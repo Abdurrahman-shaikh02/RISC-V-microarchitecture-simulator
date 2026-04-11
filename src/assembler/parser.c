@@ -1,11 +1,5 @@
-// #include "assembler.h"
-#include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
+#include "../../include/assembler/assembler.h"
 
-#define MAX_TOKEN_CHAR 32
-#define MAX_TOKENS_IN_A_LINE 4
 // this parser takes in one line and returns an array of pointers to strings(tokens) not including commas, not including spaces nothing...
 // its input is a char *
 // also fixes case.
@@ -20,7 +14,7 @@
 // doesnt handle labels ... need to make it... thinking of making two functions 
 // one for labels if a : is detected (allow underscore aswell, and no case changing)
 // and another for operations if : (and _ ) not detected
-// and a third to handle comments - using #
+// and a third to handle comments - using //
 
 char ** get_tokens (char * s){
 	//only for tokens max in each line
