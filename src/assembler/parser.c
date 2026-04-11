@@ -1,47 +1,47 @@
 #include "../../include/assembler/assembler.h"
 
-// this parser takes in one line and returns an array of pointers to strings(tokens) not including commas, not including spaces nothing...
-// its input is a char *
-// also fixes case.
-// only a max of 4 chars in one line, return NULL otherwise
+// this parser takes in one line and puts tokens in a passed array of strings, the caller of get_tokens must handle allocation of both arrays
+// also fixes case -- converts everything to lowercase except labels
 // this simple parser will give error if not the following formats,
 // <op>
 // <op> <reg>
 // <op> <reg>,<reg>
 // <op> <reg>,<reg>,<reg>
-//
-//
-// doesnt handle labels ... need to make it... thinking of making two functions 
-// one for labels if a : is detected (allow underscore aswell, and no case changing)
-// and another for operations if : (and _ ) not detected
-// and a third to handle comments - using //
+// label:
+// //comments ---> comments may also be on a line with an operation/label
 
-char ** get_tokens (char * s){
-	//only for tokens max in each line
-	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
+int parse_label(char * s, char ** ret_array, int max_tokens, int max_chars){
+	//returns 0 for an error, 1 for a success
+	char * t = ret_array[0];
 
-	//allocate memory for each token string
-	for(int i = 0; i < MAX_TOKENS_IN_A_LINE; i++){
-		ret_array[i] = (char *)malloc(sizeof(char) * MAX_TOKEN_CHAR);
+	while(isspace(*s)){
+		s++;
 	}
 
-	//initialize all strings as 0
-	for(int i = 0; i < MAX_TOKENS_IN_A_LINE; i++){
-		char * l = ret_array[i];
-		for(int j = 0; j < MAX_TOKEN_CHAR; j++){
-			l[j] = 0;
-		}
-	}
-
-	int i = 0; //keeps count in the ret_array
-	
-	char * t = s;
-	//check for characters
-	while(*t){
-		if(!(isspace(*t) || isalnum(*t) || *t == ',')) return NULL;	//invalid character
+	while(isalnum(*s) || *s == '_'){
+		*t = *s;
 		t++;
+		s++;
 	}
+	*t = '\0';
+
+	if(isspace(*s)) return 0;
+	if(*s == ':'){
+		s++;
+		while(isspace(*s)){
+			s++;
+		}
+		if(*s) return 0;
+	}
+	return 1;
 	
+}
+
+int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
+	// returns 0 for a syntax error, no of tokens read for a success
+	char * t;
+	int i = 0;
+
 	//remove spaces
 	while(isspace(*s)){
 		s++;
@@ -54,12 +54,12 @@ char ** get_tokens (char * s){
 		s++;
 		t++;
 	}
-	if(t == ret_array[i]) return NULL;	//no operation name
+	if(t == ret_array[i]) return 0;	//no operation name
 	*t = '\0';
 
-	//if the operation name does not precedes a comma theres an error 
+	//if the operation name precedes a comma theres an error 
 	if(*s == ','){
-		return NULL;
+		return 0;
 	}
 
 	//if theres no comma, there has to be a space or a null... null will be checked later... skip the spaces
@@ -70,7 +70,7 @@ char ** get_tokens (char * s){
 
 
 	while(*s){
-		if(i>=MAX_TOKENS_IN_A_LINE){
+		if(i>=max_tokens){
 			i = -1;
 			break;
 		}
@@ -85,7 +85,7 @@ char ** get_tokens (char * s){
 			s++;
 			t++;
 		}
-		if(t == ret_array[i]) return NULL;
+		if(t == ret_array[i]) return 0;
 		*t = '\0';
 
 		while(isspace(*s)){
@@ -95,31 +95,81 @@ char ** get_tokens (char * s){
 		if(*s == ','){
 			i++;
 			s++;
-			if(!*s) return NULL;		//add s1,     --->     comma and the string ends the full while loop , hence the check
+			if(!*s) return 0;		//add s1,     --->     comma and the string ends the full while loop , hence the check
 		}else if(isalnum(*s)){
-			return NULL;
+			return 0;
 		}else{
 			break;
 		}
 	}
 
-	if(i == -1) return NULL;
-	return ret_array;
+	if(i == -1) return 0;
+	return i + 1;
 
 }
 
-
-
-int main(){
-	char * s;
-
-	char ** arr = get_tokens("ADD x1, x3, x2");
-
-	if(!arr) return 0;
-
-	for(int i = 0; i < 4; i++){
-		printf("%s\n", arr[i]);
-
+char * remove_comments(char * s){
+	// returns NULL if theres an error , user must check for error
+	char * t = s;
+	while(*t){
+		if(*t == '/'){
+			if(*(t+1) == '/'){
+				*t = 0;
+				return s;
+			}
+			else{
+				return NULL;
+			}
+		}
+		t++;
 	}
-	
+	return s;
 }
+
+
+int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//max tokens in a line , max chars in each token
+	// returns -1 for error, number of tokens for an operation, 0 for a label
+	
+	s = remove_comments(s);
+	if(!s) return -1; // check for errors
+
+	int i = 0; // keeps count in the ret_array
+	int label = 0;
+	int underscore = 0;
+	char * t = s;
+
+	//check for characters
+	while(*t){
+		if(!(isspace(*t) || isalnum(*t) || *t == ',' || *t == ':' || *t == '_')) return -1;	//invalid character
+		if(*t == ':') label = 1;
+		if(*t == '_') underscore = 1;
+		t++;
+	}
+	// if you see an underscore and no colon then its an error
+	if(underscore){
+		if(!label){
+			return -1;
+		}
+	}
+
+	if(label){
+		int success = parse_label(s, ret_array, max_tokens, max_chars);
+		if(!success){
+			return -1;
+		}
+		else{
+			return 0;
+		}
+	}else{
+		int success = parse_operation(s, ret_array, max_tokens, max_chars);
+		if(!success){
+			return -1;
+		}
+		else{
+			return success;
+		}
+	}
+}
+
+
+
