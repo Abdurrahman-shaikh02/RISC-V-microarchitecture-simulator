@@ -9,6 +9,9 @@
 // <op> <reg>,<reg>,<reg>
 // label:
 // //comments ---> comments may also be on a line with an operation/label
+//
+// this parser handle brackes () in such a way that it gives error if they are a part of the operation name its an error, but when they are a part of any argument they will be view as alphanumerics
+// that means it will parse strings like --- add (,()), ()	--- > handle these in the semantic analyzer
 
 int parse_label(char * s, char ** ret_array, int max_tokens, int max_chars){
 	//returns 0 for an error, 1 for a success
@@ -57,16 +60,18 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 	if(t == ret_array[i]) return 0;	//no operation name
 	*t = '\0';
 
-	//if the operation name precedes a comma theres an error 
-	if(*s == ','){
+	//if the operation name immediately precedes a comma or any bracket theres an error 
+	if(*s == ',' || *s == '(' || *s == ')'){
 		return 0;
 	}
 
-	//if theres no comma, there has to be a space or a null... null will be checked later... skip the spaces
+	//if theres no comma or brackets, there has to be a space or a null... null will be checked later... skip the spaces
 	while(isspace(*s)){
 		s++;
 	}
-	i++;
+
+	if(*s) i++;  //if null then dont increment i and go forwards , which will reach end return statement
+	//if not null then increment i and enter loop
 
 
 	while(*s){
@@ -80,7 +85,7 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 		}
 		
 		t = ret_array[i];
-		while(isalnum(*s)){
+		while(isalnum(*s) || *s == '(' || *s == ')'){
 			*t = tolower(*s);
 			s++;
 			t++;
@@ -96,7 +101,7 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 			i++;
 			s++;
 			if(!*s) return 0;		//add s1,     --->     comma and the string ends the full while loop , hence the check
-		}else if(isalnum(*s)){
+		}else if(isalnum(*s) || *t == '(' || *t == ')'){
 			return 0;
 		}else{
 			break;
@@ -136,14 +141,22 @@ int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//m
 	int i = 0; // keeps count in the ret_array
 	int label = 0;
 	int underscore = 0;
+	int bracket = 0;
 	char * t = s;
 
 	//check for characters
 	while(*t){
-		if(!(isspace(*t) || isalnum(*t) || *t == ',' || *t == ':' || *t == '_')) return -1;	//invalid character
+		if(!(isspace(*t) || isalnum(*t) || *t == ',' || *t == ':' || *t == '_' || *t == '(' || *t == ')')) return -1;	//invalid character
 		if(*t == ':') label = 1;
 		if(*t == '_') underscore = 1;
+		if(*t == ')' || *t == '(') bracket = 1;
 		t++;
+	}
+	
+	// if you see brackets, then it cant be a label ie no colon or underscore
+	if(bracket){
+		if(label) return -1;
+		if(underscore) return -1;
 	}
 	// if you see an underscore and no colon then its an error
 	if(underscore){
