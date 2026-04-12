@@ -1,27 +1,10 @@
 #include "./../../include/assembler/assembler.h"
-#include <string.h>
-
-typedef struct syntax_block {
-	const char * operation;			//why not make a operation[32] --> cuz ur not going to edit it... its unnecessary to do so.
-	int number_of_operands;
-} syntax_block;
-
-static const int table_length = 5;
-static const syntax_block syntax_table[] = {
-	{"add", 3},
-	{"sub", 3},
-	{"load", 1},
-	{"store", 1},
-	{"jmp", 1},
-	//these for now
-
-};
 
 int get_number_of_operands(char * s){
 	//table look up --- linear search
-	for(int i = 0; i < table_length; i++){
-		if(!strcmp(s, syntax_table[i].operation)){
-			return syntax_table[i].number_of_operands;
+	for(int i = 0; i < i_table_length; i++){
+		if(!strcmp(s, i_table[i].operation)){
+			return i_table[i].number_of_operands;
 		}
 	}
 	return -1;
