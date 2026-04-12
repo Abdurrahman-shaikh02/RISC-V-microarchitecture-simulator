@@ -2,7 +2,7 @@
 
 int main(){
 	char * s = malloc(64);
-	strcpy(s, "lb x1, 43(x5)");
+	strcpy(s, "lb x1, -45(x5)");
 
 	
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
