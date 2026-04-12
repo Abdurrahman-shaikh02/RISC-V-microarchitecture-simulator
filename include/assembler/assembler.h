@@ -20,12 +20,6 @@ int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars);	//m
 
 
 // for the syntax analyzer
-int get_number_of_operands(char * s);	//table look up --- linear search
-int check_syntax(char ** array, int ntokens);	//take operation name, and number of tokens read and 0 for error, 1 for OK
-
-
-
-
 typedef struct i_block {
 	const char * operation;			//why not make a operation[32] --> cuz ur not going to edit it... its unnecessary to do so.
 	int number_of_operands;
@@ -37,6 +31,11 @@ typedef struct i_block {
 	int funct3;
 	int funct7;
 } i_block;
+
+
+const i_block * get_i_block(char * s);	//table look up --- linear search, returns NULL if not found
+int check_syntax(char ** array, int ntokens);	//take operation name, and number of tokens read and 0 for error, 1 for OK
+
 
 static const int i_table_length = 38;
 static const i_block i_table[] = {
