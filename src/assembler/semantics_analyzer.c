@@ -1,4 +1,5 @@
 #include "assembler.h"
+#include <limits.h>
 
 // all of the following return register numbers except for read label which the label if its valid, and NULL if its an error
 // support -ves for i and u
@@ -8,6 +9,7 @@
 // lets get error output as - INT_MIN since immediates are a max of 20 bits...
 
 int read_dec(char * s){
+	if(!*s) return INT_MIN;
 
 	char * t = s;
 
@@ -24,6 +26,7 @@ int read_dec(char * s){
 
 
 int read_hex(char * s){
+	if(!*s) return INT_MIN;
 
 	char * t = s;
 	if(*t == '-') t++;
