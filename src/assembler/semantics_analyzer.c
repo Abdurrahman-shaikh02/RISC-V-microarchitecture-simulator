@@ -1,6 +1,7 @@
-#include "./../../include/assembler/assembler.h"
+#include "assembler.h"
 #include <ctype.h>
 #include <limits.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 // all of the following return register numbers except for read label which the label if its valid, and NULL if its an error
@@ -19,62 +20,109 @@ int read_u(char * s);	//20 bit immediate
 int read_hex(char * s);
 int read_dec(char * s);
 
+int read_dec(char * s){
+
+	char * t = s;
+
+	if(*t == '-') t++;
+
+	while(*t){
+		if(!isdigit(*t)) return INT_MIN;
+		t++;
+	}
+
+	return atoi(s);
+
+}
+
+
+int read_hex(char * s){
+
+	char * t = s;
+	if(*t == '-') t++;
+
+	if(*t == '0' && *(t+1) == 'x'){
+		t = t + 2;
+	}
+
+	while(*t){
+		if(!(isdigit(*t) || *t == 'a' || *t == 'b' || *t == 'c' || *t == 'd' || *t == 'e' || *t == 'f')) return INT_MIN;
+		t++;
+	}
+
+	char *end; //useless
+
+	return (int) strtol(s, &end, 16);
+
+}
+
+
 int read_r(char * s){
 	if(*s == 'r'){
-		int valid = 1;
-		char * t = ++s;
-
-		while(*t){
-			if(!isdigit(*t)) return INT_MIN;
-			t++;
+		s++;
+		char * t = s;
+		if(*t == '-') t++;
+		if(*t == '0' && *(t+1) == 'x'){
+			int reg = read_hex(s);
+			if(reg >= 0 && reg < 32) return reg;
+		}else{
+			int reg = read_dec(s);
+			if(reg >= 0 && reg < 32) return reg;
 		}
-
-		int reg = atoi(s);
-		if(reg < 32 && reg >= 0) return reg;
-
-		return INT_MIN;
 	}
+
 	return INT_MIN;
 }
 
 
 int read_i(char * s){
-	char * t = s;
-	if(*t == '-') t++;
-	while(*t){
-		if(!isdigit(*t)) return INT_MIN;
-		t++;
-	}
-	int imm = atoi(s);
 
-	if(imm >= -2048 && imm <= 2047) return imm;
+	char * t = s;
+
+	if(*t == '-') t++;
+
+	if(*t == '0' && *(t+1) == 'x'){
+		int imm = read_hex(s);
+		if(imm >= -2048 && imm <= 2047) return imm;
+	}else{
+		int imm = read_dec(s);
+		if(imm >= -2048 && imm <= 2047) return imm;
+	}
+
 	return INT_MIN;
 }
 
 
 int read_s(char * s){
 	char * t = s;
-	while(*t){
-		if(!isdigit(*t)) return INT_MIN;
-		t++;
-	}
-	int imm = atoi(s);
 
-	if(imm >= 0 && imm <= 31) return imm;
+	if(*t == '-') t++;
+
+	if(*t == '0' && *(t+1) == 'x'){
+		int imm = read_hex(s);
+		if(imm >= 0 && imm <= 31) return imm;
+	}else{
+		int imm = read_dec(s);
+		if(imm >= 0 && imm <= 31) return imm;
+	}
+
 	return INT_MIN;
 }
 
 
 int read_u(char * s){
 	char * t = s;
-	if(*t == '-') t++;
-	while(*t){
-		if(!isdigit(*t)) return INT_MIN;
-		t++;
-	}
-	int imm = atoi(s);
 
-	if(imm >= -524288 && imm <= 524287) return imm;
+	if(*t == '-') t++;
+
+	if(*t == '0' && *(t+1) == 'x'){
+		int imm = read_hex(s);
+		if(imm >= -524288 && imm <= 524287) return imm;
+	}else{
+		int imm = read_dec(s);
+		if(imm >= -524288 && imm <= 524287) return imm;
+	}
+
 	return INT_MIN;
 }
 
@@ -95,5 +143,8 @@ int main(){
 	char * s = "assasd_()djh";
 	s = read_l(s);
 	if(s) printf("%s\n", s);
+
+	int reg = read_s("0xa");
+	printf("%d\n", reg);
 
 }

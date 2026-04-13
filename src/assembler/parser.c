@@ -1,4 +1,4 @@
-#include "../../include/assembler/assembler.h"
+#include "assembler.h"
 
 // this parser takes in one line and puts tokens in a passed array of strings, the caller of get_tokens must handle allocation of both arrays
 // also fixes case -- converts everything to lowercase except labels

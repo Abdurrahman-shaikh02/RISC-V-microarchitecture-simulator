@@ -1,4 +1,4 @@
-#include "./../../include/assembler/assembler.h"
+#include "assembler.h"
 
 int main(){
 	char * s = malloc(64);

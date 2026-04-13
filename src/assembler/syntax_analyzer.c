@@ -1,4 +1,4 @@
-#include "./../../include/assembler/assembler.h"
+#include "assembler.h"
 
  const i_block * get_i_block(char * s){
 	// returns a const i_block * to the block found , NULL if not found
