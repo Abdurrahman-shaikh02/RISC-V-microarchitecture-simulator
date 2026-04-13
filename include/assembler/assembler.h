@@ -65,8 +65,8 @@ static const i_block i_table[] = {
 	{"srai", 3, 'r', 'r', 's', 'i', 0b0010011, 0b101, 0b0100000},
 
 	// U-TYPE
-	{"lui",   2, 'r', 'i', 0, 'u', 0b0110111, 0, 0},
-	{"auipc", 2, 'r', 'i', 0, 'u', 0b0010111, 0, 0},
+	{"lui",   2, 'r', 'u', 0, 'u', 0b0110111, 0, 0},		// u : 20 bit immediate
+	{"auipc", 2, 'r', 'u', 0, 'u', 0b0010111, 0, 0},
 
 	// J-TYPE
 	{"jal", 2, 'r', 'l', 0, 'j', 0b1101111, 0, 0},			// l : label
