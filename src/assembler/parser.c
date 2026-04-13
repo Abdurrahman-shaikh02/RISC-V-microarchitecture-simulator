@@ -1,4 +1,5 @@
 #include "assembler.h"
+#include <ctype.h>
 
 // this parser takes in one line and puts tokens in a passed array of strings, the caller of get_tokens must handle allocation of both arrays
 // also fixes case -- converts everything to lowercase except labels
@@ -22,7 +23,7 @@ int parse_label(char * s, char ** ret_array, int max_tokens, int max_chars){
 	}
 
 	while(isalnum(*s) || *s == '_'){
-		*t = *s;
+		*t = tolower(*s);
 		t++;
 		s++;
 	}
@@ -60,8 +61,8 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 	if(t == ret_array[i]) return 0;	//no operation name
 	*t = '\0';
 
-	//if the operation name immediately precedes a comma or any bracket theres an error 
-	if(*s == ',' || *s == '(' || *s == ')' || *s == '-'){
+	//if the operation name immediately precedes a comma or any bracket or a minus or an underscore theres an error 
+	if(*s == ',' || *s == '(' || *s == ')' || *s == '-' || *s == '_'){
 		return 0;
 	}
 
@@ -85,7 +86,7 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 		}
 		
 		t = ret_array[i];
-		while(isalnum(*s) || *s == '(' || *s == ')' || *s == '-'){
+		while(isalnum(*s) || *s == '(' || *s == ')' || *s == '-' || *s == '_'){
 			*t = tolower(*s);
 			s++;
 			t++;
@@ -101,7 +102,7 @@ int parse_operation(char * s, char ** ret_array, int max_tokens, int max_chars){
 			i++;
 			s++;
 			if(!*s) return 0;		//add s1,     --->     comma and the string ends the full while loop , hence the check
-		}else if(isalnum(*s) || *s == '(' || *s == ')' || *s == '-'){
+		}else if(isalnum(*s) || *s == '(' || *s == ')' || *s == '-' || *s == '_'){
 			return 0;
 		}else{
 			break;

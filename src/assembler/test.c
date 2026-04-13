@@ -1,10 +1,121 @@
 #include "assembler.h"
 
-int main(){
-	char * s = malloc(64);
-	strcpy(s, "add r1, r2, r33");
+// two problems, its not handling only comments... nor is it handling newlines
+// nor is it handling _ waale labels as operands
+// all problems in the parser only LOL
+static char * program[] = {
+    // =========================
+    // VALID INSTRUCTIONS
+    // =========================
+    "//hiiasid",		////
+    "add r1, r2, r3",
+    "sub r4, r5, r6",
+    "and r7, r8, r9",
+    "or r10, r11, r12",
+    "xor r13, r14, r15",
+    "sll r16, r17, r18",
+    "srl r19, r20, r21",
+    "sra r22, r23, r24",
 
-	
+    "addi r1, r2, 10",
+    "andi r3, r4, 255",
+    "ori r5, r6, -1",
+    "xori r7, r8, 123",
+
+    "slti r9, r10, -5",
+    "sltiu r11, r12, 20",
+
+    "slli r13, r14, 5",
+    "srli r15, r16, 3",
+    "srai r17, r18, 7",
+
+    "lui r19, 0x12345",
+    "auipc r20, 0xABCDe",
+
+    "lw r1, 0(r2)",
+    "lh r3, 4(r4)",
+    "lb r5, 8(r6)",
+    "lhu r7, 12(r8)",
+    "lbu r9, 16(r10)",
+
+    "sw r1, 0(r2)",
+    "sh r3, 4(r4)",
+    "sb r5, 8(r6)",
+
+    "beq r1, r2, ll",
+    "bne r3, r4, ll",
+    "blt r5, r6, asd_asd",		////
+    "bge r7, r8, sdj3_",		////
+    "bltu r9, r10, 3asd_ads",		////
+    "bgeu r11, r12, _34c",		////
+
+    "jal r1, label",
+    "jalr r2, r3, 0",
+
+    // =========================
+    // EDGE CASES (VALID)
+    // =========================
+
+    "addi r1, r2, 2047",
+    "addi r3, r4, -2048",
+
+    "slli r5, r6, 31",
+    "srli r7, r8, 0",
+
+    "lui r9, 0xFFFFF",	
+    "auipc r10, 0x0",
+
+    "beq r1, r1, label",
+
+    "jal r0, asdj",
+    "jal r0, asjdla",
+
+    // =========================
+    // INVALID INSTRUCTIONS
+    // =========================
+
+    "add r1, r2",
+    "sub r1, r2, r33",
+    "and r1, r2, r-1",
+
+    "addi r1, r2, 5000",
+    "andi r1, r2, -3000",
+
+    "slli r1, r2, 40",
+    "srli r1, r2, -1",
+
+    "lui r1, 0x200000",
+
+    "lw r1, r2",
+    "sw r1, (r2)",
+
+    "beq r1, r2",
+    "bne r1, r2, 3",
+
+    "jal r1",
+    "jalr r1, r2",
+
+    "foo r1, r2, r3",
+
+    "addi r0, r0, 0",
+
+    // =========================
+    // SEMANTIC EDGE CASES
+    // =========================
+
+    "lw r1, 3(r2)",
+    "sw r1, 5(r2)",
+
+    "jalr r1, r2, 3",
+
+    NULL
+};
+
+
+int main(){
+	char * s = malloc(128);
+	char ** ic = program;
+
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
 
 	//allocate memory for each token string
@@ -12,33 +123,46 @@ int main(){
 		ret_array[i] = (char *)malloc(sizeof(char) * MAX_TOKEN_CHAR);
 	}
 
-	//initialize all strings as 0
-	for(int i = 0; i < MAX_TOKENS_IN_A_LINE; i++){
-		char * l = ret_array[i];
-		for(int j = 0; j < MAX_TOKEN_CHAR; j++){
-			l[j] = 0;
+	while(*ic != NULL){
+		//initialize all strings as 0
+		for(int i = 0; i < MAX_TOKENS_IN_A_LINE; i++){
+			char * l = ret_array[i];
+			for(int j = 0; j < MAX_TOKEN_CHAR; j++){
+				l[j] = 0;
+			}
 		}
+
+
+		strcpy(s, *ic);
+
+		int t = get_tokens(s, ret_array, MAX_TOKENS_IN_A_LINE, MAX_TOKEN_CHAR);
+		if(t == -1){
+			printf("Invalid instruction format\n");
+			ic++;
+			continue;
+		}
+
+		int v = check_syntax(ret_array, t, 1);
+		if(!v){
+			ic++;
+			continue;
+		}
+
+		int u = check_semantics(ret_array, 1);
+		if(!u){
+			ic++;
+			continue;
+		}
+
+
+		printf("%d : ", t);
+
+		for(int i = 0; i < 4; i++){
+			printf("%s ", ret_array[i]);
+
+		}
+		printf("\n");
+		ic++;
 	}
-	
 
-	int t = get_tokens(s, ret_array, MAX_TOKENS_IN_A_LINE, MAX_TOKEN_CHAR);
-	if(t == -1){
-		printf("Invalid instruction format\n");
-		return 0;
-	}
-
-	int v = check_syntax(ret_array, t, 1);
-	if(!v) return 0;
-
-	int u = check_semantics(ret_array, 1);
-	if(!u) return 0;
-
-
-	printf("%d\n", t);
-
-	for(int i = 0; i < 4; i++){
-		printf("%s\n", ret_array[i]);
-
-	}
-	
 }

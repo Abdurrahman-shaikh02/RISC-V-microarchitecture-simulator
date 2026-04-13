@@ -72,7 +72,7 @@ static const i_block i_table[] = {
 	{"jal", 2, 'r', 'l', 0, 'j', 0b1101111, 0, 0},			// l : label
 
 	// I-TYPE (JUMP REG)
-	{"jalr", 3, 'r', 'r', 'i', 'i', 0b1100111, 0b000, 0},
+	{"jalr", 3, 'r', 'r', 'i', 'i', 0b1100111, 0b000, 0},		//can you confirm this is it supposed to be a label ?
 
 	// B-TYPE
 	{"beq",  3, 'r', 'r', 'l', 'b', 0b1100011, 0b000, 0},

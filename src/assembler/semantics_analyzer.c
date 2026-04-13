@@ -102,15 +102,19 @@ int read_s(char * s){
 
 int read_u(char * s){
 	char * t = s;
-
-	if(*t == '-') t++;
+	int negative = 0;
+	if(*t == '-'){
+		negative = 1;
+		t++;
+	}
 
 	if(*t == '0' && *(t+1) == 'x'){
+		if(negative) return INT_MIN;
 		int imm = read_hex(s);
-		if(imm >= -524288 && imm <= 524287) return imm;
+		if(imm >= 0 && imm <= 1048575) return imm;
 	}else{
 		int imm = read_dec(s);
-		if(imm >= -524288 && imm <= 524287) return imm;
+		if(imm >= 0 && imm <= 1048575) return imm;
 	}
 
 	return INT_MIN;
