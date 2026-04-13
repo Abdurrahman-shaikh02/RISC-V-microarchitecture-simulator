@@ -2,7 +2,7 @@
 
 int main(){
 	char * s = malloc(64);
-	strcpy(s, "lb x1, -45(x, 234");
+	strcpy(s, "add r1, r2, r33");
 
 	
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
@@ -22,10 +22,16 @@ int main(){
 	
 
 	int t = get_tokens(s, ret_array, MAX_TOKENS_IN_A_LINE, MAX_TOKEN_CHAR);
-	if(t == -1) return 0;
+	if(t == -1){
+		printf("Invalid instruction format\n");
+		return 0;
+	}
 
-	int v = check_syntax(ret_array, t);
+	int v = check_syntax(ret_array, t, 1);
 	if(!v) return 0;
+
+	int u = check_semantics(ret_array, 1);
+	if(!u) return 0;
 
 
 	printf("%d\n", t);

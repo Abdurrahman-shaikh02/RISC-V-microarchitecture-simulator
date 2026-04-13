@@ -34,7 +34,7 @@ typedef struct i_block {
 
 
 const i_block * get_i_block(char * s);	//table look up --- linear search, returns NULL if not found
-int check_syntax(char ** array, int ntokens);	//take operation name, and number of tokens read and 0 for error, 1 for OK
+int check_syntax(char ** array, int ntokens, int errors);	//take operation name, and number of tokens read and 0 for error, 1 for OK
 
 
 static const int i_table_length = 38;
@@ -107,5 +107,22 @@ static const i_block i_table[] = {
 	{"nop", 0, 0, 0, 0, 'i', 0b0110011, 0b000, 0}
 };
 
+
+// symantic analyzer
+
+
+int read_r(char * s);
+int read_a(char * s, int * imm);
+int read_i(char * s);
+char * read_l(char * s);
+int read_s(char * s);
+int read_u(char * s);	//20 bit immediate
+int read_hex(char * s);
+int read_dec(char * s);
+int check_operand(char type, char * s);
+int check_semantics(char ** instruction, int errors);
+
+
+#include <limits.h>
 
 

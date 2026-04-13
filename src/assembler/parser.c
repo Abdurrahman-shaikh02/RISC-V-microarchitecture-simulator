@@ -134,7 +134,7 @@ char * remove_comments(char * s){
 
 int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//max tokens in a line , max chars in each token
 	// returns -1 for error, number of tokens for an operation, 0 for a label
-	
+	// needs a dynamic s... it makes changes to it, to ignore comments...
 	s = remove_comments(s);
 	if(!s) return -1; // check for errors
 
