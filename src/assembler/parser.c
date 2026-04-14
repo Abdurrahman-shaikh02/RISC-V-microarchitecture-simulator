@@ -164,7 +164,7 @@ int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//m
 	}
 	// if you see an underscore and no colon then its an error
 	if(underscore){
-		if(!label) return -1;
+		//if(!label) return -1;
 		if(negative) return -1;
 		if(bracket) return -1;
 	}

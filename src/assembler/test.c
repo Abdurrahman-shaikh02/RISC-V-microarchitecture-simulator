@@ -46,7 +46,7 @@ static char * program[] = {
     "bne r3, r4, ll",
     "blt r5, r6, asd_asd",		////
     "bge r7, r8, sdj3_",		////
-    "bltu r9, r10, 3asd_ads",		////
+    "bltu r9, r10, asd_ads",		////
     "bgeu r11, r12, _34c",		////
 
     "jal r1, label",
@@ -111,10 +111,146 @@ static char * program[] = {
     NULL
 };
 
+static char * program2[] = {
+
+    // =========================
+    // BASIC VALID
+    // =========================
+
+    "add r1,r2,r3",
+    "add   r1 ,  r2 ,r3",
+    "addi r1,r2,-10",
+    "addi r1,r2,0x7ff",
+    "addi r1,r2,-0x800",
+
+    "lw r1,0(r2)",
+    "sw r3,16(r4)",
+    "lb r5,-8(r6)",
+
+    // =========================
+    // LABEL-LIKE OPERANDS
+    // =========================
+
+    "beq r1,r2,label",
+    "beq r1,r2,label_1",
+    "beq r1,r2,_label",
+    "beq r1,r2,label_",
+    "beq r1,r2,l_a_b_e_l",
+
+    "jal r1,target",
+    "jal r1,target_123",
+    "jal r1,_start",
+
+    // =========================
+    // MIXED FORMATS
+    // =========================
+
+    "addi r1,r2,-0x1",
+    "addi r1,r2,0x0",
+    "addi r1,r2,-0",
+
+    "lw r1,-0(r2)",
+    "sw r1,0(r2)",
+
+    // =========================
+    // SPACING EDGE CASES
+    // =========================
+
+    "add r1 ,r2,r3",
+    "add r1,r2 ,r3",
+    "add r1 , r2,r3",
+    "add r1 , r2 , r3",
+
+    "lw r1, 0 ( r2 )",			//invalids ---> do not expect spaces in indexed addressing
+    "sw r1 ,16( r2 )",
+
+    // =========================
+    // WEIRD BUT LEGAL TOKENS?
+    // =========================
+
+    "beq r1,r2,a1",
+    "beq r1,r2,a_1",
+    "beq r1,r2,a__b",
+    "beq r1,r2,abc123",
+    "beq r1,r2,abc_123_xyz",
+
+    // =========================
+    // BORDERLINE / TRICKY
+    // =========================
+
+    "addi r1,r2,--1",
+    "addi r1,r2,- 1",
+    "addi r1,r2,0x",
+    "addi r1,r2,0xg",
+
+    "lw r1,(r2)",
+    "lw r1,()(r2)",
+    "lw r1,0((r2))",
+
+    "sw r1,0(r2",
+    "sw r1,0r2)",
+
+    // =========================
+    // REGISTER EDGE CASES
+    // =========================
+
+    "add r01,r2,r3",
+    "add r1,r02,r3",
+    "add r1,r2,r003",
+
+    "add r1,r2,r32",
+    "add r1,r2,r-2",
+
+    // =========================
+    // HEX EDGE CASES
+    // =========================
+
+    "lui r1,0xfffff",
+    "lui r1,0x00000",
+    "lui r1,0x100000",
+
+    "addi r1,r2,0x800",	
+    "addi r1,r2,-0x801",
+
+    // =========================
+    // COMMA / TOKEN ERRORS
+    // =========================
+
+    "add r1 r2 r3",
+    "add ,r1,r2,r3",
+    "add r1,,r2,r3",
+    "add r1,r2,",
+    "add , , ,",
+
+    // =========================
+    // COMMENT INTERACTIONS
+    // =========================
+
+    "add r1,r2,r3 // normal",
+    "add r1,r2,r3//tight",
+    "add r1,r2,r3 / / broken",
+
+    "// full line comment",
+    "   // leading spaces",
+
+    // =========================
+    // MIXED CHAOS
+    // =========================
+
+    "beq r1 , r2 , label_123 // comment",
+    "lw r1 , -16 ( r2 )",
+    "addi r1 , r2 , -0x1f",
+
+    "jal r1 , _entry_point",
+    "jal r1 , __",
+    "jal r1 , ___label___",
+
+    NULL
+};
 
 int main(){
 	char * s = malloc(128);
-	char ** ic = program;
+	char ** ic = program2;
 
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
 
