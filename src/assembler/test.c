@@ -108,6 +108,11 @@ static char * program[] = {
 
     "jalr r1, r2, 3",
 
+    "//fsdfsdfsdf",
+    "     // asdqwpeiqwe",
+    "    //asdasda",
+    "    /dsfsf",
+
     NULL
 };
 
@@ -274,6 +279,11 @@ int main(){
 		int t = get_tokens(s, ret_array, MAX_TOKENS_IN_A_LINE, MAX_TOKEN_CHAR);
 		if(t == -1){
 			printf("Invalid instruction format\n");
+			ic++;
+			continue;
+		}
+		if(t == 10){
+			printf("comment\n");
 			ic++;
 			continue;
 		}

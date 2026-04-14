@@ -132,11 +132,19 @@ char * remove_comments(char * s){
 	return s;
 }
 
+int is_full_line_comment(char * s){
+	while(isspace(*s)) s++;
+	if(*s == '/') if(*(s+1) == '/') return 1;
+	return 0;
 
+}
 int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//max tokens in a line , max chars in each token
-	// returns -1 for error, number of tokens for an operation, 0 for a label
+	// returns -1 for error, number of tokens for an operation, 0 for a label, 10 for a full comment--> to be ignored
 	// needs a dynamic s... it makes changes to it, to ignore comments...
+	if(is_full_line_comment(s)) return 10;
+	
 	s = remove_comments(s);
+
 	if(!s) return -1; // check for errors
 
 	int i = 0; // keeps count in the ret_array
