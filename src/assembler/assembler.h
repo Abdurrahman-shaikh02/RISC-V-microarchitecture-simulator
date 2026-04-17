@@ -125,4 +125,19 @@ int check_semantics(char ** instruction, int errors);
 
 #include <limits.h>
 
+// symbol_table
 
+
+
+
+typedef struct symbol_node {
+	char name[256];
+	int address;
+	struct symbol_node * next;
+} symbol_node;
+
+static symbol_node * head = NULL;
+
+symbol_node * get_symbol(char * s);
+int get_address(char * s);
+int add_symbol(char * s, int address);

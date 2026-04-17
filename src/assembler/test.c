@@ -22,7 +22,7 @@ static char * program[] = {
     "ori r5, r6, -1",
     "xori r7, r8, 123",
 
-    "slti r9, r10, -5",
+    "slti r9, r10 -5",
     "sltiu r11, r12, 20",
 
     "slli r13, r14, 5",
@@ -249,6 +249,10 @@ static char * program2[] = {
     "jal r1 , _entry_point",
     "jal r1 , __",
     "jal r1 , ___label___",
+    "skfjskdjfk:",
+    "skfjsasd:",
+    "skfjskdjfk:",
+    "skfjsk324:",
 
     NULL
 };
@@ -288,6 +292,22 @@ int main(){
 			continue;
 		}
 
+		if(t == 0){
+
+			if(add_symbol(ret_array[0], 0) == -1){
+				printf("sybol failed\n");
+				ic++;
+				continue;
+			}
+
+			printf("%d -- ", get_address(ret_array[0]));
+
+			printf("label --> ");
+			ic++;
+
+			printf("%s\n", ret_array[0]);
+			continue;
+		}
 		int v = check_syntax(ret_array, t, 1);
 		if(!v){
 			ic++;
