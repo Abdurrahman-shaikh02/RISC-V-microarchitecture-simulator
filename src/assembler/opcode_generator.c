@@ -50,8 +50,8 @@ int read_s_format(int opcode, char ** array, const i_block * block){
 
 	opcode = opcode | (arg2 << 15);
 
-	opcode = opcode | ((arg3 & ~0xFFFFFFE0) << 7);
-	opcode = opcode | ((arg3 & ~0xFFFFF01F) << 25);
+	opcode = opcode | ((arg3 & 0x1F) << 7);
+	opcode = opcode | ((arg3 & 0xFE0) << 20);
 	
 	return opcode;
 }
@@ -129,7 +129,7 @@ int get_opcode(char ** array, int address){
 		case 's':
 			return read_s_format(opcode, array, block); //has bugsssss------------------------------------------
 	}
-
+	return -1;
 }
 
 
