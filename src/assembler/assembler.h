@@ -139,5 +139,17 @@ typedef struct symbol_node {
 static symbol_node * head = NULL;
 
 symbol_node * get_symbol(char * s);
-int get_address(char * s);
-int add_symbol(char * s, int address);
+int get_address(char * s);			//the error would be if the label was not found
+int add_symbol(char * s, int address);		//the error is if it is already there...
+						
+
+//opcode gen
+
+
+
+int get_opcode(char ** array, int address);
+int read_r_format(int opcode, char ** array, const i_block * block);
+int read_i_format(int opcode, char ** array, const i_block * block);
+int read_u_format(int opcode, char ** array, const i_block * block);
+int read_s_format(int opcode, char ** array, const i_block * block);
+int read_operand(char type, char * s);

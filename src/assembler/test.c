@@ -257,9 +257,18 @@ static char * program2[] = {
     NULL
 };
 
+static char * program3[] = {
+	"sub r1, r2, r3",
+	"addi r1, r2, 7",
+	"lui r31, 45",
+	"sb r31, 45(r7)",
+	"sb r31, -45(r7)",
+	NULL
+};
+
 int main(){
 	char * s = malloc(128);
-	char ** ic = program2;
+	char ** ic = program3;
 
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
 
@@ -295,7 +304,7 @@ int main(){
 		if(t == 0){
 
 			if(add_symbol(ret_array[0], 0) == -1){
-				printf("sybol failed\n");
+				printf("symbol failed\n");
 				ic++;
 				continue;
 			}
@@ -327,7 +336,9 @@ int main(){
 			printf("%s ", ret_array[i]);
 
 		}
-		printf("\n");
+		
+		printf("%032b\n", get_opcode(ret_array, 0));
+
 		ic++;
 	}
 
