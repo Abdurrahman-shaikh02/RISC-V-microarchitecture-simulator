@@ -152,4 +152,6 @@ int read_r_format(int opcode, char ** array, const i_block * block);
 int read_i_format(int opcode, char ** array, const i_block * block);
 int read_u_format(int opcode, char ** array, const i_block * block);
 int read_s_format(int opcode, char ** array, const i_block * block);
+int read_j_format(int opcode, char ** array, const i_block * block, int current_instruction_address);
+int read_b_format(int opcode, char ** array, const i_block * block, int current_instruction_address);
 int read_operand(char type, char * s);

@@ -261,8 +261,11 @@ static char * program3[] = {
 	"sub r1, r2, r3",
 	"addi r1, r2, 7",
 	"lui r31, 45",
+	"test: ",		// let label address be 40
 	"sb r31, 45(r7)",
 	"sb r31, -45(r7)",
+	//"jal r1, test",
+	//"beq r1, r2, test",
 	NULL
 };
 
@@ -303,7 +306,7 @@ int main(){
 
 		if(t == 0){
 
-			if(add_symbol(ret_array[0], 0) == -1){
+			if(add_symbol(ret_array[0], 40) == -1){
 				printf("symbol failed\n");
 				ic++;
 				continue;
