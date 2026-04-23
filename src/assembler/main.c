@@ -34,7 +34,7 @@ int main(int argc, char * argv[]){
     for(int i = 0; i < MAX_TOKENS_IN_A_LINE; i++){
 	parsed_line[i] = (char *)malloc(sizeof(char) * MAX_TOKEN_CHAR);
     }
-    int line_number = 0;
+    int instruction_number = 0;
     int line_count = 0;
     while(fgets(line, 256, source) != NULL){
 	line_count++;
@@ -62,7 +62,7 @@ int main(int argc, char * argv[]){
 	}else if(parser == 0){
 	    log_info("Handling a label...");
 	    
-	    if(add_symbol(parsed_line[0], (line_number*4)) == -1){
+	    if(add_symbol(parsed_line[0], (instruction_number*4)) == -1){	//since we are not incrementing the instruction_number for a label... the instruction_number during the iteration of the label is the instruction_number of the next instruction....
 		log_fatal("Couldnt add symbol to table.");
 		return -1;
 	    }else{
@@ -87,7 +87,7 @@ int main(int argc, char * argv[]){
 	    log_info("Valid semantics...");
 	}
 	
-	line_number++;
+	instruction_number++;
 	
     }
 
