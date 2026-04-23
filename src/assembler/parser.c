@@ -124,6 +124,7 @@ char * remove_comments(char * s){
 				return s;
 			}
 			else{
+				log_debug("// not found.");
 				return NULL;
 			}
 		}
@@ -132,20 +133,29 @@ char * remove_comments(char * s){
 	return s;
 }
 
+
 int is_full_line_comment(char * s){
 	while(isspace(*s)) s++;
 	if(*s == '/') if(*(s+1) == '/') return 1;
 	return 0;
 
 }
+
+
 int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//max tokens in a line , max chars in each token
 	// returns -1 for error, number of tokens for an operation, 0 for a label, 10 for a full comment--> to be ignored
 	// needs a dynamic s... it makes changes to it, to ignore comments...
-	if(is_full_line_comment(s)) return 10;
+	if(is_full_line_comment(s)){
+		log_info("Processed a full line comment.");
+		return 10;
+	}
 	
 	s = remove_comments(s);
 
-	if(!s) return -1; // check for errors
+	if(!s){
+		log_error("Comment handling failed.");
+		return -1; // check for errors
+	}
 
 	int i = 0; // keeps count in the ret_array
 	int label = 0;
@@ -186,22 +196,32 @@ int get_tokens (char * s, char ** ret_array, int max_tokens, int max_chars){	//m
 		if(negative) return -1;
 		if(bracket) return -1;
 	}
+
+	log_info("Characters are valid.");
 //---------------------------------------------------------------------------------------------------------------------------------
 
 	if(label){
+		log_info("Parsing a label.");
+
 		int success = parse_label(s, ret_array, max_tokens, max_chars);
 		if(!success){
+			log_error("Label parsing failed.");
 			return -1;
 		}
 		else{
+			log_info("Label parsing succeeded.");
 			return 0;
 		}
 	}else{
+		log_info("Parsing an operation.");
+
 		int success = parse_operation(s, ret_array, max_tokens, max_chars);
 		if(!success){
+			log_error("Operation parsing failed.");
 			return -1;
 		}
 		else{
+			log_info("Operation parsing succeeded.");
 			return success;
 		}
 	}

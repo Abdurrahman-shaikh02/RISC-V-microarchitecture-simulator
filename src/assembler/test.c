@@ -271,7 +271,7 @@ static char * program3[] = {
 
 int main(){
 	char * s = malloc(128);
-	char ** ic = program3;
+	char ** ic = program2;
 
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
 
@@ -340,7 +340,7 @@ int main(){
 
 		}
 		
-		printf("%032b\n", get_opcode(ret_array, 0));
+		//printf("%032b\n", get_opcode(ret_array, 0));
 
 		ic++;
 	}
