@@ -20,29 +20,20 @@ int read_operand(char type, char * s){
 			return read_s(s);
 		case 'u':
 			return read_u(s);
-	/*
-		case 'l':
-			l = read_l(s);
-			if(l == NULL) return 0;
-			return 1;
-	
-		case 'a':
-			return read_a(s, &imm);
-	*/
 		default:
 			return 0;
 
 	}
 	
 }
-/*
+
 
 int read_b_format(int opcode, char ** array, const i_block * block, int current_instruction_address){
 	int arg1 = read_operand(block->op1, array[1]);
 	opcode = opcode | (arg1 << 15);
 	
 	int arg2 = read_operand(block->op2, array[2]);
-	opcode = opcode | (arg1 << 20);
+	opcode = opcode | (arg2 << 20);
 
 	int label = get_address(array[3]);
 	if(label == -1) return 0;	//return 0 if the label is not found
@@ -52,10 +43,11 @@ int read_b_format(int opcode, char ** array, const i_block * block, int current_
 		return 0;
 	}
 
-	opcode = opcode | ((arg2 & 0x1E) << 7);
-	opcode = opcode | ((arg2 & 0x7E0) << 20);
-	opcode = opcode | ((arg2 & 0x800) >> 4);
-	opcode = opcode | ((arg2 & 0x1000) << 19);
+	opcode = opcode | ((arg3 & 0x1E) << 7);
+	opcode = opcode | ((arg3 & 0x7E0) << 20);
+	opcode = opcode | ((arg3 & 0x800) >> 4);
+	opcode = opcode | ((arg3 & 0x1000) << 19);
+	return opcode;
 
 
 	return opcode;
@@ -65,7 +57,6 @@ int read_b_format(int opcode, char ** array, const i_block * block, int current_
 int read_j_format(int opcode, char ** array, const i_block * block, int current_instruction_address){
 	int arg1 = read_operand(block->op1, array[1]);
 	opcode = opcode | (arg1 << 7);
-	
 
 	int label = get_address(array[2]);
 	if(label == -1) return 0;	//return 0 if the label is not found
@@ -74,6 +65,7 @@ int read_j_format(int opcode, char ** array, const i_block * block, int current_
 	if(!(arg2 >= -1048576 && arg2 <= 1048575)){	// its a 21 bit value ---> the lsb is always zero...
 		return 0;
 	}
+
 	opcode = opcode | ((arg2 & 0x7FE) << 20);
 	opcode = opcode | ((arg2 & 0x800) << 9);
 	opcode = opcode | ((arg2 & 0xFF000));
@@ -82,7 +74,7 @@ int read_j_format(int opcode, char ** array, const i_block * block, int current_
 	return opcode;
 }
 
-*/
+
 int read_s_format(int opcode, char ** array, const i_block * block){
 	int arg1 = read_operand(block->op1, array[1]);
 	opcode = opcode | (arg1 << 20);
@@ -172,11 +164,11 @@ int get_opcode(char ** array, int current_instruction_address){
 		case 'u':
 			return read_u_format(opcode, array, block);
 		case 'j':
-			//return read_j_format(opcode, array, block, current_instruction_address);
+			return read_j_format(opcode, array, block, current_instruction_address);
 		case 'b':
-			//return read_b_format(opcode, array, block, current_instruction_address);
+			return read_b_format(opcode, array, block, current_instruction_address);
 		case 's':
-			return read_s_format(opcode, array, block); //has bugsssss------------------------------------------
+			return read_s_format(opcode, array, block); 
 	}
 	return 0; // an error zero will never come from here... will always be found, if there was an error the semantics would catch it...
 }

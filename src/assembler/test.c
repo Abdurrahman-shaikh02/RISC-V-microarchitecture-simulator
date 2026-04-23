@@ -258,20 +258,15 @@ static char * program2[] = {
 };
 
 static char * program3[] = {
-	"sub r1, r2, r3",
-	"addi r1, r2, 7",
-	"lui r31, 45",
 	"test: ",		// let label address be 40
-	"sb r31, 45(r7)",
-	"sb r31, -45(r7)",
 	//"jal r1, test",
-	//"beq r1, r2, test",
+	"beq r1, r2, test",
 	NULL
 };
 
 int main(){
 	char * s = malloc(128);
-	char ** ic = program2;
+	char ** ic = program3;
 
 	char ** ret_array = (char **)malloc(sizeof(char *) * MAX_TOKENS_IN_A_LINE);
 
@@ -340,7 +335,7 @@ int main(){
 
 		}
 		
-		//printf("%032b\n", get_opcode(ret_array, 0));
+		printf("%032b\n", get_opcode(ret_array, 0));
 
 		ic++;
 	}

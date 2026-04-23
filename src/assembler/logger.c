@@ -4,7 +4,7 @@
 void log_msg(log_level level, const char * msg){
     if(level < CURRENT_LEVEL) return;
     static int is_first_call = 1;
-    FILE * file = fopen("assembler.log", "a");
+    FILE * file = fopen("log.log", "a");
 
     // write date and time only the first time...
     if(is_first_call){
