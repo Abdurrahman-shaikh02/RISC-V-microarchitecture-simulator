@@ -1,0 +1,34 @@
+// initialize
+start:
+    addi r1, r0, 5        // r1 = 5
+    addi r2, r0, 0        // r2 = 0 (sum)
+    addi r3, r0, 1        // r3 = 1 (counter)
+
+// loop: sum = 1 + 2 + ... + 5
+loop:
+    add r2, r2, r3        // sum += counter
+    addi r3, r3, 1        // counter++
+
+    blt r3, r1, loop      // if counter < 5 → loop
+// store result
+    sw r2, 0(r0)          // store sum at address 0
+// load back
+    lw r4, 0(r0)          // r4 = sum
+// simple branch test
+    beq r4, r2, equal
+
+    addi r5, r0, 111      // should NOT execute
+    jal r0, end
+equal:
+    addi r5, r0, 999      // should execute
+// jump forward/backward test
+    jal r6, jump_test
+after_jump:
+    addi r7, r0, 7
+    jal r0, end
+jump_test:
+    addi r6, r6, 4        // modify return reg
+    jalr r0, r6, 0        // return
+end:
+    addi r0, r0, 0        // harmless instruction (like nop)
+    nop

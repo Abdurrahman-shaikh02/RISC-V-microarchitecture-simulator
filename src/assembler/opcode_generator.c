@@ -47,8 +47,6 @@ int read_b_format(int opcode, char ** array, const i_block * block, int current_
 	opcode = opcode | ((arg3 & 0x7E0) << 20);
 	opcode = opcode | ((arg3 & 0x800) >> 4);
 	opcode = opcode | ((arg3 & 0x1000) << 19);
-	return opcode;
-
 
 	return opcode;
 }
@@ -127,9 +125,6 @@ int read_i_format(int opcode, char ** array, const i_block * block){
 
 
 int read_r_format(int opcode, char ** array, const i_block * block){
-
-	// handles the nop command here
-	if(!strcmp(array[0], "nop")) return opcode;
 
 	int arg1 = read_operand(block->op1, array[1]);
 	opcode = opcode | (arg1 << 7);

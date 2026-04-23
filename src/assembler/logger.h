@@ -16,4 +16,4 @@ void log_msg(log_level level, const char * msg);    //use only macros to acces t
 #define log_info(msg) log_msg(LOG_INFO, msg)
 #define log_warn(msg) log_msg(LOG_WARN, msg)
 #define log_error(msg) log_msg(LOG_ERROR, msg)
-#define log_fatal(msg) log_msg(LOG_fatal, msg)
+#define log_fatal(msg) log_msg(LOG_FATAL, msg)

@@ -120,7 +120,8 @@ char * remove_comments(char * s){
 	while(*t){
 		if(*t == '/'){
 			if(*(t+1) == '/'){
-				*t = 0;
+				*t = '\n';
+				*(t+1) = 0;
 				return s;
 			}
 			else{

@@ -260,7 +260,7 @@ static char * program2[] = {
 static char * program3[] = {
 	"test: ",		// let label address be 40
 	//"jal r1, test",
-	"beq r1, r2, test",
+	"blt r3, r1, test",
 	NULL
 };
 
@@ -301,7 +301,7 @@ int main(){
 
 		if(t == 0){
 
-			if(add_symbol(ret_array[0], 40) == -1){
+			if(add_symbol(ret_array[0], 0x0c) == -1){
 				printf("symbol failed\n");
 				ic++;
 				continue;
@@ -335,7 +335,7 @@ int main(){
 
 		}
 		
-		printf("%032b\n", get_opcode(ret_array, 0));
+		printf("%032b\n", get_opcode(ret_array, 0x14));
 
 		ic++;
 	}

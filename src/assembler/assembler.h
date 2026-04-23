@@ -38,7 +38,7 @@ const i_block * get_i_block(char * s);	//table look up --- linear search, return
 int check_syntax(char ** array, int ntokens, int errors);	//take operation name, and number of tokens read and 0 for error, 1 for OK
 
 
-static const int i_table_length = 38;
+static const int i_table_length = 41;
 static const i_block i_table[] = {
 	// R-TYPE
 	{"add", 3, 'r', 'r', 'r', 'r', 0b0110011, 0b000, 0b0000000},
@@ -95,14 +95,14 @@ static const i_block i_table[] = {
 	{"sh", 2, 'r', 'a', 0, 's', 0b0100011, 0b001, 0},
 	{"sw", 2, 'r', 'a', 0, 's', 0b0100011, 0b010, 0},
 
-	/*
+	
 	// SYSTEM
 	{"ecall",  0, 0, 0, 0, 'i', 0b1110011, 0b000, 0},
 	{"ebreak", 0, 0, 0, 0, 'i', 0b1110011, 0b000, 1},
 
 	// FENCE
 	{"fence", 0, 0, 0, 0, 'i', 0b0001111, 0b000, 0},
-	*/
+	
 
 	// NOP (pseudo but useful)
 	{"nop", 0, 0, 0, 0, 'i', 0b0110011, 0b000, 0}
