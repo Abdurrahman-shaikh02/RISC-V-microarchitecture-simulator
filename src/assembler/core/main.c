@@ -1,17 +1,28 @@
 #include "assembler.h"
-#include <ctype.h>
-#include <stdio.h>
 
 int main(int argc, char * argv[]){
     int verbose = 0;
     const char * path;
-    if(argc == 3){
+    const char * out_path = "output.txt";
+
+    if(argc == 4){
+	if(!strcmp(*(argv + 1), "-v")){
+	    verbose = 1;
+	    path = *(argv + 2);
+	    out_path = *(argv + 3);
+	}
+	else{
+	    printf("Invalid arguments1\n");
+	    return -1;
+	}
+    }else if(argc == 3){
 	if(!strcmp(*(argv + 1), "-v")){
 	    verbose = 1;
 	    path = *(argv + 2);
 	}
 	else{
-	    printf("Invalid arguments1\n");
+	    path = *(argv + 1);
+	    out_path = *(argv + 2);
 	    return -1;
 	}
     }else if(argc == 2){
@@ -96,7 +107,7 @@ int main(int argc, char * argv[]){
     fclose(source);
     
     source = fopen(path, "r");
-    FILE * object = fopen("output.txt", "w");
+    FILE * object = fopen(out_path, "w");
     if(!object) return -1;
 
     while(fgets(line, 256, source)){

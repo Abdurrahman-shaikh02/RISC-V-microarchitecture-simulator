@@ -8,9 +8,10 @@
 
 int read_operand(char type, char * s){
 	//reads single int operands only not a and l
-	
+	/*
 	int reg = INT_MIN, imm = INT_MIN;
 	char * l = s;
+	*/
 	switch(type){
 		case 'r':
 			return read_r(s);
