@@ -1,0 +1,2 @@
+load l1 in main.c
+
