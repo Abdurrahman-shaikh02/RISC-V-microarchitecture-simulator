@@ -1,6 +1,8 @@
 #include "pipeline.h"
-#include "internal_memory.h"
 #include "header.h"
+#include "memory.h"
+#include "internal_memory.h"
+
 
 
 void ma_stage(){

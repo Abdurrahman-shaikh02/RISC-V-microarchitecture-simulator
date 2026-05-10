@@ -8,7 +8,6 @@ typedef enum {
     LOG_ERROR,
     LOG_FATAL
 } log_level;
-static log_level CURRENT_LEVEL = LOG_DEBUG;
 
 void log_msg(log_level level, const char * msg);    //use only macros to acces this function... to be safe ofcourse....
 

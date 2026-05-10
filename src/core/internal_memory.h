@@ -1,5 +1,7 @@
-static int reg_file[32];
+#include <stdint.h>
 
-static int pc;
+static uint32_t reg_file[32];
 
-static int ir;
+static uint32_t pc;
+
+static uint32_t ir;

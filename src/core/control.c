@@ -97,6 +97,4 @@ void decode() {
 	// takes the instruction from the instruction register... i think....
 	// gives output into the pipeline register then... the control signals are transferred down the pipeline...
 	//
-	
-	
 }
