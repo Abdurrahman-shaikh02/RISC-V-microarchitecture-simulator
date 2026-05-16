@@ -1,13 +1,11 @@
-#include <stdint.h>
+extern uint32_t text_segment_limit;	//preferably something divisible by 4... :)
+extern uint8_t mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+extern uint32_t mar_i;
+extern uint32_t mbr_i;
 
-static uint32_t text_segment_limit = 0x1000;	//preferably something divisible by 4... :)
-static uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
-static uint32_t mar_i;
-static uint32_t mbr_i;
-
-static uint8_t mfc = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
-static uint32_t mar;
-static uint32_t mbr;
+extern uint8_t mfc;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+extern uint32_t mar;
+extern uint32_t mbr;
 
 void read_memory_i();
 

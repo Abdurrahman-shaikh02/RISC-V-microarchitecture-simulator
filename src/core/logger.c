@@ -1,4 +1,7 @@
+#include <stdio.h>
+#include <time.h>
 #include "logger.h"
+
 
 static log_level CURRENT_LEVEL = LOG_DEBUG;
 // use macros to use this function...

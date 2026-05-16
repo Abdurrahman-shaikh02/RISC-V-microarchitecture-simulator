@@ -1,0 +1,35 @@
+Date and Time : Fri May 15 23:40:09 2026
+
+[INFO]: WB stage initiating.
+[INFO]: No write back.
+[INFO]: MA stage initiating.
+[INFO]: No memory access.
+[INFO]: EX stage initiating.
+[DEBUG]: r2 = rs2
+[FATAL]: invalid execute stage
+Date and Time : Fri May 15 23:41:19 2026
+
+[INFO]: WB stage initiating.
+[INFO]: No write back.
+[INFO]: MA stage initiating.
+[INFO]: No memory access.
+[INFO]: EX stage initiating.
+[DEBUG]: r2 = rs2
+[FATAL]: invalid execute stage
+Date and Time : Fri May 15 23:42:34 2026
+
+[INFO]: WB stage initiating.
+[INFO]: No write back.
+[INFO]: MA stage initiating.
+[INFO]: No memory access.
+[INFO]: EX stage initiating.
+[DEBUG]: r2 = rs2
+[FATAL]: invalid execute stage
+Date and Time : Fri May 15 23:44:21 2026
+
+[INFO]: WB stage initiating.
+[INFO]: No write back.
+[INFO]: MA stage initiating.
+[INFO]: No memory access.
+[INFO]: EX stage initiating.
+[DEBUG]: r2 = rs2

@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <time.h>
-
 typedef enum {
     LOG_DEBUG,
     LOG_INFO,

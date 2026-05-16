@@ -1,18 +1,23 @@
-#include "pipeline.h"
 #include "header.h"
+#include "control.h"
+#include "pipeline.h"
 #include "memory.h"
 #include "internal_memory.h"
 
 //this doesnt handle a memory stall MUST check mfc_i immediately after calling this function !!!!!!!!!!!
 
 void if_stage(){
+	log_info("IF stage initiating.");
 	if(mfc_i == 1){			//if memory i port is free, load pc into mar
 		mar_i = pc;
+		log_debug("initialising memory read in if stage");
 	}
 
 	read_memory_i();		//call whether or not mfc_i is 0 or 1	(in case of a stall if_stage wont be called)
 	
 	if(mfc_i == 1){
+		log_info("IF stage successful");
+		log_debug("fetch complete.");
 		//load ir
 		ir = mbr_i;
 		//load the if_id pipeline register
@@ -21,8 +26,16 @@ void if_stage(){
 
 		//increment pc
 		pc += 4;
-	}
 
+		//store the incremented pc in pc-temp;
+		if_id.PC_next = pc;
+	}else{
+		log_info("IF stage fail. Injecting a bubble.");
+		if_id.IR = 0;
+		if_id.PC = 0;
+		if_id.PC_next = 0;
+	}
+}
 	/*
 	//attempt to deal with structural hazard between EX and IF stage.. ended up making a second port in memory for instructions.. read only segment
 	//access memory location pc
@@ -53,4 +66,4 @@ void if_stage(){
 	//stall if required...
 	*/
 
-}
+

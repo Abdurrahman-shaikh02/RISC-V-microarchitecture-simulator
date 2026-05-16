@@ -1,5 +1,15 @@
-#include "memory.h"
 #include "header.h"
+#include <stdio.h>
+#include "memory.h"
+
+uint32_t text_segment_limit = 0x1000;	//preferably something divisible by 4... :)
+uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+uint32_t mar_i;
+uint32_t mbr_i;
+
+uint8_t mfc = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+uint32_t mar;
+uint32_t mbr;
 
 //assuming little endian 
 
@@ -55,6 +65,7 @@ void read_memory_i(){
 	}
 }
 
+
 void read_memory(){
 	log_debug("read memory function commence");
 
@@ -92,6 +103,7 @@ void read_memory(){
 		return;
 	}
 }
+
 
 void write_memory(){
 	log_debug("write memory function commence");
@@ -136,6 +148,45 @@ void write_memory(){
 
 }
 
+
 void init_memory(char * path){
-	//read program from file to the memory... initially l1 then later ram...
+	// read program from file into memory
+	// expected format per line:
+	// 00000000
+	// (32-bit instruction/data in hex)
+
+	FILE *f = fopen(path, "r");
+	if(f == NULL){
+		log_fatal("failed to open memory image file");
+		exit(1);
+	}
+
+	char line[64];
+	uint32_t addr = 0;
+
+	while(fgets(line, sizeof(line), f)){
+		uint32_t value;
+
+		// parse 32-bit hex value
+		if(sscanf(line, "%x", &value) != 1){
+			continue;	// skip invalid lines
+		}
+
+		// bounds check
+		if(addr + 3 >= text_segment_limit){
+			log_fatal("program too large for memory");
+			fclose(f);
+			exit(1);
+		}
+
+		// store as little endian
+		l1[addr + 0] = (value >> 0)  & 0xFF;
+		l1[addr + 1] = (value >> 8)  & 0xFF;
+		l1[addr + 2] = (value >> 16) & 0xFF;
+		l1[addr + 3] = (value >> 24) & 0xFF;
+
+		addr += 4;
+	}
+
+	fclose(f);
 }
