@@ -13,6 +13,9 @@ void ma_stage(){
 
 	ma_control control = ex_ma.cs_ma;
 	uint32_t result = ex_ma.result;
+
+	uint8_t r_w = (control.read_write_opcode & 0x8) >> 3;
+	uint32_t mem_opcode = (control.read_write_opcode & 0x7);
 	
 	if(control.mem == 0){
 		log_info("No memory access.");
@@ -20,18 +23,18 @@ void ma_stage(){
 	}else{
 		//memory access
 		log_info("Accessing memory.");
-		if(control.r_w == 0){
+		if(r_w == 0){
 			//read
 			log_info("Attempting to read.");
 			mar = ex_ma.result;
-			read_memory();
+			read_memory(mem_opcode);
 			result = mbr;
-		}else if(control.r_w == 1){
+		}else if(r_w == 1){
 			//write
 			log_info("Attempting to write.");
-			mbr = ex_ma.R1;
+			mbr = ex_ma.R2;
 			mar = ex_ma.result;
-			write_memory();
+			write_memory(mem_opcode);
 		}
 	}
 

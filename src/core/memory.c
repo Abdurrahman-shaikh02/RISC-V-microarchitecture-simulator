@@ -1,8 +1,7 @@
 #include "header.h"
-#include <stdio.h>
 #include "memory.h"
 
-uint32_t text_segment_limit = 0x1000;	//preferably something divisible by 4... :)
+uint32_t text_segment_limit = 0x7FF;	//preferably something divisible by 4... :)
 uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 uint32_t mar_i;
 uint32_t mbr_i;
@@ -13,7 +12,7 @@ uint32_t mbr;
 
 //assuming little endian 
 
-static uint8_t l1[4096];	    //16KB l1 cache
+uint8_t l1[4096];	    //16KB l1 cache
 
 //l2 
 //
@@ -66,7 +65,7 @@ void read_memory_i(){
 }
 
 
-void read_memory(){
+void read_memory(uint32_t opcode){
 	log_debug("read memory function commence");
 
 	static int counter = -1;	//-1 means theres no operation carried out
@@ -92,7 +91,27 @@ void read_memory(){
 		uint32_t b2 = l1[mar + 2] << 16;
 		uint32_t b3 = l1[mar + 3] << 24;
 		mbr = 0;
-		mbr = mbr | (b0 | b1 | b2 | b3);
+
+		switch(opcode){
+			case 0b000:
+				mbr = mbr | ((int32_t)(b0 << 24) >> 24);	//handle sign extension
+				break;
+			case 0b001:
+				mbr = mbr | (((int32_t)((b0 | b1) << 16)) >> 16);
+				break;
+			case 0b010:
+				mbr = mbr | (b0 | b1 | b2 | b3);
+				break;
+			case 0b011:
+				mbr = mbr | b0;
+				break;
+			case 0b100:
+				mbr = mbr | b0 | b1;
+				break;
+			default:
+				log_fatal("invalid memory access opcode.");
+				exit(1);
+		}
 
 		//set mfc;
 		log_debug("setting mfc to 1");
@@ -105,7 +124,7 @@ void read_memory(){
 }
 
 
-void write_memory(){
+void write_memory(uint32_t opcode){
 	log_debug("write memory function commence");
 
 	static int counter = -1;	//-1 means theres no operation carried out
@@ -123,20 +142,35 @@ void write_memory(){
 		log_debug("write counter decremented");
 		return;
 	}else if(counter == 0){
-		if(mar > text_segment_limit){
-			log_fatal("attempt to write to non text segment");
+		if(mar <= text_segment_limit){
+			log_fatal("attempt to write to text segment");
 			exit(1);
 		}
 		//read address from mar
 		//load the memory with data from mbr
-		uint32_t b0 = mbr & 0x000000FF;
-		uint32_t b1 = mbr & 0x0000FF00;
-		uint32_t b2 = mbr & 0x00FF0000;
-		uint32_t b3 = mbr & 0xFF000000;
-		l1[mar + 0] = b0;
-		l1[mar + 1] = b1;
-		l1[mar + 2] = b2;
-		l1[mar + 3] = b3;
+		uint8_t b0 = (uint8_t)(mbr & 0x000000FF);
+		uint8_t b1 = (uint8_t)((mbr & 0x0000FF00) >> 8);
+		uint8_t b2 = (uint8_t)((mbr & 0x00FF0000) >> 16);
+		uint8_t b3 = (uint8_t)((mbr & 0xFF000000) >> 24);
+
+		switch(opcode){
+			case 0b000:
+				l1[mar + 0] = b0;
+				break;
+			case 0b001:
+				l1[mar + 0] = b0;
+				l1[mar + 1] = b1;
+				break;
+			case 0b010:
+				l1[mar + 0] = b0;
+				l1[mar + 1] = b1;
+				l1[mar + 2] = b2;
+				l1[mar + 3] = b3;
+				break;
+			default:
+				log_fatal("invalid memory opcode");
+				exit(1);
+		}
 
 		//set mfc;
 		mfc = 1;
@@ -189,4 +223,11 @@ void init_memory(char * path){
 	}
 
 	fclose(f);
+	log_debug("memory initialization complete...");
+}
+
+void display_memory(){
+	for(int i = 0; i < sizeof(l1); i++){
+		printf("[%08x] : %02x\n", i, l1[i]);
+	}
 }

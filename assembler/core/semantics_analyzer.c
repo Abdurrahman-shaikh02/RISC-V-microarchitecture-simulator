@@ -162,10 +162,8 @@ int read_a(char * s, int * imm){
 	if(j >= 8) return INT_MIN;
 	reg[j] = 0;
 
-
 	*imm = read_i(offset);
 	if(*imm == INT_MIN) return INT_MIN;
-
 	return read_r(reg);
 }
 

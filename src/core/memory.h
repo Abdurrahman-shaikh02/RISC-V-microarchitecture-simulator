@@ -9,11 +9,13 @@ extern uint32_t mbr;
 
 void read_memory_i();
 
-void read_memory();
+void read_memory(uint32_t opcode);
 
-void write_memory();
+void write_memory(uint32_t opcode);
 
 void init_memory(char * path);	//to load the program into the ram... 
+
+void display_memory();
 
 #define l1_read_cycles 1
 #define l1_write_cycles 1

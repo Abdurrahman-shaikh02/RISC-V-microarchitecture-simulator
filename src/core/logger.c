@@ -19,6 +19,9 @@ void log_msg(log_level level, const char * msg){
     }
 
     switch(level){
+	case LOG_BREAK:
+	    fprintf(file, "%s", msg);
+	    break;
 	case LOG_DEBUG:
 	    fprintf(file, "[DEBUG]: %s\n", msg);
 	    break;

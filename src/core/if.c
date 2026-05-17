@@ -16,12 +16,17 @@ void if_stage(){
 	read_memory_i();		//call whether or not mfc_i is 0 or 1	(in case of a stall if_stage wont be called)
 	
 	if(mfc_i == 1){
-		log_info("IF stage successful");
 		log_debug("fetch complete.");
 		//load ir
 		ir = mbr_i;
 		//load the if_id pipeline register
 		if_id.IR = ir;
+		/*
+		if(ir == 0){
+			log_fatal("Is ir supposed to be zero ?");
+			exit(1);
+		}
+		*/
 		if_id.PC = pc;
 
 		//increment pc
@@ -29,6 +34,8 @@ void if_stage(){
 
 		//store the incremented pc in pc-temp;
 		if_id.PC_next = pc;
+
+		log_info("IF stage successful");
 	}else{
 		log_info("IF stage fail. Injecting a bubble.");
 		if_id.IR = 0;

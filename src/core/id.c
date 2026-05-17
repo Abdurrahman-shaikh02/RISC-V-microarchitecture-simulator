@@ -6,12 +6,27 @@
 
 //NEED TO HANDLE SIGN EXTENSION
 uint32_t generate_immediate(char format){
+	uint32_t ir = if_id.IR;
+	uint32_t imm = 0;
+
 	switch(format){
+		case 0:
+			//its a bubble
+			log_debug("no immediate was generated for a bubble");
+			return 0;
 		case 'r':
 			log_debug("no immediate was generated");
 			return 0;
 		case 'i':
+			imm = (int32_t)(ir & 0xFFF00000) >> 20;
+			log_debug("immediate generated for i format");
+			break;
 		case 's':
+			imm = ir & 0xFE000000;
+			imm = (ir & 0x00000F80) << 13;
+			imm = ((int32_t)imm) >> 20;
+			log_debug("immediate generated for s format");
+			break;
 		case 'b':
 		case 'u':
 		case 'j':
@@ -19,6 +34,8 @@ uint32_t generate_immediate(char format){
 			log_fatal("invalid format for immediate generation");
 			exit(1);
 	}
+
+	return imm;
 }
 
 void id_stage(){

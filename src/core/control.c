@@ -68,7 +68,7 @@ static const i_block i_table[] = {
 	
 
 	// NOP (pseudo but useful)
-	{"nop", 0, 0, 0, 0, 'i', 0b0110011, 0b000, 0}
+	{"nop", 0, 0, 0, 0, 'i', 0b0010011, 0b000, 0}
 };
 
 /*
@@ -127,37 +127,45 @@ cu_output read_r_format(uint32_t ir){
 			switch(funct7){
 				case 0b0000000:
 					//add
-					return (cu_output){'r', (ex_control){0b010,0,1,0b1000,0,0,0},{0,0,0,1},{1}};
+					return (cu_output){'r', {1, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
 				case 0b0100000:
 					//sub
-					return (cu_output){'r', {1,0,1,1,1,0,0},{0,0,0,0},{1}};
+					return (cu_output){'r', {1, 0, 1, 0, 1, 0, 0, 0}, {0, 0, 0, 0}, {1}};
 				default:
-					log_fatal("error in funct7");
+					log_fatal("error in funct7 in r type");
 					exit(1);
 			}
 		case 0b001: 
 			//sll
+			return (cu_output){'r', {1, 0, 0, 0b01, 0, 0b011, 0, 0}, {0, 0, 0, 0}, {1}};
 		case 0b010:
 			//slt
+			return (cu_output){'r', {1, 0, 1, 0b10, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
 		case 0b011:
 			//sltu
+			return (cu_output){'r', {1, 0, 0, 0b10, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
 		case 0b100:
 			//xor
+			return (cu_output){'r', {1, 0, 0, 0b01, 0, 0b010, 0, 0}, {0, 0, 0, 0}, {1}};
 		case 0b101:
 			//srl or sra
 			switch(funct7){
 				case 0b0000000:
 					//srl
+					return (cu_output){'r', {1, 0, 0, 0b01, 0, 0b100, 0, 0}, {0, 0, 0, 0}, {1}};
 				case 0b0100000:
 					//sra
+					return (cu_output){'r', {1, 0, 1, 0b01, 0, 0b100, 0, 0}, {0, 0, 0, 0}, {1}};
 				default:
-					log_fatal("error in funct7");
+					log_fatal("error in funct7 in r type");
 					exit(1);
 			}
 		case 0b110:
 			//or
+			return (cu_output){'r', {1, 0, 0, 0b01, 0, 0b001, 0, 0}, {0, 0, 0, 0}, {1}};
 		case 0b111:
 			//and
+			return (cu_output){'r', {1, 0, 0, 0b01, 0, 0b000, 0, 0}, {0, 0, 0, 0}, {1}};
 		default:
 			log_fatal("error in funct3");
 			exit(1);
@@ -166,30 +174,181 @@ cu_output read_r_format(uint32_t ir){
 }
 
 cu_output read_i_format(uint32_t ir){
+	uint32_t opcode = (ir & 0x0000007F);
+	int32_t funct3 = (ir & 0x00007000) >> 12;
+	int32_t funct7 = (ir & 0xFE000000) >> 25;
+
+	switch(opcode){
+		case 0b0010011:
+			//arithmetics, special arithmetics
+			switch(funct3){
+				case 0b000:
+					//addi
+					return (cu_output){'i', {1, 1, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b010:
+					//slti
+					return (cu_output){'i', {1, 1, 1, 0b10, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b011:
+					//sltiu
+					return (cu_output){'i', {1, 1, 0, 0b10, 0, 0, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b100:
+					//xori
+					return (cu_output){'i', {1, 1, 0, 0b01, 0, 0b010, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b110:
+					//ori
+					return (cu_output){'i', {1, 1, 0, 0b01, 0, 0b001, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b111:
+					//andi
+					return (cu_output){'i', {1, 1, 0, 0b01, 0, 0b000, 0, 0}, {0, 0, 0, 0}, {1}};
+				case 0b001:
+					switch(funct7){
+						case 0b0000000:
+							//slli
+							return (cu_output){'i', {1, 1, 0, 0b01, 0, 0b011, 0, 0}, {0, 0, 0, 0}, {1}};
+						default:
+							log_fatal("error in funct 7 in i type");
+							exit(1);
+					}
+				case 0b101:
+					switch(funct7){
+						case 0b0000000:
+							//srli
+							return (cu_output){'i', {1, 1, 0, 0b01, 0, 0b100, 0, 0}, {0, 0, 0, 0}, {1}};
+						case 0b0100000:
+							//srai
+							return (cu_output){'i', {1, 1, 1, 0b01, 0, 0b100, 0, 0}, {0, 0, 0, 0}, {1}};
+						default:
+							log_fatal("error in funct 7 in i type");
+							exit(1);
+					}
+			}
+		case 0b1100111:
+			//jalr
+		case 0b0000011:
+			//loads
+			switch(funct3){
+				case 0b000:
+					//lb
+					return (cu_output){'i', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b0000, 0, 0}, {1}};
+				case 0b001:
+					//lh
+					return (cu_output){'i', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b0001, 0, 0}, {1}};
+				case 0b010:
+					//lw
+					return (cu_output){'i', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b0010, 0, 0}, {1}};
+				case 0b100:
+					//lbu
+					return (cu_output){'i', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b0011, 0, 0}, {1}};
+				case 0b101:
+					//lhu
+					return (cu_output){'i', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b0100, 0, 0}, {1}};
+				default:
+					log_fatal("error in funct3");
+					exit(1);
+			}
+		case 0b1110011:
+			//system calls
+			switch(funct7){
+				case 0:
+					return (cu_output){0, {0,0,0,0,0,0,0,0}, {0,0,0,0}, {0}};
+				case 1:
+					return (cu_output){0, {0,0,0,0,0,0,0,1}, {0,0,0,0}, {0}};
+				default:
+					log_fatal("error funct 7 in i type -");
+					exit(1);
+			}
+		case 0b0001111:
+			//fence
+			return (cu_output){0, {0,0,0,0,0,0,0,0}, {0,0,0,0}, {0}};
+		default:
+			log_fatal("invalid opcode for i type encoding");
+			exit(1);
+	}
 
 }
 
 cu_output read_s_format(uint32_t ir){
+	uint32_t opcode = (ir & 0x0000007F);
+	int32_t funct3 = (ir & 0x00007000) >> 12;
+	int32_t funct7 = (ir & 0xFE000000) >> 25;
 
+
+	switch(funct3){
+		case 0b000:
+			//sb
+			return (cu_output){'s', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b1000, 0, 0}, {0}};
+		case 0b001:
+			//sh
+			return (cu_output){'s', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b1001, 0, 0}, {0}};
+		case 0b010:
+			//sw
+			return (cu_output){'s', {1, 1, 0, 0, 0, 0, 0, 0}, {1, 0b1010, 0, 0}, {0}};
+		default:
+			log_fatal("error in funct3 in s type.");
+			exit(1);
+	}
 }
 
 cu_output read_b_format(uint32_t ir){
+	uint32_t opcode = (ir & 0x0000007F);
+	int32_t funct3 = (ir & 0x00007000) >> 12;
+	int32_t funct7 = (ir & 0xFE000000) >> 25;
+
+	switch(funct3){
+		case 0b000:
+			//beq
+		case 0b001:
+			//bne
+		case 0b100:
+			//blt
+		case 0b101:
+			//bge
+		case 0b110:
+			//bltu
+		case 0b111:
+			//bgeu
+		default:
+			log_fatal("error in funct3 in b type.");
+			exit(1);
+	}
 
 }
 
 cu_output read_u_format(uint32_t ir){
+	uint32_t opcode = (ir & 0x0000007F);
+
+	switch(opcode){
+		case 0b0110111:
+			//lui
+		case 0b0010111:
+			//auipc
+		default:
+			log_fatal("error in opcode in u type.");
+			exit(1);
+	}
 
 }
 
 cu_output read_j_format(uint32_t ir){
+	uint32_t opcode = (ir & 0x0000007F);
 
+	switch(opcode){
+		case 0b1101111:
+			//jal
+		default:
+			log_fatal("error in opcode in j type.");
+			exit(1);
+	}
 }
 // read different format (different functions for each format) generate control signals and store them directly in a new struct defined in control.h
 // copy that struct in the id_stage function !!
 
 cu_output decode(uint32_t ir) {
 	uint32_t opcode = ir & 0x7F;
-
+	if(opcode == 0){
+		//its a bubble
+		return (cu_output){0, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0 ,0 ,0}, {0}};
+	}
 	char format = get_format(opcode);
 	if(format == 0){
 		log_fatal("invalid opcode, couldnt find a format");

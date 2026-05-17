@@ -9,7 +9,7 @@
 
 void display_general_purpose_registers(){
 	for(int i = 0; i < 32; i++){
-		printf("r%d : %08x\n", i, reg_file[i]);
+		printf("r%02d : %08x\n", i, reg_file[i]);
 	}
 }
 
@@ -74,7 +74,7 @@ void display_internal_registers() {
 
 	printf("MA CONTROL:\n");
 	printf("mem                 : %02x\n", id_ex.cs_ma.mem);
-	printf("r_w                 : %02x\n", id_ex.cs_ma.r_w);
+	printf("read_write_opcode   : %02x\n", id_ex.cs_ma.read_write_opcode);
 	printf("branch_taken        : %02x\n", id_ex.cs_ma.branch_taken);
 	printf("jump_or_branch      : %02x\n", id_ex.cs_ma.jump_or_branch);
 
@@ -89,7 +89,7 @@ void display_internal_registers() {
 
 	printf("EX_MA:\n");
 	printf("PC_next  : %08x\n", ex_ma.PC_next);
-	printf("R1       : %08x\n", ex_ma.R1);
+	printf("R2       : %08x\n", ex_ma.R2);
 	printf("result   : %08x\n", ex_ma.result);
 	printf("nrd      : %08x\n", ex_ma.nrd);
 
@@ -97,7 +97,7 @@ void display_internal_registers() {
 
 	printf("MA CONTROL:\n");
 	printf("mem                 : %02x\n", ex_ma.cs_ma.mem);
-	printf("r_w                 : %02x\n", ex_ma.cs_ma.r_w);
+	printf("read_write_opcode   : %02x\n", ex_ma.cs_ma.read_write_opcode);
 	printf("branch_taken        : %02x\n", ex_ma.cs_ma.branch_taken);
 	printf("jump_or_branch      : %02x\n", ex_ma.cs_ma.jump_or_branch);
 
@@ -122,12 +122,6 @@ void display_internal_registers() {
 	printf("========================================\n");
 }
 
-
-void display_memory(){
-
-
-
-}
 
 /*
 void display_internal_registers(){

@@ -16,12 +16,15 @@ need to declare internal registers, pipeline registers here.
 
 int main(){
 	//initialize memory...
-	init_memory("in.asm");
-	
+	init_memory("output.txt");
+
 	//then while loop...
 	int cycle = 0;
 	char c;
-	while(cycle < 10){
+	while(1){
+		log_break();
+		log_info("New cycle starts");
+
 		//wb stage
 		wb_stage();
 
@@ -39,6 +42,7 @@ int main(){
 
 		//ex stage
 		ex_stage();
+		if(PAUSE == 1) break;
 
 		//id_stage
 		id_stage();
@@ -58,6 +62,9 @@ int main(){
 		cycle++;
 
 	}
+
+	display_general_purpose_registers();
+	display_memory();
 	
 
 }

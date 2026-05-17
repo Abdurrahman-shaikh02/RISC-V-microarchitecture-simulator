@@ -5,7 +5,6 @@
 #include "internal_memory.h"
 #include "alu.h"
 
-static int PAUSE = 0;
 
 void ex_stage(){
 	log_info("EX stage initiating.");
@@ -19,15 +18,22 @@ void ex_stage(){
 	}
 
 	uint32_t operand1;
-	if(control.source1 == 0b00000001){
-		operand1 = pc;
-		log_debug("r1 = pc");
-	}else if(control.source1 == 0b00000010){
-		operand1 = id_ex.R1;
-		log_debug("r1 = rs1");
-	}else if(control.source1 == 0b00000100){
-		operand1 = id_ex.R2;
-		log_debug("r1 = rs2");
+	switch(control.source1){
+		case 0b00:
+			operand1 = id_ex.PC;
+			log_debug("r1 = pc");
+			break;
+		case 0b01:
+			operand1 = id_ex.R1;
+			log_debug("r1 = rs1");
+			break;
+		case 0b10:
+			operand1 = id_ex.R2;
+			log_debug("r1 = rs2");
+			break;
+		default:
+			log_fatal("Invalid source 1.");
+			exit(1);
 	}
 
 	uint32_t operand2;
@@ -40,24 +46,24 @@ void ex_stage(){
 	}
 
 	uint32_t result = 0;
-
+	
 	switch(control.type){
-		case 0b00000001:
+		case 0b00:
 			//arithmetic
 			log_debug("arithmetic op");
 			result = arithmetic_unit(operand1, operand2, control.arithmetic_opcode);
 			break;
-		case 0b00000010:
+		case 0b01:
 			//logic
 			log_debug("logical op");
 			result = logical_unit(operand1, operand2, control.logic_opcode, control.sign);
 			break;
-		case 0b00000100:
+		case 0b10:
 			//less than
 			log_debug("less than compare");
 			result = less_than_comparator(operand1, operand2, control.sign);
 			break;
-		case 0b00001000:
+		case 0b11:
 			//branch compare
 			log_debug("branch compare");
 			//handle result, handle the branch taken flag as well....
@@ -72,7 +78,7 @@ void ex_stage(){
 	ex_ma.result = result;
 	ex_ma.cs_ma = id_ex.cs_ma;
 	ex_ma.cs_wb = id_ex.cs_wb;
-	ex_ma.R1 = id_ex.R1;
+	ex_ma.R2 = id_ex.R2;
 	ex_ma.nrd = id_ex.nrd;
 	ex_ma.PC_next = id_ex.PC_next;
 

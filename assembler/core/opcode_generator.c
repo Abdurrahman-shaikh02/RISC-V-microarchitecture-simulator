@@ -81,10 +81,10 @@ int read_s_format(int opcode, char ** array, const i_block * block){
 	int arg2, arg3;
 	if(block->op2 == 'a'){
 		arg2 = read_a(array[2], &arg3);
-	}else{
+	}/*else{
 		arg2 = read_operand(block->op2, array[2]);
 		arg3 = read_operand(block->op3, array[3]);
-	}
+	}*/
 
 	opcode = opcode | (arg2 << 15);
 

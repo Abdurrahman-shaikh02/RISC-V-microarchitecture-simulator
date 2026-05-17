@@ -65,5 +65,5 @@ static const i_block i_table[] = {
 	
 
 	// NOP (pseudo but useful)
-	{"nop", 0, 0, 0, 0, 'i', 0b0110011, 0b000, 0}
+	{"nop", 0, 0, 0, 0, 'i', 0b0010011, 0b000, 0}
 };
