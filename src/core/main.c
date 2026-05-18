@@ -16,7 +16,7 @@ need to declare internal registers, pipeline registers here.
 
 int main(){
 	//initialize memory...
-	init_memory("output.txt");
+	init_memory_x("output.txt");
 
 	//then while loop...
 	int cycle = 0;
@@ -42,7 +42,10 @@ int main(){
 
 		//ex stage
 		ex_stage();
-		if(PAUSE == 1) break;
+		if(PAUSE == 1){
+			cycle++;
+			break;
+		}
 
 		//id_stage
 		id_stage();
@@ -61,11 +64,15 @@ int main(){
 
 		cycle++;
 
+		//printf("%s | %s | %s | %s | %s\n", if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
 	}
 
 	display_general_purpose_registers();
 	//display_internal_registers();
 	display_memory();
 	
-
+	//printf("%d\n", cycle);
+	
+	free_instructions();
 }

@@ -70,4 +70,5 @@ void id_stage(){
 	id_ex.cs_ex = out.cs_ex;
 	id_ex.cs_ma = out.cs_ma;
 	id_ex.cs_wb = out.cs_wb;
+	id_ex.ins = if_id.ins;
 }

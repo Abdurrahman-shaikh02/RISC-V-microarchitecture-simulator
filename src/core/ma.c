@@ -42,5 +42,6 @@ void ma_stage(){
 	ma_wb.result = result;
 	ma_wb.cs_wb = ex_ma.cs_wb;
 	ma_wb.nrd = ex_ma.nrd;
+	ma_wb.ins = ex_ma.ins;
 
 }

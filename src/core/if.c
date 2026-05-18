@@ -35,6 +35,8 @@ void if_stage(){
 		//store the incremented pc in pc-temp;
 		if_id.PC_next = pc;
 
+		if_id.ins = instructions[(pc-4)/4];
+
 		log_info("IF stage successful");
 	}else{
 		log_info("IF stage fail. Injecting a bubble.");

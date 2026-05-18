@@ -10,3 +10,4 @@ IF_ID if_id;
 ID_EX id_ex;
 EX_MA ex_ma;
 MA_WB ma_wb;
+WB_IF wb_if;

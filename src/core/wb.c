@@ -17,4 +17,6 @@ void wb_stage(){
 
 		reg_file[0] = 0;		//ensure after every write that r0 is 0
 	}
+
+	wb_if.ins = ma_wb.ins;
 }

@@ -83,7 +83,9 @@ void ex_stage(){
 	ex_ma.cs_wb = id_ex.cs_wb;
 	ex_ma.R2 = id_ex.R2;
 	ex_ma.nrd = id_ex.nrd;
-	//ex_ma.PC_next = id_ex.PC_next;
+	ex_ma.PC_next = id_ex.PC_next;
+	ex_ma.ins = id_ex.ins;
+
 
 
 

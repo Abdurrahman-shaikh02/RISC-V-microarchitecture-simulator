@@ -7,6 +7,8 @@ extern uint8_t mfc;	    //0 means not completed	make sure to call read/write ONL
 extern uint32_t mar;
 extern uint32_t mbr;
 
+extern char * instructions[];
+
 void read_memory_i();
 
 void read_memory(uint32_t opcode);
@@ -14,8 +16,11 @@ void read_memory(uint32_t opcode);
 void write_memory(uint32_t opcode);
 
 void init_memory(char * path);	//to load the program into the ram... 
+void init_memory_x(char * path);	//to load the program into the ram... 
 
 void display_memory();
+void free_instructions(void);
+void display_instructions();
 
 #define l1_read_cycles 1
 #define l1_write_cycles 1

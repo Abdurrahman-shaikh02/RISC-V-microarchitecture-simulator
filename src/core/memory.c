@@ -1,7 +1,9 @@
 #include "header.h"
 #include "memory.h"
 
+
 uint32_t text_segment_limit = 0x7FF;	//preferably something divisible by 4... :)
+#define total_number_of_instructions (0x7FF + 1)/4	//total text bytes / 4
 uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 uint32_t mar_i;
 uint32_t mbr_i;
@@ -12,6 +14,7 @@ uint32_t mbr;
 
 //assuming little endian 
 
+char * instructions[total_number_of_instructions];
 uint8_t l1[4096];	    //16KB l1 cache
 
 //l2 
@@ -231,3 +234,273 @@ void display_memory(){
 		printf("[%08x] : %02x\n", i, l1[i]);
 	}
 }
+
+void init_memory_x(char *path)
+{
+	FILE *f = fopen(path, "r");
+
+	if (f == NULL) {
+		log_fatal("failed to open memory image file");
+		exit(1);
+	}
+
+	char line[256];
+
+	uint32_t addr = 0;
+	uint32_t instr_index = 0;
+
+	while (fgets(line, sizeof(line), f)) {
+
+		/*
+			expected:
+			[151] 0x00025c   000ff117   auipc r2, 0xFF
+		*/
+
+		char *p = line;
+
+		// -----------------------------------------
+		// skip: [151]
+		// -----------------------------------------
+		char *bracket = strchr(p, ']');
+
+		if (bracket == NULL)
+			continue;
+
+		p = bracket + 1;
+
+		// -----------------------------------------
+		// skip whitespace
+		// -----------------------------------------
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// -----------------------------------------
+		// skip address
+		// -----------------------------------------
+		char *space = strchr(p, ' ');
+
+		if (space == NULL)
+			continue;
+
+		p = space;
+
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// -----------------------------------------
+		// parse opcode
+		// -----------------------------------------
+		uint32_t opcode;
+
+		if (sscanf(p, "%x", &opcode) != 1)
+			continue;
+
+		// move past opcode
+		while (*p && *p != ' ' && *p != '\t')
+			p++;
+
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// -----------------------------------------
+		// bounds checks
+		// -----------------------------------------
+		if (addr + 3 >= text_segment_limit) {
+			log_fatal("program too large for memory");
+			fclose(f);
+			exit(1);
+		}
+
+		if (instr_index >= total_number_of_instructions) {
+			log_fatal("too many instructions");
+			fclose(f);
+			exit(1);
+		}
+
+		// -----------------------------------------
+		// store opcode little endian
+		// -----------------------------------------
+		l1[addr + 0] = (opcode >> 0)  & 0xFF;
+		l1[addr + 1] = (opcode >> 8)  & 0xFF;
+		l1[addr + 2] = (opcode >> 16) & 0xFF;
+		l1[addr + 3] = (opcode >> 24) & 0xFF;
+
+		// -----------------------------------------
+		// allocate 20-char instruction string
+		// -----------------------------------------
+		instructions[instr_index] = malloc(21);
+
+		if (instructions[instr_index] == NULL) {
+			log_fatal("malloc failed");
+			fclose(f);
+			exit(1);
+		}
+
+		// fill all 20 chars with spaces
+		memset(instructions[instr_index], ' ', 20);
+
+		// null terminator
+		instructions[instr_index][20] = '\0';
+
+		// copy manually without copying '\0'
+		for (int i = 0; i < 20; i++) {
+
+			if (p[i] == '\0' || p[i] == '\n')
+				break;
+
+			instructions[instr_index][i] = p[i];
+		}
+
+		addr += 4;
+		instr_index++;
+	}
+
+	fclose(f);
+
+	log_debug("memory initialization complete...");
+}
+
+void init_memory_y(char *path)
+{
+	FILE *f = fopen(path, "r");
+
+	if (f == NULL) {
+		log_fatal("failed to open memory image file");
+		exit(1);
+	}
+
+	char line[256];
+
+	uint32_t addr = 0;
+	uint32_t instr_index = 0;
+
+	while (fgets(line, sizeof(line), f)) {
+
+		/*
+			expected:
+			[151] 0x00025c   000ff117   auipc r2, 0xFF
+		*/
+
+		char *p = line;
+
+		// -----------------------------------------
+		// skip: [151]
+		// -----------------------------------------
+		char *bracket = strchr(p, ']');
+
+		if (bracket == NULL)
+			continue;
+
+		p = bracket + 1;
+
+		// -----------------------------------------
+		// skip whitespace
+		// -----------------------------------------
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// -----------------------------------------
+		// skip address: 0x00025c
+		// -----------------------------------------
+		char *space = strchr(p, ' ');
+
+		if (space == NULL)
+			continue;
+
+		p = space;
+
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// -----------------------------------------
+		// parse opcode
+		// -----------------------------------------
+		uint32_t opcode;
+
+		if (sscanf(p, "%x", &opcode) != 1)
+			continue;
+
+		// move past opcode
+		while (*p && *p != ' ' && *p != '\t')
+			p++;
+
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// now p points to assembly instruction
+
+		// -----------------------------------------
+		// bounds checks
+		// -----------------------------------------
+		if (addr + 3 >= text_segment_limit) {
+			log_fatal("program too large for memory");
+			fclose(f);
+			exit(1);
+		}
+
+		if (instr_index >= total_number_of_instructions) {
+			log_fatal("too many instructions");
+			fclose(f);
+			exit(1);
+		}
+
+		// -----------------------------------------
+		// store opcode little endian
+		// -----------------------------------------
+		l1[addr + 0] = (opcode >> 0)  & 0xFF;
+		l1[addr + 1] = (opcode >> 8)  & 0xFF;
+		l1[addr + 2] = (opcode >> 16) & 0xFF;
+		l1[addr + 3] = (opcode >> 24) & 0xFF;
+
+		// -----------------------------------------
+		// allocate instruction string
+		// -----------------------------------------
+		instructions[instr_index] = malloc(33);
+
+		if (instructions[instr_index] == NULL) {
+			log_fatal("malloc failed");
+			fclose(f);
+			exit(1);
+		}
+
+		// fill ALL 32 chars with spaces
+		memset(instructions[instr_index], ' ', 32);
+
+		// null terminator
+		instructions[instr_index][32] = '\0';
+
+		// copy manually WITHOUT copying '\0'
+		for (int i = 0; i < 32; i++) {
+
+			if (p[i] == '\0' || p[i] == '\n')
+				break;
+
+			instructions[instr_index][i] = p[i];
+		}
+
+		addr += 4;
+		instr_index++;
+	}
+
+	fclose(f);
+
+	log_debug("memory initialization complete...");
+}
+
+void free_instructions(void)
+{
+	for (uint32_t i = 0; i < total_number_of_instructions; i++) {
+
+		if (instructions[i] != NULL) {
+			free(instructions[i]);
+			instructions[i] = NULL;
+		}
+	}
+}
+
+void display_instructions(){
+	for(int i = 0; i < total_number_of_instructions; i++){
+		printf("%d : %s\n", i, instructions[i]);
+	}
+}
+
