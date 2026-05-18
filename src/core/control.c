@@ -320,8 +320,10 @@ cu_output read_u_format(uint32_t ir){
 	switch(opcode){
 		case 0b0110111:
 			//lui
+			return (cu_output){'u', {0, 1, 0, 0b01, 0, 0b101, 0, 0}, {0,0,0,0}, {1}};
 		case 0b0010111:
 			//auipc
+			return (cu_output){'u', {0, 1, 0, 0b01, 0, 0b110, 0, 0}, {0,0,0,0}, {1}};
 		default:
 			log_fatal("error in opcode in u type.");
 			exit(1);

@@ -294,4 +294,8 @@ lw r9, 8(r1)
 nop
 nop
 
+lui r1, 0xFF
+auipc r2, 0xFF
+nop
+nop
 ebreak

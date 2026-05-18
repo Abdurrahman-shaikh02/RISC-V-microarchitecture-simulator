@@ -38,10 +38,10 @@ uint32_t logical_unit(uint32_t operand1, uint32_t operand2, uint32_t opcode, uin
 			}
 		case 0b101:
 			//left shift 12
-			return operand1 << 12;
+			return operand2 << 12;
 		case 0b110:
 			//left shift 12 and add to pc(pass as operand two)
-			return (operand1 << 12) + operand2;
+			return (operand2 << 12) + operand1;
 		default:
 			log_fatal("invalid logical unit opcode");
 			exit(1);

@@ -1,0 +1,145 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "control.o",
+      "control.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/control.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/control.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "alu.o",
+      "alu.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/alu.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/alu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "ex.o",
+      "ex.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/ex.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/ex.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "id.o",
+      "id.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/id.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/id.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "if.o",
+      "if.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/if.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/if.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "logger.o",
+      "logger.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/logger.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/logger.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "ma.o",
+      "ma.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/ma.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/ma.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "main.o",
+      "main.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/main.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "memory.o",
+      "memory.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/memory.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/memory.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "utility.o",
+      "utility.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/utility.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/utility.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "wb.o",
+      "wb.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/wb.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/wb.o"
+  }
+]

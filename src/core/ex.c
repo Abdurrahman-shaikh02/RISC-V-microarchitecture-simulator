@@ -27,10 +27,11 @@ void ex_stage(){
 			operand1 = id_ex.R1;
 			log_debug("r1 = rs1");
 			break;
-		case 0b10:
+	/*	case 0b10:
 			operand1 = id_ex.R2;
 			log_debug("r1 = rs2");
 			break;
+	*/
 		default:
 			log_fatal("Invalid source 1.");
 			exit(1);

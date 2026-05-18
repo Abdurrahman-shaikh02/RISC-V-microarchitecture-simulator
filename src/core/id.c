@@ -29,6 +29,9 @@ uint32_t generate_immediate(char format){
 			break;
 		case 'b':
 		case 'u':
+			imm = (int32_t)(ir & 0xFFFFF000) >> 12;
+			log_debug("immediate generated for u format");
+			break;
 		case 'j':
 		default:
 			log_fatal("invalid format for immediate generation");
