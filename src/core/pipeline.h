@@ -21,7 +21,7 @@ typedef struct ID_EX{
 extern ID_EX id_ex;
 
 typedef struct EX_MA{
-	uint32_t PC_next;
+	//uint32_t PC_next;
 	uint32_t R2;
 	uint32_t result;
 	uint32_t nrd;		//destination register number

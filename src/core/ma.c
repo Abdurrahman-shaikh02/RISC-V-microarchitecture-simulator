@@ -19,7 +19,7 @@ void ma_stage(){
 	
 	if(control.mem == 0){
 		log_info("No memory access.");
-		//jump or branch
+		result = ex_ma.result;
 	}else{
 		//memory access
 		log_info("Accessing memory.");

@@ -66,6 +66,8 @@ void ex_stage(){
 			break;
 		case 0b11:
 			//branch compare
+			//comapre, change pc, set a global stall flag(to flush the pipe, later used by branch pred)
+			//set result = pc_next (for jump instructions...) regardless of branch or jump
 			log_debug("branch compare");
 			//handle result, handle the branch taken flag as well....
 			break;
@@ -81,7 +83,7 @@ void ex_stage(){
 	ex_ma.cs_wb = id_ex.cs_wb;
 	ex_ma.R2 = id_ex.R2;
 	ex_ma.nrd = id_ex.nrd;
-	ex_ma.PC_next = id_ex.PC_next;
+	//ex_ma.PC_next = id_ex.PC_next;
 
 
 
