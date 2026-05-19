@@ -43,6 +43,7 @@ void if_stage(){
 		if_id.IR = 0;
 		if_id.PC = 0;
 		if_id.PC_next = 0;
+		if_id.ins = "                    ";
 	}
 }
 	/*

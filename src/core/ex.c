@@ -14,6 +14,7 @@ void ex_stage(){
 	if(control.PAUSE){
 		log_info("Breakpoint");
 		PAUSE = 1;
+		ex_ma.ins = id_ex.ins;		//need to make sure instruction is correct for visuals
 		return;
 	}
 

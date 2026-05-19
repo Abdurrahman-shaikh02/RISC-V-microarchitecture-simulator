@@ -34,16 +34,32 @@ int main(){
 			//ex stage stall
 			
 			//clearing the next pipeline register...
-			ma_wb = (MA_WB){0, 0, {0}};
+			ma_wb = (MA_WB){0, 0, {0}, "                    "};
 
 			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
 		//ex stage
 		ex_stage();
 		if(PAUSE == 1){
+			//these just to complete the clockcycle......
+			//id_stage
+			id_stage();
+
+			//if_stage
+			if_stage();
+			if(mfc_i == 0){
+				//if stage stall
+
+				//clearing the next pipeline rgister...
+				if_id = (IF_ID){0, 0, 0, "                    "};
+
+				break;
+			}
 			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			break;
 		}
 
@@ -56,15 +72,16 @@ int main(){
 			//if stage stall
 			
 			//clearing the next pipeline rgister...
-			if_id = (IF_ID){0, 0, 0};
+			if_id = (IF_ID){0, 0, 0, "                    "};
 
 			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
 		cycle++;
 
-		//printf("%s | %s | %s | %s | %s\n", if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+		printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 	}
 
