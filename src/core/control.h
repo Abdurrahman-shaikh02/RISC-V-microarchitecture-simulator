@@ -8,7 +8,7 @@ typedef struct ex_control{
 	uint8_t arithmetic_opcode;		//alu opcode 0, 1
 	uint8_t logic_opcode;		//logic opcode	000 ... 110
 	uint8_t branch_opcode;		//branch comparison opcode 000...
-	uint8_t PAUSE;		//for ebreak, a SYSTEMCALL
+	uint8_t SYSTEM_CALL;		//for ebreak, a SYSTEMCALL
 } ex_control;
 
 typedef struct ma_control{
@@ -55,3 +55,4 @@ char get_format(uint32_t opcode);
 cu_output decode(uint32_t ir);
 
 extern int PAUSE;
+extern int TRAP;

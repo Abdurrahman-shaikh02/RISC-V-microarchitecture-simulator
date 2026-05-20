@@ -11,9 +11,14 @@ void ex_stage(){
 
 	ex_control control = id_ex.cs_ex;
 
-	if(control.PAUSE){
+	if(control.SYSTEM_CALL == 1){
 		log_info("Breakpoint");
 		PAUSE = 1;
+		ex_ma.ins = id_ex.ins;		//need to make sure instruction is correct for visuals
+		return;
+	}else if(control.SYSTEM_CALL == 0b10){
+		log_info("System call");
+		TRAP = 1;
 		ex_ma.ins = id_ex.ins;		//need to make sure instruction is correct for visuals
 		return;
 	}

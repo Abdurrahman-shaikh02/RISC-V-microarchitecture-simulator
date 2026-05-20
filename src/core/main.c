@@ -20,7 +20,10 @@ int main(){
 
 	//then while loop...
 	int cycle = 0;
-	char c;
+	int pause_counter = -1;		//this is the count 1 cycles from the cycle where ebreak was in exec
+	int trap_counter = -1;		//this is the count 1 cycles from the cycle where ecall was in exec
+	int halt = 0;
+
 	while(1){
 		log_break();
 		log_info("New cycle starts");
@@ -36,6 +39,7 @@ int main(){
 			//clearing the next pipeline register...
 			ma_wb = (MA_WB){0, 0, {0}, "                    "};
 
+			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
 			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
@@ -44,24 +48,140 @@ int main(){
 		//ex stage
 		ex_stage();
 		if(PAUSE == 1){
-			//these just to complete the clockcycle......
-			//id_stage
-			id_stage();
+			log_debug("ebreak encountered");
+			//all the following codes job is to stall the pipeline once for the last instruction to get completed...
+			if(pause_counter == 0){
+				log_info("Stopping for ebreak");
+				//complete the clock cycle (no stalling) let the ebreak get erased from the id_ex reg then break
+				
+				//id_stage
+				id_stage();
 
-			//if_stage
-			if_stage();
-			if(mfc_i == 0){
-				//if stage stall
+				//if_stage
+				if_stage();
+				if(mfc_i == 0){
+					//if stage stall
 
-				//clearing the next pipeline rgister...
-				if_id = (IF_ID){0, 0, 0, "                    "};
+					//clearing the next pipeline rgister...
+					if_id = (IF_ID){0, 0, 0, "                    "};
 
+					cycle++;
+					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					continue;
+				}
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				
+				pause_counter--;
+				PAUSE = 0;
+				log_debug("PAUSE flag set to 0");
 				break;
 			}
-			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
-			break;
+			/*else if(pause_counter > 0){
+				//stall(skip the IF, ID stage) and decrement the pause_counter
+				
+				//clearing ex_ma register
+				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				
+				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
+				pause_counter--;
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+				PAUSE = 0;
+				log_debug("PAUSE flag set to 0");
+				continue;
+			}*/
+			else{
+				//pause_counter < 0 means we have just encountered an ebreak need to stall it...
+				log_debug("pause_counter set to 1");
+				pause_counter = 1;
+				//stall(skip the IF, ID stage) and decrement the pause_counter
+				
+				//clearing ex_ma register
+				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				
+				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
+				pause_counter--;
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+				PAUSE = 0;
+				log_debug("PAUSE flag set to 0");
+				continue;
+			}
+		}else if(TRAP == 1){
+			//all the following codes job is to stall the pipeline once for the last instruction to get completed...
+			if(trap_counter == 0){
+				log_info("Trapping for ecall");
+				//complete the clock cycle (no stalling) let the ecall get erased from the id_ex reg then break
+				
+				//id_stage
+				id_stage();
+
+				//if_stage
+				if_stage();
+				if(mfc_i == 0){
+					//if stage stall
+
+					//clearing the next pipeline rgister...
+					if_id = (IF_ID){0, 0, 0, "                    "};
+
+					cycle++;
+					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					continue;
+				}
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				
+				//do the system call here
+				uint32_t ecall_code = reg_file[17];
+				trap_counter--;
+				TRAP = 0;
+				log_debug("TRAP flag was set to 0");
+
+				if(ecall_code == 0xF000000F){
+					halt = 1;
+					break;
+				}
+
+				continue;
+			}
+			/*else if(trap_counter > 0){
+				//stall(skip the IF, ID stage) and decrement the trap_counter
+				
+				//clearing ex_ma register
+				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				
+				//increase the clock, handle visuals, handle trap_counter and skip the IF, ID stages(stall) and continue to next cycle
+				trap_counter--;
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+				TRAP = 0;
+				log_debug("TRAP flag was set to 0");
+				continue;
+			}*/
+			else{
+				//trap_counter < 0 means we have just encountered an ebreak need to stall it...
+				log_debug("trap_counter was set to 1");
+				trap_counter = 1;
+				//stall(skip the IF, ID stage) and decrement the pause_counter
+				
+				//clearing ex_ma register
+				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				
+				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
+				trap_counter--;
+				cycle++;
+				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+				TRAP = 0;
+				log_debug("TRAP flag was set to 0");
+				continue;
+			}
 		}
+
 
 		//id_stage
 		id_stage();
@@ -79,15 +199,17 @@ int main(){
 			continue;
 		}
 
+		
 		cycle++;
 
 		printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
-
 	}
+
+	if(halt) exit(0);
 
 	display_general_purpose_registers();
 	//display_internal_registers();
-	display_memory();
+	//display_memory();
 	
 	//printf("%d\n", cycle);
 	

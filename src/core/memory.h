@@ -22,6 +22,6 @@ void display_memory();
 void free_instructions(void);
 void display_instructions();
 
-#define l1_read_cycles 3
-#define l1_write_cycles 2
+#define l1_read_cycles 1
+#define l1_write_cycles 1
 

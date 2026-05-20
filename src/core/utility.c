@@ -68,7 +68,7 @@ void display_internal_registers() {
 	printf("arithmetic_opcode   : %02x\n", id_ex.cs_ex.arithmetic_opcode);
 	printf("logic_opcode        : %02x\n", id_ex.cs_ex.logic_opcode);
 	printf("branch_opcode       : %02x\n", id_ex.cs_ex.branch_opcode);
-	printf("PAUSE               : %02x\n", id_ex.cs_ex.PAUSE);
+	printf("SYSTEM_CALL         : %02x\n", id_ex.cs_ex.SYSTEM_CALL);
 
 	printf("\n");
 

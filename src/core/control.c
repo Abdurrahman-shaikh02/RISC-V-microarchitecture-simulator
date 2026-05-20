@@ -250,8 +250,10 @@ cu_output read_i_format(uint32_t ir){
 			//system calls
 			switch(funct7){
 				case 0:
-					return (cu_output){0, {0,0,0,0,0,0,0,0}, {0,0,0,0}, {0}};
+					//ecall
+					return (cu_output){0, {0,0,0,0,0,0,0,0b10}, {0,0,0,0}, {0}};
 				case 1:
+					//ebreak
 					return (cu_output){0, {0,0,0,0,0,0,0,1}, {0,0,0,0}, {0}};
 				default:
 					log_fatal("error funct 7 in i type -");
