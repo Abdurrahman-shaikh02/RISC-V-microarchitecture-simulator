@@ -57,4 +57,5 @@ cu_output decode(uint32_t ir);
 extern int PAUSE;	//for ebreak
 extern int TRAP;	//for ecall
 extern int FORWARDING_STALL;	//for a compulsory hazard stall
-extern int HAZARD;		//set when a hazard is detected if forwarding is off main can decide to force a stall and clear the reg...
+extern int HAZARD_STALL;		//set to number of cycles by the decode stage that must be stalled...
+extern int FORWARDING_SWITCH;

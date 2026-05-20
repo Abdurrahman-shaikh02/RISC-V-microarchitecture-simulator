@@ -6,8 +6,8 @@ uint32_t ir;
 
 int PAUSE;
 int TRAP;
-int FORWARDING_STALL;
-int HAZARD;
+int FORWARDING_STALL;	//used for the compulsory stall during forwarding to ex stage
+int HAZARD_STALL;	//set when a stall is required... only used when forwarding switch is on
 
 IF_ID if_id;
 ID_EX id_ex;
@@ -16,4 +16,4 @@ MA_WB ma_wb;
 WB_IF wb_if;
 WB_IF recent_wb;
 
-int FORWARDING_SWITCH = 1;	//forwarding on or off ?
+int FORWARDING_SWITCH = 1;	//forwarding on(1) or off(0) ?

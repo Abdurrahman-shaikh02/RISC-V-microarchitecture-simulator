@@ -197,6 +197,18 @@ int main(){
 
 		//id_stage
 		id_stage();
+		if(HAZARD_STALL == 1){
+			//clear id_ex register
+			//increment cycle, print visuals, reset HAZARD_STALL
+
+			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+
+			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			
+			HAZARD_STALL = 0;
+			continue;
+		}
 
 		//if_stage
 		if_stage();

@@ -4,6 +4,7 @@
 #include "memory.h"
 #include "internal_memory.h"
 
+void set_hazard_stall();
 //NEED TO HANDLE SIGN EXTENSION
 uint32_t generate_immediate(char format){
 	uint32_t ir = if_id.IR;
@@ -73,4 +74,37 @@ void id_stage(){
 	id_ex.cs_ma = out.cs_ma;
 	id_ex.cs_wb = out.cs_wb;
 	id_ex.ins = if_id.ins;
+
+	
+	if(FORWARDING_SWITCH == 0){
+		set_hazard_stall();
+	}
+
+}
+
+void set_hazard_stall(){
+	//this will analyse the current scenario and set a stall if required...
+	//CATCH THE STALL IN MAIN
+	//first check ex_ma
+	//then ma_wb
+	//then wb_if --> has been written in the current cycle must stall
+	
+
+	if(ex_ma.cs_wb.wb == 1){
+		if((id_ex.cs_ex.source1 == 1 && ex_ma.nrd == id_ex.nrs1) || (id_ex.cs_ex.source2 == 0 && ex_ma.nrd == id_ex.nrs2)){
+			//if either of the current operands has a pending write in the ex_ma
+			HAZARD_STALL = 1;
+		}
+	}else if(ma_wb.cs_wb.wb == 1){
+		if((id_ex.cs_ex.source1 == 1 && ma_wb.nrd == id_ex.nrs1) || (id_ex.cs_ex.source2 == 0 && ma_wb.nrd == id_ex.nrs2)){
+			//if either of the current operands has a pending write in the ma_wb
+			HAZARD_STALL = 1;
+		}
+	}else if(wb_if.cs_wb.wb == 1){
+		if((id_ex.cs_ex.source1 == 1 && wb_if.nrd == id_ex.nrs1) || (id_ex.cs_ex.source2 == 0 && wb_if.nrd == id_ex.nrs2)){
+			//if either of the current operands has been written to in the current cycle in wb stage
+			//still need to stall because due to our design wb stage happens before id in the same clock
+			HAZARD_STALL = 1;
+		}
+	}
 }

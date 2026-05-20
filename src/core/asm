@@ -121,6 +121,7 @@ add  r26, r23, r24
 sub  r27, r26, r25
 xor  r28, r27, r22
 or   r29, r28, r21
+lw r0, 0(r0)
 and  r30, r29, r20
 ebreak
 nop

@@ -40,7 +40,6 @@ void ex_stage(){
 			if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0))){
 				//in the next cycle since ma happens before ex, the value maybe there...
 				//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
-				HAZARD = 1;
 				log_info("hazard detected rs1");
 				if(ex_ma.cs_ma.mem == 1){
 					//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
@@ -54,7 +53,6 @@ void ex_stage(){
 				//why check wb_if and not ma_wb
 				//because due to our design wb and ma of the current cycle are getting executed before ex
 				//this is causing the value to move up ahead of ma_wb
-				HAZARD = 1;
 				//forward directly
 				log_debug("forwarding rs1 from ma_wb...");
 				operand1 = wb_if.result;
@@ -76,7 +74,6 @@ void ex_stage(){
 		if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0))){
 			//in the next cycle since ma happens before ex, the value maybe there...
 			//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
-			HAZARD = 1;
 			log_info("hazard detected rs2");
 			if(ex_ma.cs_ma.mem == 1){
 				//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
@@ -90,7 +87,6 @@ void ex_stage(){
 			//why check wb_if and not ma_wb
 			//because due to our design wb and ma of the current cycle are getting executed before ex
 			//this is causing the value to move up ahead of ma_wb
-			HAZARD = 1;
 			//forward directly
 			log_debug("forwarding rs2 from ma_wb...");
 			operand2 = wb_if.result;
