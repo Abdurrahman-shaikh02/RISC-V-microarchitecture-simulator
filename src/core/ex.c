@@ -30,14 +30,40 @@ void ex_stage(){
 			log_debug("r1 = pc");
 			break;
 		case 0b01:
-			operand1 = id_ex.R1;
+			//here need to check for hazard first
+			//see in EX_MA if it is (set HAZARD = 1) 
+			//a write back and not a mem load instruction... if yes then copy result from EX_MA
+			//if it is a wb and a mem load as well then its a compulory stall and hence HAZARD_STALL = 1(handle this in main)
+			//if its not there in EX_MA then look into MA_WB
+			//if yes (HAZARD = 1) then copy directly (because if it is in MA_WB that would mean that the memory load has finished)
+			//-------------------------------------------------------------------------------------------------------------
+			if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0))){
+				//in the next cycle since ma happens before ex, the value maybe there...
+				//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
+				HAZARD = 1;
+				log_info("hazard detected rs1");
+				if(ex_ma.cs_ma.mem == 1){
+					//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
+					log_info("Compulsory stall due to hazard.");
+					FORWARDING_STALL = 1;
+				}else{
+					log_debug("forwarding rs1 from ex_ma...");
+					operand1 = ex_ma.result;
+				}
+			}else if(wb_if.cs_wb.wb == 1 && (id_ex.nrs1 == wb_if.nrd && wb_if.nrd != 0)){
+				//why check wb_if and not ma_wb
+				//because due to our design wb and ma of the current cycle are getting executed before ex
+				//this is causing the value to move up ahead of ma_wb
+				HAZARD = 1;
+				//forward directly
+				log_debug("forwarding rs1 from ma_wb...");
+				operand1 = wb_if.result;
+			}else{
+				operand1 = id_ex.R1;
+			}
+			//-------------------------------------------------------------------------------------------------------------
 			log_debug("r1 = rs1");
 			break;
-	/*	case 0b10:
-			operand1 = id_ex.R2;
-			log_debug("r1 = rs2");
-			break;
-	*/
 		default:
 			log_fatal("Invalid source 1.");
 			exit(1);
@@ -45,7 +71,32 @@ void ex_stage(){
 
 	uint32_t operand2;
 	if(control.source2 == 0){
-		operand2 = id_ex.R2;
+		//check for hazard first...
+		//same as above
+		if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0))){
+			//in the next cycle since ma happens before ex, the value maybe there...
+			//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
+			HAZARD = 1;
+			log_info("hazard detected rs2");
+			if(ex_ma.cs_ma.mem == 1){
+				//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
+				log_info("Compulsory stall due to hazard.");
+				FORWARDING_STALL = 1;
+			}else{
+				log_debug("forwarding rs2 from ex_ma...");
+				operand2 = ex_ma.result;
+			}
+		}else if(wb_if.cs_wb.wb == 1 && (id_ex.nrs2 == wb_if.nrd && wb_if.nrd != 0)){
+			//why check wb_if and not ma_wb
+			//because due to our design wb and ma of the current cycle are getting executed before ex
+			//this is causing the value to move up ahead of ma_wb
+			HAZARD = 1;
+			//forward directly
+			log_debug("forwarding rs2 from ma_wb...");
+			operand2 = wb_if.result;
+		}else{
+			operand2 = id_ex.R2;
+		}
 		log_debug("r2 = rs2");
 	}else if(control.source2 == 1){
 		operand2 = id_ex.imm;
@@ -87,6 +138,7 @@ void ex_stage(){
 	ex_ma.result = result;
 	ex_ma.cs_ma = id_ex.cs_ma;
 	ex_ma.cs_wb = id_ex.cs_wb;
+	ex_ma.nrs2 = id_ex.nrs2;
 	ex_ma.R2 = id_ex.R2;
 	ex_ma.nrd = id_ex.nrd;
 	ex_ma.PC_next = id_ex.PC_next;

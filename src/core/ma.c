@@ -31,8 +31,24 @@ void ma_stage(){
 			result = mbr;
 		}else if(r_w == 1){
 			//write
+			//forwarding logic
+			if(ma_wb.cs_wb.wb == 1 && (ma_wb.nrd == ex_ma.nrs2 && ma_wb.nrd != 0)){
+				//why only check ma_wb not the value of wb_if ?
+				//because the wb stage of the current cycle has already happened and the value of ma_wb is the same as wb_if...
+				log_info("forwarding value of rs2 from ex_ma in ma stage");
+				mbr = ma_wb.result;
+			}else if(recent_wb.cs_wb.wb == 1 && (recent_wb.nrd == ex_ma.nrs2 && recent_wb.nrd != 0)){
+				//ideally i should be saving the wb before the recent wb too...
+				//that would be the write back stage during the decode of this instruction...
+				//but since our wb happens before decode does we (coincidentaly... luckily) got that value right during decode....
+				log_info("forwarding value of rs2 from recent wb in ma stage");
+				mbr = recent_wb.result;
+			}else{
+				mbr = ex_ma.R2;
+				log_info("no forwarding done...");
+			}
+
 			log_info("Attempting to write.");
-			mbr = ex_ma.R2;
 			mar = ex_ma.result;
 			write_memory(mem_opcode);
 		}
