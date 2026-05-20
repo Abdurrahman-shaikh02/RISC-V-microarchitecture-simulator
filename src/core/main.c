@@ -13,6 +13,7 @@ need to declare internal registers, pipeline registers here.
 #include "utility.h"
 #include "component_declaration.h"
 
+#define SYSTEM_HALT_CODE 0x000000AA
 
 int main(){
 	//initialize memory...
@@ -140,7 +141,7 @@ int main(){
 				TRAP = 0;
 				log_debug("TRAP flag was set to 0");
 
-				if(ecall_code == 0xF000000F){
+				if(ecall_code == SYSTEM_HALT_CODE){
 					halt = 1;
 					break;
 				}

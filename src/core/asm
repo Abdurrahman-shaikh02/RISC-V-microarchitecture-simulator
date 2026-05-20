@@ -297,10 +297,9 @@ nop
 lui r1, 0xFF
 auipc r2, 0xFF
 
-lui r17, 0xF0000
 nop
 nop
-addi r17, r17, 0x00F
+addi r17, r17, 0x0AA
 ecall
 ebreak
 nop
