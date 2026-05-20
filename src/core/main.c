@@ -100,7 +100,7 @@ int main(){
 				//stall(skip the IF, ID stage) and decrement the pause_counter
 				
 				//clearing ex_ma register
-				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
 				
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				pause_counter--;
@@ -170,7 +170,7 @@ int main(){
 				//stall(skip the IF, ID stage) and decrement the pause_counter
 				
 				//clearing ex_ma register
-				ex_ma = (EX_MA){0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+				ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
 				
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				trap_counter--;
@@ -181,6 +181,17 @@ int main(){
 				log_debug("TRAP flag was set to 0");
 				continue;
 			}
+		}
+		else if(FORWARDING_STALL == 1){
+			//compulsory stall...
+			
+			//clearing ex_ma register
+			ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+			FORWARDING_STALL = 0;
+			continue;
 		}
 
 
@@ -210,7 +221,7 @@ int main(){
 
 	display_general_purpose_registers();
 	//display_internal_registers();
-	//display_memory();
+	display_memory();
 	
 	//printf("%d\n", cycle);
 	

@@ -13,7 +13,7 @@ typedef struct ex_control{
 
 typedef struct ma_control{
 	uint8_t mem;		//memory access or no ?
-	uint8_t read_write_opcode;	//read or write ? memory access code.... 0000...0100 for reads, 1000...1011 for writes (b, h, w, bu, hu) the 4th last bit gives whether its a read or a write...
+	uint8_t read_write_opcode;	//read or write ? memory access code.... 0000...0100 for reads, 1000...1010 for writes (b, h, w, bu, hu) the 4th last bit gives whether its a read or a write...
 	uint8_t branch_taken;	//was the branch taken ?
 	uint8_t jump_or_branch;	//was this a branch (no address needs to be writtenback) or a jump (save return address) ? 0,1
 } ma_control;
@@ -54,5 +54,7 @@ cu_output read_j_format(uint32_t ir);
 char get_format(uint32_t opcode);
 cu_output decode(uint32_t ir);
 
-extern int PAUSE;
-extern int TRAP;
+extern int PAUSE;	//for ebreak
+extern int TRAP;	//for ecall
+extern int FORWARDING_STALL;	//for a compulsory hazard stall
+extern int HAZARD;		//set when a hazard is detected if forwarding is off main can decide to force a stall and clear the reg...

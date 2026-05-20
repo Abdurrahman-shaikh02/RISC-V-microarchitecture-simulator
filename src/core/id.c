@@ -23,7 +23,7 @@ uint32_t generate_immediate(char format){
 			break;
 		case 's':
 			imm = ir & 0xFE000000;
-			imm = (ir & 0x00000F80) << 13;
+			imm = imm | ((ir & 0x00000F80) << 13);
 			imm = ((int32_t)imm) >> 20;
 			log_debug("immediate generated for s format");
 			break;
@@ -63,7 +63,9 @@ void id_stage(){
 	//copy everything into id_ex
 	id_ex.PC = if_id.PC;
 	id_ex.PC_next = if_id.PC_next;
+	id_ex.nrs1 = nrs1;
 	id_ex.R1 = reg_file[nrs1];
+	id_ex.nrs2 = nrs2;
 	id_ex.R2 = reg_file[nrs2];
 	id_ex.imm = imm;
 	id_ex.nrd = nrd;

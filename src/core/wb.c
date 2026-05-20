@@ -18,5 +18,15 @@ void wb_stage(){
 		reg_file[0] = 0;		//ensure after every write that r0 is 0
 	}
 
+	//saving history for the forwarding to ma
+	recent_wb.ins = wb_if.ins;
+	recent_wb.result = wb_if.result;
+	recent_wb.nrd = wb_if.nrd;
+	recent_wb.cs_wb = wb_if.cs_wb;
+	
+
 	wb_if.ins = ma_wb.ins;
+	wb_if.result = ma_wb.result;
+	wb_if.nrd = ma_wb.nrd;
+	wb_if.cs_wb = ma_wb.cs_wb;
 }
