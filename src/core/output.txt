@@ -1,14 +1,84 @@
-[0] 00000000   00100093   addi r1, r0, 1
-[1] 0x000004   01400f67   jalr r30, 0x14(r0)
-[2] 0x000008   00100113   addi r2, r0, 1
-l2:
-[3] 0x00000c   00100213   addi r4, r0, 1
-[4] 0x000010   02000073   ebreak
-label:
-[5] 0x000014   00100193   addi r3, r0, 1
-[6] 0x000018   00c00fe7   jalr r31, 0xc(r0)
-[7] 0x00001c   02000073   ebreak
-[8] 0x000020   00000013   nop
-[9] 0x000024   00000013   nop
-[10] 0x000028   00000013   nop
-[11] 0x00002c   00000013   nop
+[0] 00000000   00500093   addi r1, r0, 0x5
+[1] 0x000004   00500113   addi r2, r0, 0x5
+[2] 0x000008   fff00193   addi r3, r0, -0x1
+[3] 0x00000c   00100213   addi r4, r0, 0x1
+[4] 0x000010   00a00293   addi r5, r0, 0xA
+[5] 0x000014   00208463   beq r1, r2, beq_taken
+[6] 0x000018   06f00313   addi r6, r0, 0x6F
+beq_taken:
+[7] 0x00001c   0de00313   addi r6, r0, 0xDE
+[8] 0x000020   00508463   beq r1, r5, beq_not_taken
+[9] 0x000024   14d00393   addi r7, r0, 0x14D
+beq_not_taken:
+[10] 0x000028   00000013   addi r0, r0, 0x0
+[11] 0x00002c   00509463   bne r1, r5, bne_taken
+[12] 0x000030   1bc00413   addi r8, r0, 0x1BC
+bne_taken:
+[13] 0x000034   22b00413   addi r8, r0, 0x22B
+[14] 0x000038   00209463   bne r1, r2, bne_not_taken
+[15] 0x00003c   29a00493   addi r9, r0, 0x29A
+bne_not_taken:
+[16] 0x000040   00000013   addi r0, r0, 0x0
+[17] 0x000044   0041c463   blt r3, r4, blt_taken
+[18] 0x000048   30900513   addi r10, r0, 0x309
+blt_taken:
+[19] 0x00004c   37800513   addi r10, r0, 0x378
+[20] 0x000050   0012d463   bge r5, r1, bge_taken
+[21] 0x000054   3e700593   addi r11, r0, 0x3E7
+bge_taken:
+[22] 0x000058   45700593   addi r11, r0, 0x457
+[23] 0x00005c   0041e463   bltu r3, r4, bltu_taken
+[24] 0x000060   4d200613   addi r12, r0, 0x4D2
+bltu_taken:
+[25] 0x000064   00000013   addi r0, r0, 0x0
+[26] 0x000068   0041f863   bgeu r3, r4, bgeu_taken
+[27] 0x00006c   00500693   addi r13, r0, 0x5
+[28] 0x000070   00869693   slli r13, r13, 8
+[29] 0x000074   04d68693   addi r13, r13, 0x4D
+bgeu_taken:
+[30] 0x000078   00900693   addi r13, r0, 0x9
+[31] 0x00007c   00869693   slli r13, r13, 8
+[32] 0x000080   0a468693   addi r13, r13, 0xA4
+[33] 0x000084   00208733   add r14, r1, r2
+[34] 0x000088   00570463   beq r14, r5, forward_branch_taken
+[35] 0x00008c   7ff00793   addi r15, r0, 0x7FF
+forward_branch_taken:
+[36] 0x000090   01000793   addi r15, r0, 0x10
+[37] 0x000094   00879793   slli r15, r15, 8
+[38] 0x000098   0e178793   addi r15, r15, 0xE1
+[39] 0x00009c   0080086f   jal r16, jal_target
+[40] 0x0000a0   7ff00893   addi r17, r0, 0x7FF
+jal_target:
+[41] 0x0000a4   01a00893   addi r17, r0, 0x1A
+[42] 0x0000a8   00889893   slli r17, r17, 8
+[43] 0x0000ac   00a88893   addi r17, r17, 0x0A
+[44] 0x0000b0   00080913   addi r18, r16, 0x0
+[45] 0x0000b4   00c009ef   jal r19, second_jump_target
+[46] 0x0000b8   06f00a13   addi r20, r0, 0x6F
+[47] 0x0000bc   0de00a13   addi r20, r0, 0xDE
+second_jump_target:
+[48] 0x0000c0   14d00a13   addi r20, r0, 0x14D
+[49] 0x0000c4   0d800a93   addi r21, r0, 0xD8
+[50] 0x0000c8   000a8b67   jalr r22, 0x0(r21)
+[51] 0x0000cc   3e700b93   addi r23, r0, 0x3E7
+[52] 0x0000d0   3e700c13   addi r24, r0, 0x3E7
+[53] 0x0000d4   3e700c93   addi r25, r0, 0x3E7
+jalr_target:
+[54] 0x0000d8   01e00d13   addi r26, r0, 0x1E
+[55] 0x0000dc   008d1d13   slli r26, r26, 8
+[56] 0x0000e0   061d0d13   addi r26, r26, 0x61
+[57] 0x0000e4   00100d93   addi r27, r0, 0x1
+[58] 0x0000e8   00200e13   addi r28, r0, 0x2
+[59] 0x0000ec   01cdc463   blt r27, r28, branch_chain_1
+[60] 0x0000f0   06f00e93   addi r29, r0, 0x6F
+branch_chain_1:
+[61] 0x0000f4   0de00e93   addi r29, r0, 0xDE
+[62] 0x0000f8   01be5463   bge r28, r27, branch_chain_2
+[63] 0x0000fc   14d00f13   addi r30, r0, 0x14D
+branch_chain_2:
+[64] 0x000100   1bc00f13   addi r30, r0, 0x1BC
+[65] 0x000104   01ee8463   beq r29, r30, final_taken
+[66] 0x000108   22b00f93   addi r31, r0, 0x22B
+final_taken:
+[67] 0x00010c   29a00f93   addi r31, r0, 0x29A
+[68] 0x000110   02000073   ebreak

@@ -225,7 +225,7 @@ cu_output read_i_format(uint32_t ir){
 			}
 		case 0b1100111:
 			//jalr
-			return (cu_output){'i', {1, 1, 1, 0b11, 0, 0, 0b110, 0}, {0, 0, 1, 1}, {1}};
+			return (cu_output){'i', {1, 1, 1, 0b11, 0, 0, 0b100, 0}, {0, 0, 1, 1}, {1}};
 		case 0b0000011:
 			//loads
 			switch(funct3){
@@ -301,16 +301,22 @@ cu_output read_b_format(uint32_t ir){
 	switch(funct3){
 		case 0b000:
 			//beq
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b000, 0}, {0, 0, predict(), 0}, {0}};
 		case 0b001:
 			//bne
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b001, 0}, {0, 0, predict(), 0}, {0}};
 		case 0b100:
 			//blt
+			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(), 0}, {0}};
 		case 0b101:
 			//bge
+			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(), 0}, {0}};
 		case 0b110:
 			//bltu
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(), 0}, {0}};
 		case 0b111:
 			//bgeu
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(), 0}, {0}};
 		default:
 			log_fatal("error in funct3 in b type.");
 			exit(1);
@@ -341,7 +347,7 @@ cu_output read_j_format(uint32_t ir){
 	switch(opcode){
 		case 0b1101111:
 			//jal
-			return (cu_output){'j', {0, 1, 1, 0b11, 0, 0, 0b110, 0}, {0, 0, 1, 1}, {1}};
+			return (cu_output){'j', {0, 1, 1, 0b11, 0, 0, 0b100, 0}, {0, 0, 1, 1}, {1}};
 		default:
 			log_fatal("error in opcode in j type.");
 			exit(1);

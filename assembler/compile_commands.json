@@ -1,0 +1,100 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/main.o",
+      "core/main.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/main.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/opcode_generator.o",
+      "core/opcode_generator.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/opcode_generator.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/opcode_generator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/parser.o",
+      "core/parser.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/parser.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/parser.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/semantics_analyzer.o",
+      "core/semantics_analyzer.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/semantics_analyzer.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/semantics_analyzer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/symbol_table.o",
+      "core/symbol_table.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/symbol_table.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/symbol_table.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/core/syntax_analyzer.o",
+      "core/syntax_analyzer.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/core/syntax_analyzer.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/core/syntax_analyzer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wextra",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "build/log/logger.o",
+      "log/logger.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/assembler",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/assembler/log/logger.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/assembler/build/log/logger.o"
+  }
+]

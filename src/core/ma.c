@@ -33,6 +33,19 @@ void ma_stage(){
 			FLUSH = 1;
 		}else{
 			//branch
+			uint8_t predicted = 0, actual = 0;
+			actual = (control.branch_taken & 0b10) >> 1;
+			predicted = (control.branch_taken & 0b1);
+
+			if(actual == predicted){
+				//do nothing
+			}else if(actual == 1 && predicted == 0){
+				pc = ex_ma.PC_next;
+				FLUSH = 1;
+			}else if(actual == 0 && predicted == 1){
+				pc = ex_ma.result;
+				FLUSH = 1;
+			}
 		}
 		result = ex_ma.result;
 	}else{

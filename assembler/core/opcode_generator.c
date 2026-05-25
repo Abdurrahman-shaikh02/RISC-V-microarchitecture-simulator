@@ -37,7 +37,10 @@ int read_b_format(int opcode, char ** array, const i_block * block, int current_
 	opcode = opcode | (arg2 << 20);
 
 	int label = get_address(array[3]);
-	if(label == -1) return 0;	//return 0 if the label is not found
+	if(label == -1){
+		log_fatal("Couldnt get labels address");
+		return 0;	//return 0 if the label is not found
+	}
 	
 	int arg3 = label - current_instruction_address;
 	if(!(arg3 >= -4096 && arg3 <= 4095)){	// its a 13 bit value ---> the lsb is always zero...

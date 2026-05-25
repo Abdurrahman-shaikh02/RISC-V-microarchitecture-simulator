@@ -4,6 +4,7 @@
 #include "memory.h"
 #include "internal_memory.h"
 #include "alu.h"
+#include "branch_prediction.h"
 
 
 void ex_stage(){
@@ -118,6 +119,7 @@ void ex_stage(){
 			result = less_than_comparator(operand1, operand2, control.sign);
 			break;
 		case 0b11:
+			log_debug("branch compare");
 			//branch compare
 			//result = temp
 			//pc_next = arithmetic... pc + imm
@@ -125,7 +127,7 @@ void ex_stage(){
 			//branch compare and set the branch taken signal's SECOND LSB
 			//
 			result = id_ex.PC_next;
-			if(control.branch_opcode == 0b110){
+			if(control.branch_opcode == 0b100){
 				log_debug("jump instruction");
 				//jump
 				id_ex.PC_next = arithmetic_unit(operand1, operand2, control.arithmetic_opcode);
@@ -133,12 +135,13 @@ void ex_stage(){
 				id_ex.cs_ma.branch_taken |= 0b10;
 			}else{
 				//branch
+				log_debug("branch instruction");
 				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm, control.arithmetic_opcode);
-				//uint8_t branch_taken = branch_compare();
+				uint8_t branch_taken = branch_comparator(operand1, operand2, control.branch_opcode, control.sign);
 				//store
+				store(branch_taken);
+				id_ex.cs_ma.branch_taken |= (branch_taken << 1);
 			}
-			log_debug("branch compare");
-			//handle result, handle the branch taken flag as well....
 			break;
 		default:
 			log_fatal("invalid execute stage");

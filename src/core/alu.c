@@ -68,11 +68,50 @@ uint32_t less_than_comparator(uint32_t operand1, uint32_t operand2, uint8_t sign
 	exit(1);
 }
 
-uint32_t branch_comparator(){
+uint32_t branch_comparator(uint32_t operand1, uint32_t operand2, uint8_t branch_opcode, uint8_t sign){
+
+	switch(branch_opcode){
+		case 0b000:
+			if(operand1 == operand2){
+				return 1;
+			}
+			return 0;
+		case 0b001:
+			if(operand1 != operand2){
+				return 1;
+			}
+			return 0;
+		case 0b010:
+			if(sign == 0){
+				if(operand1 < operand2){
+					return 1;
+				}
+			}else{
+				if((int32_t)operand1 < (int32_t)operand2){
+					return 1;
+				}
+			}
+			return 0;
+		case 0b011:
+			if(sign == 0){
+				if(operand1 >= operand2){
+					return 1;
+				}
+			}else{
+				if((int32_t)operand1 >= (int32_t)operand2){
+					return 1;
+				}
+			}
+			return 0;
+		default:
+			log_fatal("Invalid branch opcode.");
+			exit(1);
+	}
 
 }
 
 
+//NEED TO HANDLE SIGN EXTENSION
 uint32_t generate_immediate(char format, uint32_t ir){
 	uint32_t imm = 0;
 
@@ -95,6 +134,12 @@ uint32_t generate_immediate(char format, uint32_t ir){
 			log_debug("immediate generated for s format");
 			break;
 		case 'b':
+			imm = (ir & 0x00000F00) >> 8;
+			imm = imm | ((ir & 0x7E000000) >> 21);
+			imm = imm | ((ir & 0x80) << 3);
+			imm = imm | (((int32_t)(ir & 0x80000000)) >> 20);
+			imm = imm << 1;
+			break;
 		case 'u':
 			imm = (int32_t)(ir & 0xFFFFF000) >> 12;
 			log_debug("immediate generated for u format");
