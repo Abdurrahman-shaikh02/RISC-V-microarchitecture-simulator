@@ -7,8 +7,8 @@ typedef struct ex_control{
 	uint8_t type;		//arithmetic | logic | less than(slt) | branch compare? 00, 01, 10, 11
 	uint8_t arithmetic_opcode;		//alu opcode 0, 1
 	uint8_t logic_opcode;		//logic opcode	000 ... 110
-	uint8_t branch_opcode;		//branch comparison opcode 000...
-	uint8_t SYSTEM_CALL;		//for ebreak, a SYSTEMCALL
+	uint8_t branch_opcode;		//branch comparison opcode 000, 001, 010, 011, 100, 101 for branches, 110 for jump
+	uint8_t SYSTEM_CALL;		//for ebreak, a SYSTEMCALL, 010 for an ecall
 } ex_control;
 
 typedef struct ma_control{
@@ -59,3 +59,4 @@ extern int TRAP;	//for ecall
 extern int FORWARDING_STALL;	//for a compulsory hazard stall
 extern int HAZARD_STALL;		//set to number of cycles by the decode stage that must be stalled...
 extern int FORWARDING_SWITCH;
+extern int FLUSH;

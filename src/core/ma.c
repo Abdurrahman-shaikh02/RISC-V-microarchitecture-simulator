@@ -19,6 +19,21 @@ void ma_stage(){
 	
 	if(control.mem == 0){
 		log_info("No memory access.");
+		//if its a jump, result = result
+		//and update pc right now... pc = pc_next
+		//
+		//else if its a branch
+		//if the predict and compare bits match then store only...
+		//if they dont, store, flush bit
+		//if prediction was to take a branch and we didnt take then pc = result
+		//if prediction was not to take and we did then update pc = pc_next (remember we swapped values in the last stage...)
+		//result = result
+		if(control.jump_or_branch == 1){
+			pc = ex_ma.PC_next;
+			FLUSH = 1;
+		}else{
+			//branch
+		}
 		result = ex_ma.result;
 	}else{
 		//memory access

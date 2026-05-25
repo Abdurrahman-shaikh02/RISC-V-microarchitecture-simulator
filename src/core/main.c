@@ -44,6 +44,15 @@ int main(){
 			cycle++;
 			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
+		}else if(FLUSH == 1){
+			//clear ex_ma, id_ex, if_id stages
+			//and let the execution continue... because this flush and pc change should have been done at the end of the last clock cycle...
+			//but due to our design we have decided to do it right now because the ex, id, if of the current cycle havent been done yet...
+			ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+			if_id = (IF_ID){0, 0, 0, "                    "};
+
+			FLUSH = 0;
 		}
 
 		//ex stage

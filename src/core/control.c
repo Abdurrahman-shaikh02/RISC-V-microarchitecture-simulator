@@ -1,5 +1,6 @@
 #include "header.h"
 #include "control.h"
+#include "branch_prediction.h"
 
 static const int i_table_length = 41;
 static const i_block i_table[] = {
@@ -224,6 +225,7 @@ cu_output read_i_format(uint32_t ir){
 			}
 		case 0b1100111:
 			//jalr
+			return (cu_output){'i', {1, 1, 1, 0b11, 0, 0, 0b110, 0}, {0, 0, 1, 1}, {1}};
 		case 0b0000011:
 			//loads
 			switch(funct3){
@@ -339,6 +341,7 @@ cu_output read_j_format(uint32_t ir){
 	switch(opcode){
 		case 0b1101111:
 			//jal
+			return (cu_output){'j', {0, 1, 1, 0b11, 0, 0, 0b110, 0}, {0, 0, 1, 1}, {1}};
 		default:
 			log_fatal("error in opcode in j type.");
 			exit(1);

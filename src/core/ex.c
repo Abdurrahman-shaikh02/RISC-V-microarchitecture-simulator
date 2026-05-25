@@ -119,8 +119,24 @@ void ex_stage(){
 			break;
 		case 0b11:
 			//branch compare
-			//comapre, change pc, set a global stall flag(to flush the pipe, later used by branch pred)
-			//set result = pc_next (for jump instructions...) regardless of branch or jump
+			//result = temp
+			//pc_next = arithmetic... pc + imm
+			//why do the above swap ? the forwarding logic expects value to be written in register to be in result field
+			//branch compare and set the branch taken signal's SECOND LSB
+			//
+			result = id_ex.PC_next;
+			if(control.branch_opcode == 0b110){
+				log_debug("jump instruction");
+				//jump
+				id_ex.PC_next = arithmetic_unit(operand1, operand2, control.arithmetic_opcode);
+				//set the branch taken bit too
+				id_ex.cs_ma.branch_taken |= 0b10;
+			}else{
+				//branch
+				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm, control.arithmetic_opcode);
+				//uint8_t branch_taken = branch_compare();
+				//store
+			}
 			log_debug("branch compare");
 			//handle result, handle the branch taken flag as well....
 			break;

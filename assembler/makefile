@@ -39,6 +39,7 @@ $(BUILD_DIR)/%.o: %.c
 # Clean
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
+	rm log.log
 
 # Rebuild
 rebuild: clean all

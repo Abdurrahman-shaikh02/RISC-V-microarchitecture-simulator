@@ -8,6 +8,7 @@ int PAUSE;
 int TRAP;
 int FORWARDING_STALL;	//used for the compulsory stall during forwarding to ex stage
 int HAZARD_STALL;	//set when a stall is required... only used when forwarding switch is on
+int FLUSH;
 
 IF_ID if_id;
 ID_EX id_ex;
