@@ -66,6 +66,25 @@ int main(){
 				
 				//id_stage
 				id_stage();
+				if(HAZARD_STALL == 1){
+					//clear id_ex register
+					//increment cycle, print visuals, reset HAZARD_STALL
+
+					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+
+					cycle++;
+					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+					HAZARD_STALL = 0;
+					continue;
+				}else if(FLUSH == 1){
+					//clear id_ex register, if_id register... let the excution continue
+					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+					if_id = (IF_ID){0, 0, 0, "                    "};
+
+					FLUSH = 0;
+				}
+
 
 				//if_stage
 				if_stage();
@@ -128,6 +147,25 @@ int main(){
 				
 				//id_stage
 				id_stage();
+				if(HAZARD_STALL == 1){
+					//clear id_ex register
+					//increment cycle, print visuals, reset HAZARD_STALL
+
+					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+
+					cycle++;
+					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+
+					HAZARD_STALL = 0;
+					continue;
+				}else if(FLUSH == 1){
+					//clear id_ex register, if_id register... let the excution continue
+					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+					if_id = (IF_ID){0, 0, 0, "                    "};
+
+					FLUSH = 0;
+				}
+
 
 				//if_stage
 				if_stage();
@@ -217,6 +255,12 @@ int main(){
 			
 			HAZARD_STALL = 0;
 			continue;
+		}else if(FLUSH == 1){
+			//clear id_ex register, if_id register... let the excution continue
+			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+			if_id = (IF_ID){0, 0, 0, "                    "};
+
+			FLUSH = 0;
 		}
 
 		//if_stage

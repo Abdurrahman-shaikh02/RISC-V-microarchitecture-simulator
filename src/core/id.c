@@ -9,20 +9,27 @@ int set_hazard_stall();
 
 
 void id_stage(){
-	/*
+	//the following segment is only due to our design where id happens before if does...
+	//so if we change the value of pc here it would be the same as if the pc value was changed in the last clock cycle...
 	static int change_pc = 0;
 	static uint32_t jump_pc = 0;
 	if(change_pc == 1){
 		//change pc, reset id_ex reg and if_id
+		//now this is sort of a trigger set in the last clock cycle to change the pc because the branch prediction predicted
+		//in the last clock cycle that the branch will be taken 
+		pc = jump_pc;
+		FLUSH = 1;
 		
 		jump_pc = 0;
 		change_pc = 0;
+		log_debug("made a branch taken prediction last clock cycle...");
+		return;
 	}
-	*/
+	//-------------------------------------------------------------------------------------------------------------------------
 
 	log_info("ID stage initiating.");
 	//read contents from if_id
-	//uint32_t ir = if_id.IR;
+	uint32_t ir = if_id.IR;
 	//uint32_t pc = if_id.PC;
 	//break the opcode into source1, source2, immediate, control signals(maybe add a seperate field for dest reg or include in here)
 	
@@ -59,11 +66,14 @@ void id_stage(){
 			return;		//return only if a stall was set
 		}
 	}
-/*
-	if(out.cs_ma.branch_taken == 1){
+	
+	//after hazard stall so if u are stallin gthen this trigger wont set
+	if(out.cs_ma.branch_taken == 1 && out.cs_ex.type == 0b11 && out.cs_ma.jump_or_branch == 0){
+		//if it s a branch insturctions and the prediction value is 1
 		//set change_pc = 1 to be read in the next cycle...
+		change_pc = 1;
+		jump_pc = if_id.PC + generate_immediate('b', ir);
 	}
-*/
 }
 
 int set_hazard_stall(){
