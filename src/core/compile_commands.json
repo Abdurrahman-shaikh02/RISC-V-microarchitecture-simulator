@@ -141,5 +141,44 @@
     "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
     "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/wb.c",
     "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/wb.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "branch_prediction.o",
+      "branch_prediction.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/branch_prediction.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/branch_prediction.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "static_prediction.o",
+      "static_prediction.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/static_prediction.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/static_prediction.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-c",
+      "-o",
+      "dynamic_prediction.o",
+      "dynamic_prediction.c"
+    ],
+    "directory": "/home/abdurrahman/Documents/projects/compute_engine/src/core",
+    "file": "/home/abdurrahman/Documents/projects/compute_engine/src/core/dynamic_prediction.c",
+    "output": "/home/abdurrahman/Documents/projects/compute_engine/src/core/dynamic_prediction.o"
   }
 ]

@@ -1,7 +1,8 @@
 CC = gcc
 CFLAGS = -g
 
-SRC = control.c alu.c ex.c id.c if.c logger.c ma.c main.c memory.c utility.c wb.c branch_prediction.c
+SRC = control.c alu.c ex.c id.c if.c logger.c ma.c main.c memory.c utility.c wb.c branch_prediction.c static_prediction.c dynamic_prediction.c
+
 OBJ = $(SRC:.c=.o)
 
 TARGET = a.out
