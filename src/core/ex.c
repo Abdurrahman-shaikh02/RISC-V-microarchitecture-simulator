@@ -24,7 +24,7 @@ void ex_stage(){
 		return;
 	}
 
-	uint32_t operand1;
+	uint32_t operand1 = 0;
 	switch(control.source1){
 		case 0b00:
 			operand1 = id_ex.PC;
@@ -68,7 +68,7 @@ void ex_stage(){
 			exit(1);
 	}
 
-	uint32_t operand2;
+	uint32_t operand2 = 0;
 	if(control.source2 == 0){
 		//check for hazard first...
 		//same as above
@@ -101,6 +101,7 @@ void ex_stage(){
 	}
 
 	uint32_t result = 0;
+	uint8_t actual_branch_taken = 0;
 	
 	switch(control.type){
 		case 0b00:
@@ -137,10 +138,10 @@ void ex_stage(){
 				//branch
 				log_debug("branch instruction");
 				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm, control.arithmetic_opcode);
-				uint8_t branch_taken = branch_comparator(operand1, operand2, control.branch_opcode, control.sign);
+				printf("%08x, %08x\n", operand1, operand2);
+				actual_branch_taken = branch_comparator(operand1, operand2, control.branch_opcode, control.sign);
 				//store
-				store(branch_taken);
-				id_ex.cs_ma.branch_taken |= (branch_taken << 1);
+				store(actual_branch_taken);
 			}
 			break;
 		default:
@@ -152,6 +153,11 @@ void ex_stage(){
 	
 	ex_ma.result = result;
 	ex_ma.cs_ma = id_ex.cs_ma;
+	//after copying the original cs_ma, add the actual branch taken bit...
+	ex_ma.cs_ma.branch_taken |= (actual_branch_taken << 1);	//doing this even if it is not a branch
+								//if control hasnt been in the above branch part of the code(else part)
+								//then the value of actual_branch_taken will be zero, cuz its been initialized to 0
+								//and oring with 0 doesnt cause a problem...
 	ex_ma.cs_wb = id_ex.cs_wb;
 	ex_ma.nrs2 = id_ex.nrs2;
 	ex_ma.R2 = id_ex.R2;

@@ -21,5 +21,13 @@ uint8_t predict(uint32_t ir){
 }
 
 void store(uint8_t branch_taken){
+	switch(BRANCH_PREDICTION_STRATEGY){
+		case 3:
+			store_taken_not_taken_switch(branch_taken);
+		case 4:
+			store_branch_history_table(branch_taken);
+		default:
+			return;
+	}
 
 }

@@ -285,8 +285,8 @@ int main(){
 	if(halt) exit(0);
 
 	display_general_purpose_registers();
-	//display_internal_registers();
-	//display_memory();
+	display_internal_registers();
+	display_memory();
 	
 	//printf("%d\n", cycle);
 	

@@ -230,8 +230,12 @@ void init_memory(char * path){
 }
 
 void display_memory(){
-	for(int i = 0; i < sizeof(l1); i++){
-		printf("[%08x] : %02x\n", i, l1[i]);
+	for(int i = 0; i < sizeof(l1); i+=16){
+		printf("[%08x] :", i);
+		for(int j = 0; j < 16; j++){
+			printf(" %02x", l1[i+j]);
+		}
+		printf("\n");
 	}
 }
 
