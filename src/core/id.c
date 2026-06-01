@@ -108,3 +108,9 @@ int set_hazard_stall(){
 
 	return 0;
 }
+
+void update_operands(){
+	id_ex.R1 = reg_file[id_ex.nrs1];
+	id_ex.R2 = reg_file[id_ex.nrs2];
+	log_info("Updating operands in decode stage due to stall");
+}

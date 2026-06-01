@@ -72,16 +72,19 @@ uint32_t branch_comparator(uint32_t operand1, uint32_t operand2, uint8_t branch_
 
 	switch(branch_opcode){
 		case 0b000:
+			//beq
 			if(operand1 == operand2){
 				return 1;
 			}
 			return 0;
 		case 0b001:
+			//bne
 			if(operand1 != operand2){
 				return 1;
 			}
 			return 0;
 		case 0b010:
+			//blt
 			if(sign == 0){
 				if(operand1 < operand2){
 					return 1;
@@ -93,6 +96,7 @@ uint32_t branch_comparator(uint32_t operand1, uint32_t operand2, uint8_t branch_
 			}
 			return 0;
 		case 0b011:
+			//bge
 			if(sign == 0){
 				if(operand1 >= operand2){
 					return 1;

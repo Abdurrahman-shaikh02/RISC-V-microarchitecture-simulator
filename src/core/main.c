@@ -39,6 +39,8 @@ int main(){
 			
 			//clearing the next pipeline register...
 			ma_wb = (MA_WB){0, 0, {0}, "                    "};
+			//updating decode stage operands
+			update_operands();
 
 			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
@@ -234,6 +236,8 @@ int main(){
 			
 			//clearing ex_ma register
 			ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+			update_operands();	//updating decode stage operands
+
 			cycle++;
 			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 

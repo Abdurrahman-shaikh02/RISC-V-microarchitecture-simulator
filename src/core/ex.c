@@ -31,16 +31,11 @@ void ex_stage(){
 			log_debug("r1 = pc");
 			break;
 		case 0b01:
-			//here need to check for hazard first
-			//see in EX_MA if it is (set HAZARD = 1) 
-			//a write back and not a mem load instruction... if yes then copy result from EX_MA
-			//if it is a wb and a mem load as well then its a compulory stall and hence HAZARD_STALL = 1(handle this in main)
-			//if its not there in EX_MA then look into MA_WB
-			//if yes (HAZARD = 1) then copy directly (because if it is in MA_WB that would mean that the memory load has finished)
-			//-------------------------------------------------------------------------------------------------------------
-			if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0))){
-				//in the next cycle since ma happens before ex, the value maybe there...
-				//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
+			if(ex_ma.cs_wb.wb == 1 && (id_ex.nrs1 == ex_ma.nrd && ex_ma.nrd != 0)){
+				//first lets check in ex_ma... this moment it contains the result of the ex stage of the previous clock cycle.
+				//if we find it here then we need to see if its a memory load operation
+				//if yes then we must stall and then wait for the ma stage to complete... then we can have our value
+				//if no then just use the result directly no problem with that...
 				log_info("hazard detected rs1");
 				if(ex_ma.cs_ma.mem == 1){
 					//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
@@ -50,14 +45,23 @@ void ex_stage(){
 					log_debug("forwarding rs1 from ex_ma...");
 					operand1 = ex_ma.result;
 				}
+			}else if(ma_wb.cs_wb.wb == 1 && (id_ex.nrs1 == ma_wb.nrd && ma_wb.nrd != 0)){
+				//if we find our value here then it MUST NECESSARILY mean that the memory operation just got completed this cycle(ma happened before ex)
+				//(if it was something like an addi which has an idle ma stage then we would have caught it in the above clause in the ex_ma register)
+				//and therefore we must cause a stall to skip the current cycle
+				log_info("Must give a stall because the memory action got completed in the current cycle... cant forward it...");
+				FORWARDING_STALL = 1;
 			}else if(wb_if.cs_wb.wb == 1 && (id_ex.nrs1 == wb_if.nrd && wb_if.nrd != 0)){
-				//why check wb_if and not ma_wb
-				//because due to our design wb and ma of the current cycle are getting executed before ex
-				//this is causing the value to move up ahead of ma_wb
-				//forward directly
+				//if we find our value here then we can directly use the value...
+				//it could either be after a memory access or maybe we had an instruction b/w the hazard causing instruction and the current instruction
 				log_debug("forwarding rs1 from ma_wb...");
 				operand1 = wb_if.result;
-			}else{
+			}/*else if(recent_wb.cs_wb.wb == 1 && (id_ex.nrs1 == recent_wb.nrd && recent_wb.nrd != 0)){
+				//we have a PROBLEMMMM
+				log_debug("forwarding rs1 from ma_wb...");
+				operand1 = recent_wb.result;
+			}*/
+			else{
 				operand1 = id_ex.R1;
 			}
 			//-------------------------------------------------------------------------------------------------------------
@@ -70,11 +74,12 @@ void ex_stage(){
 
 	uint32_t operand2 = 0;
 	if(control.source2 == 0){
-		//check for hazard first...
-		//same as above
-		if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0)) || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0))){
-			//in the next cycle since ma happens before ex, the value maybe there...
-			//but that cycle must be skipped... because the value was just fetched that clock cycle and cant be used in ex...
+		//same as for operand 1
+		if((ex_ma.cs_wb.wb == 1 && (id_ex.nrs2 == ex_ma.nrd && ex_ma.nrd != 0))&&0 || (ma_wb.cs_wb.wb == 1 && (id_ex.nrs2 == ma_wb.nrd && ma_wb.nrd != 0))){
+			//first lets check in ex_ma... this moment it contains the result of the ex stage of the previous clock cycle.
+			//if we find it here then we need to see if its a memory load operation
+			//if yes then we must stall and then wait for the ma stage to complete... then we can have our value
+			//if no then just use the result directly no problem with that...
 			log_info("hazard detected rs2");
 			if(ex_ma.cs_ma.mem == 1){
 				//compulsory stall if its a memory read (for a mem write wb = 0 so no question of that)
@@ -84,14 +89,23 @@ void ex_stage(){
 				log_debug("forwarding rs2 from ex_ma...");
 				operand2 = ex_ma.result;
 			}
+		}else if(ma_wb.cs_wb.wb == 1 && (id_ex.nrs2 == ma_wb.nrd && ma_wb.nrd != 0)){
+			//if we find our value here then it MUST NECESSARILY mean that the memory operation just got completed this cycle(ma happened before ex)
+			//(if it was something like an addi which has an idle ma stage then we would have caught it in the above clause in the ex_ma register)
+			//and therefore we must cause a stall to skip the current cycle
+			log_info("Must give a stall because the memory action got completed in the current cycle... cant forward it...");
+			FORWARDING_STALL = 1;
 		}else if(wb_if.cs_wb.wb == 1 && (id_ex.nrs2 == wb_if.nrd && wb_if.nrd != 0)){
-			//why check wb_if and not ma_wb
-			//because due to our design wb and ma of the current cycle are getting executed before ex
-			//this is causing the value to move up ahead of ma_wb
-			//forward directly
-			log_debug("forwarding rs2 from ma_wb...");
+			//if we find our value here then we can directly use the value...
+			//it could either be after a memory access or maybe we had an instruction b/w the hazard causing instruction and the current instruction
+			log_debug("forwarding rs2 from ma_wb...(actually wb_if)");
 			operand2 = wb_if.result;
-		}else{
+		}/*else if(recent_wb.cs_wb.wb == 1 && (id_ex.nrs2 == recent_wb.nrd && recent_wb.nrd != 0)){
+			//we have a PROBLEMMMM
+			log_debug("forwarding rs2 from ma_wb...(actually wb_if)");
+			operand2 = recent_wb.result;
+		}*/
+		else{
 			operand2 = id_ex.R2;
 		}
 		log_debug("r2 = rs2");
@@ -138,7 +152,6 @@ void ex_stage(){
 				//branch
 				log_debug("branch instruction");
 				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm, control.arithmetic_opcode);
-				printf("%08x, %08x\n", operand1, operand2);
 				actual_branch_taken = branch_comparator(operand1, operand2, control.branch_opcode, control.sign);
 				//store
 				store(actual_branch_taken);
