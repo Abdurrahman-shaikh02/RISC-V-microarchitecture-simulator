@@ -21,8 +21,8 @@ int main(){
 
 	//then while loop...
 	int cycle = 0;
-	int pause_counter = -1;		//this is the count 1 cycles from the cycle where ebreak was in exec
-	int trap_counter = -1;		//this is the count 1 cycles from the cycle where ecall was in exec
+	int pause_counter = -1;		//this is to count 1 cycles from the cycle where ebreak was in exec
+	int trap_counter = -1;		//this is to count 1 cycles from the cycle where ecall was in exec
 	int halt = 0;
 
 	while(1){

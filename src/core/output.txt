@@ -1,0 +1,26 @@
+[0] 00000000   00500293           addi    r5, r0, 5          
+[1] 0x000004   00100313           addi    r6, r0, 1          
+[2] 0x000008   00200393           addi    r7, r0, 2          
+outer_loop:
+[3] 0x00000c   0272c463           blt     r5, r7, done_factorial
+[4] 0x000010   00000413           addi    r8, r0, 0          
+[5] 0x000014   00038493           addi    r9, r7, 0          
+mul_loop:
+[6] 0x000018   00048863           beq     r9, r0, mul_done
+[7] 0x00001c   00640433           add     r8, r8, r6
+[8] 0x000020   fff48493           addi    r9, r9, -1
+[9] 0x000024   ff5ff06f           jal     r0, mul_loop
+mul_done:
+[10] 0x000028   00040313           addi    r6, r8, 0          
+[11] 0x00002c   00138393           addi    r7, r7, 1          
+[12] 0x000030   fddff06f           jal     r0, outer_loop
+done_factorial:
+[13] 0x000034   00001537           lui     r10, 0x00001
+[14] 0x000038   90050513           addi    r10, r10, -1792    
+[15] 0x00003c   00652023           sw      r6, 0(r10)
+done:
+[16] 0x000040   02000073           ebreak
+[17] 0x000044   00000013           nop
+[18] 0x000048   00000013           nop
+[19] 0x00004c   00000013           nop
+[20] 0x000050   00000013           nop

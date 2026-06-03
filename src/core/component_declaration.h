@@ -17,7 +17,7 @@ MA_WB ma_wb;
 WB_IF wb_if;
 WB_IF recent_wb;
 
-int FORWARDING_SWITCH = 1;	//forwarding on(1) or off(0) ?
+int FORWARDING_SWITCH = 0;	//forwarding on(1) or off(0) ?
 int BRANCH_PREDICTION_STRATEGY = 0;	//0 not taken
 					//1 taken
 					//2 based on offset
