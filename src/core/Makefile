@@ -16,3 +16,5 @@ $(TARGET): $(OBJ)
 clean:
 	rm -f $(OBJ) $(TARGET)
 	rm log.log
+
+

@@ -50,6 +50,12 @@ void read_memory_i(){
 			exit(1);
 		}
 
+		if(mar_i % 4 != 0){
+			//this is an unaligned access
+			log_fatal("Unaligned instruction word access");
+			exit(1);
+		}
+
 		uint32_t b0 = l1[mar_i + 0];
 		uint32_t b1 = l1[mar_i + 1] << 8;
 		uint32_t b2 = l1[mar_i + 2] << 16;
@@ -97,18 +103,38 @@ void read_memory(uint32_t opcode){
 
 		switch(opcode){
 			case 0b000:
+				//signed byte
 				mbr = mbr | ((int32_t)(b0 << 24) >> 24);	//handle sign extension
 				break;
 			case 0b001:
+				//signed halfword
+				if(mar % 2 != 0){
+					//this is an unaligned access
+					log_fatal("Unaligned halfword access");
+					exit(1);
+				}
 				mbr = mbr | (((int32_t)((b0 | b1) << 16)) >> 16);
 				break;
 			case 0b010:
+				//word
+				if(mar % 4 != 0){
+					//this is an unaligned access
+					log_fatal("Unaligned word access");
+					exit(1);
+				}
 				mbr = mbr | (b0 | b1 | b2 | b3);
 				break;
 			case 0b011:
+				//unsigned byte
 				mbr = mbr | b0;
 				break;
 			case 0b100:
+				//unsigned halfword
+				if(mar % 2 != 0){
+					//this is an unaligned access
+					log_fatal("Unaligned halfword access");
+					exit(1);
+				}
 				mbr = mbr | b0 | b1;
 				break;
 			default:
@@ -158,13 +184,26 @@ void write_memory(uint32_t opcode){
 
 		switch(opcode){
 			case 0b000:
+				//byte
 				l1[mar + 0] = b0;
 				break;
 			case 0b001:
+				//halfword
+				if(mar % 2 != 0){
+					//this is an unaligned access
+					log_fatal("Unaligned halfword access");
+					exit(1);
+				}
 				l1[mar + 0] = b0;
 				l1[mar + 1] = b1;
 				break;
 			case 0b010:
+				//word
+				if(mar % 4 != 0){
+					//this is an unaligned access
+					log_fatal("Unaligned word access");
+					exit(1);
+				}
 				l1[mar + 0] = b0;
 				l1[mar + 1] = b1;
 				l1[mar + 2] = b2;

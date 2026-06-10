@@ -1,0 +1,7 @@
+MEMORY : 
+
+word accesses are word aligned
+halfword accesses are halfword aligned
+
+CACHE:
+64 reference bits...

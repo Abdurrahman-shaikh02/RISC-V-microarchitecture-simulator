@@ -11,7 +11,7 @@ extern char * instructions[];
 
 void read_memory_i();
 
-void read_memory(uint32_t opcode);
+void read_memory(uint32_t opcode);	//need to implement aligned accesses only, REMEMBER THAT
 
 void write_memory(uint32_t opcode);
 
