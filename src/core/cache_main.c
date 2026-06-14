@@ -7,6 +7,10 @@ int set_read_counter(){
 	//if -1 set a structural hazard stall
 }
 
+int set_write_counter(){
+	return 1;
+}
+
 
 int find_block(uint32_t addr, cache_line *cache, int size, int block_size, int n_way){
 	//index set, and the iterate over every block in that set to see if the tag exists...(tag is same for all words in the block)

@@ -14,6 +14,7 @@ need to declare internal registers, pipeline registers here.
 #include "component_declaration.h"
 
 #define SYSTEM_HALT_CODE 0x000000AA
+extern int cycle;
 
 int main(){
 	//initialize memory...

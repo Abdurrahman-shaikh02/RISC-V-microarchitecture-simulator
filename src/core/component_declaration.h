@@ -1,3 +1,5 @@
+int cycle = 0;
+
 uint32_t reg_file[32];
 
 uint32_t pc;
