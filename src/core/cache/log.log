@@ -1,0 +1,94 @@
+Date and Time : Tue Jun 16 16:16:15 2026
+
+[INFO]: configured...
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l1_d read miss...
+[INFO]: looking into l2 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l2 read miss...
+[INFO]: looking into l3 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l3 read miss... looking into memory now
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: completing data read
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l1_d read miss...
+[INFO]: looking into l2 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l2 read miss...
+[INFO]: looking into l3 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l3 read miss... looking into memory now
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: completing data read
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: cache hit !
+[INFO]: Cache hit at l1_d
+Date and Time : Tue Jun 16 16:17:52 2026
+
+[INFO]: configured...
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l1_d read miss...
+[INFO]: looking into l2 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l2 read miss...
+[INFO]: looking into l3 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l3 read miss... looking into memory now
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: completing data read
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l1_d read miss...
+[INFO]: looking into l2 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l2 read miss...
+[INFO]: looking into l3 for read
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: l3 read miss... looking into memory now
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: block not found, looking if theres a space that can be freed..
+[DEBUG]: Theres atleast one space here... cool
+[INFO]: completing data read
+[INFO]: Data read
+[INFO]: looking into l1_d cache
+[INFO]: cache hit !
+[INFO]: Cache hit at l1_d
