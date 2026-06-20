@@ -2,6 +2,29 @@
 #include "cache.h"
 #include "memory.h"
 
+void complete_below(uint32_t addr, cache_level s){
+	log_info("Completing below operation");
+	switch(s.level){
+		case 1:
+			if(CACHE_LEVELS > 0){
+				set_done(addr, 1, s);
+			}
+		case 2:
+			if(CACHE_LEVELS > 1){
+				set_done(addr, 1, l2);
+			}
+		case 3:
+			if(CACHE_LEVELS > 2){
+				set_done(addr, 1, l3);
+			}
+			break;
+		default:
+			log_fatal("Illegal cache level");
+			exit(1);
+	}
+}
+
+
 void touch(uint32_t addr, cache_level s){
 	//touch only on cache hits
 	if(s.replacement_policy == 1){
@@ -39,7 +62,7 @@ int find_block(uint32_t addr, cache_level s){
 			return 1;
 		}else if(line->valid == 1 && line_tag == tag && line->done == 0){
 			//structural hazard
-			log_info("structural hazard waow thats rare... actually impossible... somethings wrong bud !");
+			log_fatal("structural hazard waow thats rare... actually impossible... somethings wrong bud !");
 			//because yk, the text segment and the data segment are different the two stages will never ask for the same block....
 			exit(1);
 		}
@@ -84,7 +107,8 @@ void configure_cache(){
 	l1_d.write_latency = 1;
 	l1_d.write_miss_policy = 0;
 	l1_d.replacement_policy = 0;
-	l1_d.write_policy = 0;
+	l1_d.write_policy = 1;
+	l1_d.level = 1;
 
 	l1_i.cache_size = 1024 * 2;	//2k
 	l1_i.block_size = 16;
@@ -93,7 +117,8 @@ void configure_cache(){
 	l1_i.write_latency = 1;
 	l1_i.write_miss_policy = 0;
 	l1_i.replacement_policy = 0;
-	l1_i.write_policy = 0;
+	l1_i.write_policy = 1;
+	l1_i.level = 1;
 
 	
 	l2.cache_size = 1024 * 8;	//8k
@@ -103,7 +128,8 @@ void configure_cache(){
 	l2.write_latency = 2;
 	l2.write_miss_policy = 0;
 	l2.replacement_policy = 0;
-	l2.write_policy = 0;
+	l2.write_policy = 1;
+	l2.level = 2;
 
 	l3.cache_size = 1024 * 16;	//16k
 	l3.block_size = 64;
@@ -112,10 +138,11 @@ void configure_cache(){
 	l3.write_latency = 3;
 	l3.write_miss_policy = 0;
 	l3.replacement_policy = 0;
-	l3.write_policy = 0;
+	l3.write_policy = 1;
+	l3.level = 3;
 
 	for(int i = 0; i < l1_d.cache_size/4; i++){
-		l1_d.cache[i].addr = 1;
+		l1_d.cache[i].addr = 0;
 		l1_d.cache[i].data = 0;
 		l1_d.cache[i].dirty = 0;
 		l1_d.cache[i].done = 0;
@@ -124,7 +151,7 @@ void configure_cache(){
 	}
 
 	for(int i = 0; i < l1_i.cache_size/4; i++){
-		l1_i.cache[i].addr = 1;
+		l1_i.cache[i].addr = 0;
 		l1_i.cache[i].data = 0;
 		l1_i.cache[i].dirty = 0;
 		l1_i.cache[i].done = 0;
@@ -133,7 +160,7 @@ void configure_cache(){
 	}
 
 	for(int i = 0; i < l2.cache_size/4; i++){
-		l2.cache[i].addr = 1;
+		l2.cache[i].addr = 0;
 		l2.cache[i].data = 0;
 		l2.cache[i].dirty = 0;
 		l2.cache[i].done = 0;
@@ -142,7 +169,7 @@ void configure_cache(){
 	}
 
 	for(int i = 0; i < l3.cache_size/4; i++){
-		l3.cache[i].addr = 1;
+		l3.cache[i].addr = 0;
 		l3.cache[i].data = 0;
 		l3.cache[i].dirty = 0;
 		l3.cache[i].done = 0;

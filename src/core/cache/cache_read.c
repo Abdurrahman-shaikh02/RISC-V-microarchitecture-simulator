@@ -91,6 +91,7 @@ int l1_i_read(uint32_t addr){
 		log_info("Cache hit at l1_i");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l1_i);
+		set_done(addr, 0, l1_i);
 		return l1_i.read_latency;
 	}else if(found == -1){
 		//theres a structural hazard here....
@@ -113,7 +114,12 @@ int l1_i_read(uint32_t addr){
 		}
 	
 		//we know theres atleast one space in the cache
-		stall_count += evict(addr, l1_i);
+		int stall_count2 = evict(addr, l1_i);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 		
 		//return stall + latency because it is taken from l2 cache(conceptually...)
 		//(doesnt work that way in our implementation, we always copy form mem)
@@ -123,7 +129,12 @@ int l1_i_read(uint32_t addr){
 		
 		//we know theres atleast one space in the cache
 		log_info("l1_i read miss...looking into memory now");
-		stall_count = evict(addr, l1_i);
+		int stall_count2 = evict(addr, l1_i);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 
 		//since theres only one level of cache... we have to take it form the ram...
 		return l1_i.read_latency + DRAM_READ_LATENCY + stall_count;
@@ -143,6 +154,7 @@ int l1_d_read(uint32_t addr){
 		log_info("Cache hit at l1_d");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l1_d);
+		set_done(addr, 0, l1_d);
 		return l1_d.read_latency;
 	}else if(found == -1){
 		//theres a structural hazard here....
@@ -165,7 +177,12 @@ int l1_d_read(uint32_t addr){
 		}
 	
 		//we know theres atleast one space in the cache
-		stall_count += evict(addr, l1_d);
+		int stall_count2 = evict(addr, l1_d);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 		
 		//return stall + latency because it is taken from l2 cache(conceptually...)
 		//(doesnt work that way in our implementation, we always copy form mem)
@@ -175,7 +192,12 @@ int l1_d_read(uint32_t addr){
 		
 		//we know theres atleast one space in the cache
 		log_info("l1_d read miss...looking into memory now");
-		stall_count = evict(addr, l1_d);
+		int stall_count2 = evict(addr, l1_d);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 
 		//since theres only one level of cache... we have to take it form the ram...
 		return l1_d.read_latency + DRAM_READ_LATENCY + stall_count;
@@ -193,6 +215,7 @@ int l2_read(uint32_t addr){
 		log_info("Cache hit at l2");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l2);
+		set_done(addr, 0, l2);
 		return l2.read_latency;
 	}else if(found == -1){
 		//structural hazard
@@ -213,7 +236,12 @@ int l2_read(uint32_t addr){
 		}
 
 		//we know theres a free block to replace...
-		stall_count += evict(addr, l2);
+		int stall_count2 = evict(addr, l2);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 
 		return stall_count + l2.read_latency;
 	}else{
@@ -221,7 +249,12 @@ int l2_read(uint32_t addr){
 		//if CACHE_LEVELS not > 2 then just evict and return l2 latency plus dram latency
 		
 		//we know a free space exists
-		stall_count = evict(addr, l2);
+		int stall_count2 = evict(addr, l2);
+		if(stall_count2 == -1){
+			log_info("Structural hazard... need to stall");
+			return -1;
+		}
+		stall_count += stall_count2;
 
 		return l2.read_latency + DRAM_READ_LATENCY + stall_count;
 	}
@@ -240,6 +273,7 @@ int l3_read(uint32_t addr){
 		log_info("Cache hit at l3");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l3);
+		set_done(addr, 0, l3);
 		return l3.read_latency;
 	}else if(found == -1){
 		//structural hazard
@@ -253,8 +287,12 @@ int l3_read(uint32_t addr){
 
 	//we know thers atleast one free space..
 	stall_count = evict(addr, l3);
+	if(stall_count == -1){
+		log_info("Structural hazard... need to stall");
+		return -1;
+	}
 
-	return l3.read_latency + DRAM_READ_LATENCY;
+	return l3.read_latency + DRAM_READ_LATENCY + stall_count;
 }
 
 

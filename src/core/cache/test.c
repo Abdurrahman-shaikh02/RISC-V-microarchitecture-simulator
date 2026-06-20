@@ -1,6 +1,7 @@
 #include "header.h"
 #include "memory.h"
 #include "cache.h"
+#include <stdio.h>
 
 uint64_t cycle = 0x99;
 int CACHE_LEVELS = 3;
@@ -32,14 +33,30 @@ void display(){
 
 int main(){
 	configure_cache();
+	
+	char s = 0;
+	uint32_t addr = 0;
+	cycle = 0;
+	while(scanf("%c %x", &s, &addr) == 2){
+		switch(s){
+			case 'w':
+				//write
+				printf("%ld : %d\n", ++cycle, set_write_counter(addr));
+				complete_write(addr);
+				break;
+			case 'r':
+				//read
+				printf("%ld : %d\n", ++cycle, set_read_counter(addr));
+				complete_read(addr);
+				break;
+			default:
+				printf("Illegal operation");
+				exit(1);
+		}
+		getchar();
+	}
 
-	int stall_count = set_read_counter(0xffffffff);
-	complete_read(0xffffffff);
-	stall_count = set_read_counter(0xffffffbf);
-	complete_read(0xffffffbf);
-	cycle = 0x88;
-	stall_count = set_read_counter(0xffffffbe);
-	display();
-
-	return stall_count;
+	//display();
+	
+	return 1;
 }

@@ -20,14 +20,15 @@ typedef struct cache_line{
 
 
 typedef struct cache_level{
+	int level;
 	cache_line * cache;	//allocate this dynamically
 	int write_latency;
 	int read_latency;
 	int cache_size;
 	int block_size;
 	int associativity;
-	int write_policy;
-	int write_miss_policy;
+	int write_policy;	//0 is write through, 1 is write back
+	int write_miss_policy;	//0 is no write allocate, 1 write allocate
 	int replacement_policy;
 } cache_level;
 
@@ -80,6 +81,9 @@ void copy_from_mem(uint32_t addr, cache_line * cache, int n_words);	//copy from 
 void touch(uint32_t addr, cache_level cache);	//can implement it as a dispatch function
 //call this after any kind of access to a block update the reference bits as per the chosen cache eviction policy
 
+void complete_below(uint32_t addr, cache_level s);	//set done = 1 for s and all level below it
+
+
 //READ MECHANISM
 int set_read_counter(uint32_t addr);		//called by read; -2 if it needs a structural hazard stall
 void complete_read(uint32_t addr);
@@ -99,24 +103,21 @@ int l3_read(uint32_t addr);
 
 
 //WRITE MECHANISM
-int set_write_counter();
+int set_write_counter(uint32_t addr);
+void complete_write(uint32_t addr);
 
 //depending upon the chosen policy.... do the thing and return stalls
-int l1_i_write();
-int l1_d_write();
-int l2_write();
-int l3_write();
-//we wont be simulating full cahce behaviour, instead we just directyl write to memory always, and give a no of stalls based on latency and policy
+int l1_d_write(uint32_t addr);
+int l2_write(uint32_t addr);
+int l3_write(uint32_t addr);
+
+//we wont be simulating full cache behaviour, instead we just directyl write to memory always, and give a no of stalls based on latency and policy
 //for write through we can add certain penalty... 
 //### later on we can add a queue...(buffer) look below to find its plan
 //for write back we can use the dirty bit... replace function gives higher stalls if the block to be evicted is dirty...
 //if theres a write miss then write allocate/ no write allocate will return different stall counts
 
-// WRITE-buffer plan:
+// WRITE-buffer plan:(later)
 // how to implement it... DO NOT CREATE ANY INCONSISTENCY BW THE CACHE AND THE MEMORY
 // instead if it is not found, look in the buffer if yes then give a smaller stall(data will always be taken from ram directly)
-
-//these will be dispatched to by the write function
-//void write_through();
-//void write_back();
 
