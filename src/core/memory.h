@@ -9,6 +9,8 @@ extern uint32_t mbr;
 
 extern char * instructions[];
 
+extern int STRUCTURAL_HAZARD_STALL;
+
 void read_memory_i();
 
 void read_memory(uint32_t opcode);	//need to implement aligned accesses only, REMEMBER THAT
@@ -16,7 +18,7 @@ void read_memory(uint32_t opcode);	//need to implement aligned accesses only, RE
 void write_memory(uint32_t opcode);
 
 void init_memory(char * path);	//to load the program into the ram... 
-void init_memory_x(char * path);	//to load the program into the ram... 
+void init_memory_i(char * path);	//to load the program into the ram... 
 
 void display_memory();
 void free_instructions(void);

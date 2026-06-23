@@ -120,7 +120,7 @@ void configure_cache(){
 	l1_i.write_policy = 1;
 	l1_i.level = 1;
 
-	
+
 	l2.cache_size = 1024 * 8;	//8k
 	l2.block_size = 32;
 	l2.associativity = 4;

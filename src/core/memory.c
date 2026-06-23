@@ -32,6 +32,13 @@ void read_memory_i(){
 	if(counter < 0){
 		//reload counter based on operation;
 		counter = 0;
+		if(counter == -1){
+			//Structural hazard
+			log_info("Uh oh ! Structural hazard...");
+			STRUCTURAL_HAZARD_STALL = 1;
+			return;
+		}
+
 		log_debug("read instruction counter set");
 
 		//reset mfc
@@ -82,8 +89,15 @@ void read_memory(uint32_t opcode){
 	if(counter < 0){
 		//reload counter based on operation;
 		counter = l1_read_cycles - 1;
-		log_debug("read counter set");
+		
+		if(counter == -1){
+			//Structural hazard
+			log_info("Uh oh ! Structural hazard...");
+			STRUCTURAL_HAZARD_STALL = 1;
+			return;
+		}
 
+		log_debug("read data counter set");
 		//reset mfc
 		mfc = 0;
 	}
@@ -162,6 +176,13 @@ void write_memory(uint32_t opcode){
 		//reload counter
 		//reset mfc
 		counter = l1_write_cycles - 1;
+		if(counter == -1){
+			//Structural hazard
+			log_info("Uh oh ! Structural hazard...");
+			STRUCTURAL_HAZARD_STALL = 1;
+			return;
+		}
+
 		mfc = 0;
 		log_debug("write counter set");
 	}
@@ -278,7 +299,7 @@ void display_memory(){
 	}
 }
 
-void init_memory_x(char *path)
+void init_memory_i(char *path)
 {
 	FILE *f = fopen(path, "r");
 
@@ -403,132 +424,6 @@ void init_memory_x(char *path)
 	log_debug("memory initialization complete...");
 }
 
-void init_memory_y(char *path)
-{
-	FILE *f = fopen(path, "r");
-
-	if (f == NULL) {
-		log_fatal("failed to open memory image file");
-		exit(1);
-	}
-
-	char line[256];
-
-	uint32_t addr = 0;
-	uint32_t instr_index = 0;
-
-	while (fgets(line, sizeof(line), f)) {
-
-		/*
-			expected:
-			[151] 0x00025c   000ff117   auipc r2, 0xFF
-		*/
-
-		char *p = line;
-
-		// -----------------------------------------
-		// skip: [151]
-		// -----------------------------------------
-		char *bracket = strchr(p, ']');
-
-		if (bracket == NULL)
-			continue;
-
-		p = bracket + 1;
-
-		// -----------------------------------------
-		// skip whitespace
-		// -----------------------------------------
-		while (*p == ' ' || *p == '\t')
-			p++;
-
-		// -----------------------------------------
-		// skip address: 0x00025c
-		// -----------------------------------------
-		char *space = strchr(p, ' ');
-
-		if (space == NULL)
-			continue;
-
-		p = space;
-
-		while (*p == ' ' || *p == '\t')
-			p++;
-
-		// -----------------------------------------
-		// parse opcode
-		// -----------------------------------------
-		uint32_t opcode;
-
-		if (sscanf(p, "%x", &opcode) != 1)
-			continue;
-
-		// move past opcode
-		while (*p && *p != ' ' && *p != '\t')
-			p++;
-
-		while (*p == ' ' || *p == '\t')
-			p++;
-
-		// now p points to assembly instruction
-
-		// -----------------------------------------
-		// bounds checks
-		// -----------------------------------------
-		if (addr + 3 >= text_segment_limit) {
-			log_fatal("program too large for memory");
-			fclose(f);
-			exit(1);
-		}
-
-		if (instr_index >= total_number_of_instructions) {
-			log_fatal("too many instructions");
-			fclose(f);
-			exit(1);
-		}
-
-		// -----------------------------------------
-		// store opcode little endian
-		// -----------------------------------------
-		l1[addr + 0] = (opcode >> 0)  & 0xFF;
-		l1[addr + 1] = (opcode >> 8)  & 0xFF;
-		l1[addr + 2] = (opcode >> 16) & 0xFF;
-		l1[addr + 3] = (opcode >> 24) & 0xFF;
-
-		// -----------------------------------------
-		// allocate instruction string
-		// -----------------------------------------
-		instructions[instr_index] = malloc(33);
-
-		if (instructions[instr_index] == NULL) {
-			log_fatal("malloc failed");
-			fclose(f);
-			exit(1);
-		}
-
-		// fill ALL 32 chars with spaces
-		memset(instructions[instr_index], ' ', 32);
-
-		// null terminator
-		instructions[instr_index][32] = '\0';
-
-		// copy manually WITHOUT copying '\0'
-		for (int i = 0; i < 32; i++) {
-
-			if (p[i] == '\0' || p[i] == '\n')
-				break;
-
-			instructions[instr_index][i] = p[i];
-		}
-
-		addr += 4;
-		instr_index++;
-	}
-
-	fclose(f);
-
-	log_debug("memory initialization complete...");
-}
 
 void free_instructions(void)
 {
@@ -546,4 +441,5 @@ void display_instructions(){
 		printf("%d : %s\n", i, instructions[i]);
 	}
 }
+
 

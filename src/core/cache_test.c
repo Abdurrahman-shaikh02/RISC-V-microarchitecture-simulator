@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 uint64_t cycle = 0x99;
-int CACHE_LEVELS = 3;
+int CACHE_LEVELS = -1;
 
 cache_level l1_i, l1_d, l2, l3;
 int DRAM_READ_LATENCY, DRAM_WRITE_LATENCY, DRAM_SIZE;

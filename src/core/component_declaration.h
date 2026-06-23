@@ -29,4 +29,3 @@ int BRANCH_PREDICTION_STRATEGY = 0;	//0 not taken
 					//3 taken not taken switch
 					//4 branch history table
 
-int REPLACEMENT_POLICY = 0;

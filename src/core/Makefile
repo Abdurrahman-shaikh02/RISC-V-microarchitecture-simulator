@@ -17,4 +17,7 @@ clean:
 	rm -f $(OBJ) $(TARGET)
 	rm log.log
 
+cache:
+	cc cache_main.c cache_eviction.c cache_read.c cache_write.c cache_setters.c logger.c cache_test.c -lm
+
 

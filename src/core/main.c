@@ -18,7 +18,7 @@ extern int cycle;
 
 int main(){
 	//initialize memory...
-	init_memory_x("output.txt");
+	init_memory_i("output.txt");
 
 	//then while loop...
 	int cycle = 0;
@@ -50,12 +50,34 @@ int main(){
 		}else if(FLUSH == 1){
 			//clear ex_ma, id_ex, if_id stages
 			//and let the execution continue... because this flush and pc change should have been done at the end of the last clock cycle...
-			//but due to our design we have decided to do it right now because the ex, id, if of the current cycle havent been done yet...
+			//but due to our design we have decided to do it right now because the ex, id, if of the current cycle havent been completed yet...
 			ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 			if_id = (IF_ID){0, 0, 0, "                    "};
 
 			FLUSH = 0;
+		}else if(STRUCTURAL_HAZARD_STALL == 1){
+			//the memory access has failed due to a pending memory access from the if stage
+			//clear the next pipeline register ma_wb
+			ma_wb = (MA_WB){0, 0, {0}, "                    "};
+			//updating decode stage operands
+			update_operands();
+
+			//call if stage to make its attempt on the memory access... and update its internal stall counter.
+			if_stage();
+			if(mfc_i == 0){
+				//if stage stall
+
+				//clearing the next pipeline rgister...
+				if_id = (IF_ID){0, 0, 0, "                    "};
+			}
+	
+			STRUCTURAL_HAZARD_STALL = 0;
+
+			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
+			cycle++;
+			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			continue;
 		}
 
 		//ex stage
@@ -272,7 +294,7 @@ int main(){
 		if_stage();
 		if(mfc_i == 0){
 			//if stage stall
-			
+
 			//clearing the next pipeline rgister...
 			if_id = (IF_ID){0, 0, 0, "                    "};
 
