@@ -12,9 +12,9 @@ need to declare internal registers, pipeline registers here.
 #include "memory.h"
 #include "utility.h"
 #include "component_declaration.h"
+#include "stats.h"
 
 #define SYSTEM_HALT_CODE 0x000000AA
-extern int cycle;
 
 int main(){
 	//initialize memory...

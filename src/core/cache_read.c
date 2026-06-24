@@ -1,6 +1,7 @@
 #include "header.h"
 #include "cache.h"
 #include "memory.h"
+#include "stats.h"
 
 //complete reads only set the done bits in every level...
 
@@ -88,6 +89,8 @@ int l1_i_read(uint32_t addr){
 
 	//if found reset done but and return l1 read latency
 	if(found == 1){
+		l1_i_hit_r++;	//stat
+
 		log_info("Cache hit at l1_i");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l1_i);
@@ -121,6 +124,7 @@ int l1_i_read(uint32_t addr){
 		}
 		stall_count += stall_count2;
 		
+		l1_i_miss_r++;	//stat
 		//return stall + latency because it is taken from l2 cache(conceptually...)
 		//(doesnt work that way in our implementation, we always copy form mem)
 		return l1_i.read_latency + stall_count;
@@ -136,6 +140,7 @@ int l1_i_read(uint32_t addr){
 		}
 		stall_count += stall_count2;
 
+		l1_i_miss_r++;	//stat
 		//since theres only one level of cache... we have to take it form the ram...
 		return l1_i.read_latency + DRAM_READ_LATENCY + stall_count;
 	}
@@ -151,6 +156,8 @@ int l1_d_read(uint32_t addr){
 
 	//if found reset done but and return l1 read latency
 	if(found == 1){
+		l1_d_hit_r++;	//stat
+
 		log_info("Cache hit at l1_d");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l1_d);
@@ -184,6 +191,7 @@ int l1_d_read(uint32_t addr){
 		}
 		stall_count += stall_count2;
 		
+		l1_d_miss_r++;	//stat
 		//return stall + latency because it is taken from l2 cache(conceptually...)
 		//(doesnt work that way in our implementation, we always copy form mem)
 		return l1_d.read_latency + stall_count;
@@ -198,7 +206,8 @@ int l1_d_read(uint32_t addr){
 			return -1;
 		}
 		stall_count += stall_count2;
-
+		
+		l1_d_miss_r++;	//stat
 		//since theres only one level of cache... we have to take it form the ram...
 		return l1_d.read_latency + DRAM_READ_LATENCY + stall_count;
 	}
@@ -212,6 +221,8 @@ int l2_read(uint32_t addr){
 
 	//if hit , return l2 latency...
 	if(found == 1){
+		l2_hit_r++;	//stat
+
 		log_info("Cache hit at l2");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l2);
@@ -243,6 +254,7 @@ int l2_read(uint32_t addr){
 		}
 		stall_count += stall_count2;
 
+		l2_miss_r++;	//stat
 		return stall_count + l2.read_latency;
 	}else{
 		log_info("l2 read miss...looking into memory now");
@@ -256,6 +268,7 @@ int l2_read(uint32_t addr){
 		}
 		stall_count += stall_count2;
 
+		l2_miss_r++;	//stat
 		return l2.read_latency + DRAM_READ_LATENCY + stall_count;
 	}
 }
@@ -270,6 +283,8 @@ int l3_read(uint32_t addr){
 
 	//if found cache hit return l3 read latency
 	if(found == 1){
+		l3_hit_r++;	//stat
+
 		log_info("Cache hit at l3");
 		//touch only the level that was accessed, the lower levels do not need to know that an upper level had a cache hit on a line that they also contain
 		touch(addr, l3);
@@ -291,7 +306,8 @@ int l3_read(uint32_t addr){
 		log_info("Structural hazard... need to stall");
 		return -1;
 	}
-
+	
+	l3_miss_r++;	//stat
 	return l3.read_latency + DRAM_READ_LATENCY + stall_count;
 }
 

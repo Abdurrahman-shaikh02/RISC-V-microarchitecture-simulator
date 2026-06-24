@@ -1,5 +1,6 @@
 #include "header.h"
 #include "memory.h"
+#include "stats.h"
 
 
 uint32_t text_segment_limit = 0x7FF;	//preferably something divisible by 4... :)
@@ -35,9 +36,14 @@ void read_memory_i(){
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
+
+			n_structural_hazards++;		//stat
+
 			STRUCTURAL_HAZARD_STALL = 1;
 			return;
 		}
+		
+		n_read_i_stalls += counter;	//stat
 
 		log_debug("read instruction counter set");
 
@@ -50,6 +56,8 @@ void read_memory_i(){
 		log_debug("read instruction counter decremented");
 		return;
 	}else if(counter == 0){
+		n_instruction_reads++;	//stat
+
 		log_debug("loading mbr_i with [mar_i]");
 		//read address from mar load into mbr
 		if(mar_i > text_segment_limit){
@@ -93,9 +101,14 @@ void read_memory(uint32_t opcode){
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
+
+			n_structural_hazards++;		//stat
+
 			STRUCTURAL_HAZARD_STALL = 1;
 			return;
 		}
+		
+		n_read_d_stalls += counter;	//stat
 
 		log_debug("read data counter set");
 		//reset mfc
@@ -107,6 +120,8 @@ void read_memory(uint32_t opcode){
 		log_debug("read counter decremented");
 		return;
 	}else if(counter == 0){
+		n_reads++;	//stat
+
 		log_debug("loading mbr with [mar]");
 		//read address from mar load into mbr
 		uint32_t b0 = l1[mar + 0];
@@ -179,10 +194,15 @@ void write_memory(uint32_t opcode){
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
+
+			n_structural_hazards++;		//stat
+
 			STRUCTURAL_HAZARD_STALL = 1;
 			return;
 		}
-
+		
+		n_write_d_stalls += counter;	//stat
+		
 		mfc = 0;
 		log_debug("write counter set");
 	}
@@ -192,6 +212,8 @@ void write_memory(uint32_t opcode){
 		log_debug("write counter decremented");
 		return;
 	}else if(counter == 0){
+		n_writes++;	//stat
+
 		if(mar <= text_segment_limit){
 			log_fatal("attempt to write to text segment");
 			exit(1);

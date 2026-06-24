@@ -1,6 +1,7 @@
 #include "header.h"
 #include "cache.h"
 #include "memory.h"
+#include "stats.h"
 
 void complete_write(uint32_t addr){
 	log_info("completing write");
@@ -64,13 +65,15 @@ int l1_d_write(uint32_t addr){
 
 				touch(addr, l1_d);
 				set_done(addr, 0, l1_d);
-
+				
+				l1_d_hit_w++;	//stat
 				return l1_d.write_latency + stall_count;
 			}else{
 				//write directly to memory
 				touch(addr, l1_d);
 				set_done(addr, 0, l1_d);
 
+				l1_d_hit_w++;	//stat
 				return l1_d.write_latency + DRAM_WRITE_LATENCY;
 			}
 		}else if(l1_d.write_policy == 1){
@@ -80,6 +83,7 @@ int l1_d_write(uint32_t addr){
 			touch(addr, l1_d);
 			set_done(addr, 0, l1_d);
 
+			l1_d_hit_w++;	//stat
 			return l1_d.write_latency;
 		}
 		log_fatal("Illegal write policy at l1_d");
@@ -111,7 +115,10 @@ int l1_d_write(uint32_t addr){
 				log_fatal("Structural Hazard at l1_d! Shouldnt happen at all somethings wrong !");
 				exit(1);
 			}
-
+			
+			l1_d_miss_r--;	//stat	this is because when we called the read function an l1_d_miss_w was recorded...
+			l1_d_hit_w--;	//stat	this is because we are recursively calling l1_d write and this time it will be a hit... shouldnt count as one though
+			l1_d_miss_w++;	//stat
 			return stall_count + stall_count2;
 
 		}else if(l1_d.write_miss_policy == 0){
@@ -127,9 +134,11 @@ int l1_d_write(uint32_t addr){
 					return -1;
 				}
 
+				l1_d_miss_w++;	//stat
 				return stall_count;	//fully bypassed l1_d
 			}else{
 				//write directly to memory
+				l1_d_miss_w++;	//stat
 				return DRAM_WRITE_LATENCY;	//fully bypassed l1_d
 			}
 		}else{
@@ -164,13 +173,15 @@ int l2_write(uint32_t addr){
 
 				touch(addr, l2);
 				set_done(addr, 0, l2);
-
+				
+				l2_hit_w++;	//stat
 				return l2.write_latency + stall_count;
 			}else{
 				//write directly to memory
 				touch(addr, l2);
 				set_done(addr, 0, l2);
 
+				l2_hit_w++;	//stat
 				return l2.write_latency + DRAM_WRITE_LATENCY;
 			}
 		}else if(l2.write_policy == 1){
@@ -180,6 +191,7 @@ int l2_write(uint32_t addr){
 			touch(addr, l2);
 			set_done(addr, 0, l2);
 
+			l2_hit_w++;	//stat
 			return l2.write_latency;
 		}
 		log_fatal("Illegal write policy at l2");
@@ -211,7 +223,10 @@ int l2_write(uint32_t addr){
 				log_fatal("Structural Hazard at l2! Shouldnt happen at all somethings wrong !");
 				exit(1);
 			}
-
+			
+			l2_miss_r--;	//stat
+			l2_hit_w--;	//stat
+			l2_miss_w++;	//stat
 			return stall_count + stall_count2;
 
 		}else if(l2.write_miss_policy == 0){
@@ -227,8 +242,10 @@ int l2_write(uint32_t addr){
 					return -1;
 				}
 
+				l2_miss_w++;	//stat
 				return stall_count;	//fully bypassed l2
 			}else{
+				l2_miss_w++;	//stat
 				//write directly to memory
 				return DRAM_WRITE_LATENCY;	//fully bypassed l2
 			}
@@ -256,7 +273,8 @@ int l3_write(uint32_t addr){
 			//write directly to memory
 			touch(addr, l3);
 			set_done(addr, 0, l3);
-
+			
+			l3_hit_w++;	//stat
 			return l3.write_latency + DRAM_WRITE_LATENCY;
 		}else if(l3.write_policy == 1){
 			//write back
@@ -265,6 +283,7 @@ int l3_write(uint32_t addr){
 			touch(addr, l3);
 			set_done(addr, 0, l3);
 
+			l3_hit_w++;	//stat
 			return l3.write_latency;
 		}
 		log_fatal("Illegal write policy at l3");
@@ -296,12 +315,16 @@ int l3_write(uint32_t addr){
 				log_fatal("Structural Hazard at l3! Shouldnt happen at all somethings wrong !");
 				exit(1);
 			}
-
+			
+			l3_miss_r--;	//stat
+			l3_hit_w--;	//stat
+			l3_miss_w++;	//stat
 			return stall_count + stall_count2;
 
 		}else if(l3.write_miss_policy == 0){
 			//no write allocate
 			log_info("No write allocate so issuing write to the lower level");
+			l3_miss_w++;	//stat
 			//write directly to memory
 			return DRAM_WRITE_LATENCY;	//fully bypassed l3
 		}else{

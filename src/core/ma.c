@@ -3,6 +3,7 @@
 #include "pipeline.h"
 #include "memory.h"
 #include "internal_memory.h"
+#include "stats.h"
 
 
 //this function does not handle memory stalls and the user must check the status of mfc after to decide what to do
@@ -33,16 +34,23 @@ void ma_stage(){
 			FLUSH = 1;
 		}else{
 			//branch
+			n_branch_instructions++;	//stat
 			uint8_t predicted = 0, actual = 0;
 			actual = (control.branch_taken & 0b10) >> 1;
 			predicted = (control.branch_taken & 0b1);
 
 			if(actual == predicted){
 				//do nothing
+				log_info("branch hit!");
+				branch_hit++;		//stat
 			}else if(actual == 1 && predicted == 0){
+				log_info("branch miss!");
+				branch_miss++;		//stat
 				pc = ex_ma.PC_next;
 				FLUSH = 1;
 			}else if(actual == 0 && predicted == 1){
+				log_info("branch miss!");
+				branch_miss++;		//stat
 				pc = ex_ma.result;
 				FLUSH = 1;
 			}
