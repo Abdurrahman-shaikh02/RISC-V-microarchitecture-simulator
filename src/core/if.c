@@ -13,7 +13,7 @@ void if_stage(){
 		log_debug("initialising memory read in if stage");
 	}
 
-	read_memory_i();		//call whether or not mfc_i is 0 or 1	(in case of a stall if_stage wont be called)
+	read_memory_i(0);		//call whether or not mfc_i is 0 or 1	(in case of a stall if_stage wont be called)
 	
 	if(mfc_i == 1){
 		log_debug("fetch complete.");

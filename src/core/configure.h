@@ -1,0 +1,1 @@
+void configure(char * path);

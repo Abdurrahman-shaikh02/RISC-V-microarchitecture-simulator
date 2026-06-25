@@ -1,11 +1,13 @@
 #include "header.h"
 #include "memory.h"
 #include "stats.h"
+#include "cache.h"
 
-FILE * memory_access_history_file;
+FILE * memory_access_history_file_d;
+FILE * memory_access_history_file_i;
 
-uint32_t text_segment_limit = 0x7FF;	//preferably something divisible by 4... :)
-#define total_number_of_instructions (0x7FF + 1)/4	//total text bytes / 4
+uint32_t text_segment_limit;	//preferably something divisible by 4... :)
+uint32_t total_number_of_instructions;
 uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 uint32_t mar_i;
 uint32_t mbr_i;
@@ -16,20 +18,29 @@ uint32_t mbr;
 
 //assuming little endian 
 
-char * instructions[total_number_of_instructions];
-uint8_t dram[4096];	    //16KB 
+char ** instructions;
+uint8_t * dram;	    //16KB 
 
 
-void read_memory_i(){
-	//remember to check for write permission (text segment limit)
-	//need changes in write_memory as well... !!!!
-	log_debug("read instruction function commence");
-
+void read_memory_i(int cancel){
+	//if cancel is non zero then reset the read memory i function
+	
 	static int counter = -1;	//-1 means theres no operation carried out
+
+	if(cancel){
+		log_info("Cancelling ongoing memory instruction read !");
+		//reset internal counter
+		counter = -1;
+		//set mfc_i
+		mfc_i = 1;
+		return;
+	}
+
+	log_debug("read instruction function commence");
 
 	if(counter < 0){
 		//reload counter based on operation;
-		counter = 0;
+		counter = l1_read_i_cycles - 1;
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
@@ -75,6 +86,8 @@ void read_memory_i(){
 		mbr_i = 0;
 		mbr_i = mbr_i | (b0 | b1 | b2 | b3);
 
+		fprintf(memory_access_history_file_i, "i %#08x\n", mar_i);		//memory access history file
+	
 		//set mfc;
 		log_debug("setting mfc to 1");
 		mfc_i = 1;
@@ -168,7 +181,7 @@ void read_memory(uint32_t opcode){
 				exit(1);
 		}
 
-		fprintf(memory_access_history_file, "r %#08x\n", mar);		//memory access history file
+		fprintf(memory_access_history_file_d, "r %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		log_debug("setting mfc to 1");
@@ -256,7 +269,7 @@ void write_memory(uint32_t opcode){
 				exit(1);
 		}
 
-		fprintf(memory_access_history_file, "w %#08x\n", mar);		//memory access history file
+		fprintf(memory_access_history_file_d, "w %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		mfc = 1;
@@ -270,9 +283,10 @@ void write_memory(uint32_t opcode){
 
 void init_memory(char * instruction_file, char * data_file){
 	//open the memory access histroy file... for writing
-	memory_access_history_file = fopen("memory_operations.txt", "w");
-	if(memory_access_history_file == NULL){
-		log_fatal("memory_operations.txt file couldnt be opened");
+	memory_access_history_file_d = fopen("memory_data_operations.txt", "w");
+	memory_access_history_file_i = fopen("memory_instruction_operations.txt", "w");
+	if(memory_access_history_file_d == NULL || memory_access_history_file_i == NULL){
+		log_fatal("memory_operations files couldnt be opened");
 		exit(1);
 	}
 	
@@ -326,9 +340,9 @@ void init_memory(char * path){
 }
 */
 void display_memory(){
-	for(int i = 0; i < sizeof(dram); i+=16){
+	for(int i = 0; i < DRAM_SIZE; i+=32){
 		printf("[%08x] :", i);
-		for(int j = 0; j < 16; j++){
+		for(int j = 0; j < 32; j++){
 			printf(" %02x", dram[i+j]);
 		}
 		printf("\n");

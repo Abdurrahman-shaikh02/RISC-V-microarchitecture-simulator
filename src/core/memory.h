@@ -7,11 +7,13 @@ extern uint8_t mfc;	    //0 means not completed	make sure to call read/write ONL
 extern uint32_t mar;
 extern uint32_t mbr;
 
-extern char * instructions[];
+extern char ** instructions;
+extern uint32_t total_number_of_instructions;
+extern uint8_t * dram;
 
 extern int STRUCTURAL_HAZARD_STALL;
 
-void read_memory_i();
+void read_memory_i(int cancel);		//in case of a flush one must also cancel any pending memory instruction reads... non zero value of cancel resets the internal counter and sets the mfc_i
 
 void read_memory(uint32_t opcode);	//need to implement aligned accesses only, REMEMBER THAT
 
@@ -25,7 +27,9 @@ void display_memory();
 void free_instructions(void);
 void display_instructions();
 
-extern FILE * memory_access_history_file;
-#define l1_read_cycles 1
-#define l1_write_cycles 1
+extern FILE * memory_access_history_file_d;
+extern FILE * memory_access_history_file_i;
+#define l1_read_cycles 3
+#define l1_read_i_cycles 3
+#define l1_write_cycles 3
 

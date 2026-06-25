@@ -1,12 +1,15 @@
 #include "header.h"
 #include "cache.h"
 #include "memory.h"
+#include "branch_prediction.h"
+#include "control.h"
 
 
 
-
+// MUST BE CALLED BEFORE ANY INIT
 void configure(char * path){
 	//DEFAULT CONFIGURATIONS :-
+	CACHE_LEVELS = 3;
 	
 	l1_d.cache_size = 1024 * 2;	//2k
 	l1_d.block_size = 16;
@@ -52,19 +55,25 @@ void configure(char * path){
 	DRAM_READ_LATENCY = 4;
 	DRAM_WRITE_LATENCY = 4;
 	DRAM_SIZE = 32 * 1024;		//32k
+	
+	FORWARDING_SWITCH = 1;
+	BRANCH_PREDICTION_STRATEGY = 0;
+
+	text_segment_limit = 0x7FF;	//this must be l1 block aligned !!!!! is it ? i think i should remove this restriction
+	total_number_of_instructions = (text_segment_limit + 1) / 4;
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	//read file here
 	
-	//dram size too
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 
 	l1_d.cache = (cache_line *)calloc(l1_d.cache_size / 4, sizeof(cache_line));	//2 kb l1_d ram
 	l1_i.cache = (cache_line *)calloc(l1_i.cache_size / 4, sizeof(cache_line));	//2 kb l1_i ram
 	l2.cache = (cache_line *)calloc(l2.cache_size / 4, sizeof(cache_line));	//8 kb l2 ram
 	l3.cache = (cache_line *)calloc(l3.cache_size / 4, sizeof(cache_line));	//16 kb l3 ram
-	//allocate ram here too
+	dram = (uint8_t *)calloc(DRAM_SIZE, sizeof(uint8_t));
+	instructions = (char **)calloc(total_number_of_instructions, sizeof(char *));
 
-	if(!l1_d.cache || !l1_i.cache || !l2.cache || !l3.cache){
+	if(!l1_d.cache || !l1_i.cache || !l2.cache || !l3.cache || !dram){
 		log_fatal("Couldnt allocate space for the cache and memory.");
 		exit(1);
 	}

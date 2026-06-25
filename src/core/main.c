@@ -14,11 +14,14 @@ need to declare internal registers, pipeline registers here.
 #include "cache.h"
 #include "component_declaration.h"
 #include "stats.h"
+#include "configure.h"
 
 #define SYSTEM_HALT_CODE 0x000000AA
 
 int main(){
 	//initialize memory...
+	
+	configure(NULL);
 	init_memory("output.txt", NULL);
 
 	//then while loop...
@@ -54,6 +57,9 @@ int main(){
 			ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 			if_id = (IF_ID){0, 0, 0, "                    "};
+
+			//cancelling any on going read instruction operations going on !!!
+			read_memory_i(1);
 
 			FLUSH = 0;
 		}else if(STRUCTURAL_HAZARD_STALL == 1){
@@ -106,6 +112,9 @@ int main(){
 					//clear id_ex register, if_id register... let the excution continue
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 					if_id = (IF_ID){0, 0, 0, "                    "};
+
+					//cancelling any on going read instruction operations going on !!!
+					read_memory_i(1);
 
 					FLUSH = 0;
 				}
@@ -187,6 +196,9 @@ int main(){
 					//clear id_ex register, if_id register... let the excution continue
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 					if_id = (IF_ID){0, 0, 0, "                    "};
+
+					//cancelling any on going read instruction operations going on !!!
+					read_memory_i(1);
 
 					FLUSH = 0;
 				}
@@ -287,6 +299,9 @@ int main(){
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 			if_id = (IF_ID){0, 0, 0, "                    "};
 
+			//cancelling any on going read instruction operations going on !!!
+			read_memory_i(1);
+
 			FLUSH = 0;
 		}
 
@@ -312,10 +327,11 @@ int main(){
 	if(halt) exit(0);
 
 	display_general_purpose_registers();
-	display_internal_registers();
+	//display_internal_registers();
 	display_memory();
 	
 	//printf("%ld\n", cycle);
 	
 	free_instructions();
+	//close the files tooooooo !!!
 }
