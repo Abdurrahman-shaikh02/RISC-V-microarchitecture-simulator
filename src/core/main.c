@@ -11,6 +11,7 @@ need to declare internal registers, pipeline registers here.
 #include "pipeline.h"
 #include "memory.h"
 #include "utility.h"
+#include "cache.h"
 #include "component_declaration.h"
 #include "stats.h"
 
@@ -18,10 +19,9 @@ need to declare internal registers, pipeline registers here.
 
 int main(){
 	//initialize memory...
-	init_memory_i("output.txt");
+	init_memory("output.txt", NULL);
 
 	//then while loop...
-	int cycle = 0;
 	int pause_counter = -1;		//this is to count 1 cycles from the cycle where ebreak was in exec
 	int trap_counter = -1;		//this is to count 1 cycles from the cycle where ecall was in exec
 	int halt = 0;
@@ -45,7 +45,7 @@ int main(){
 
 			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}else if(FLUSH == 1){
 			//clear ex_ma, id_ex, if_id stages
@@ -76,7 +76,7 @@ int main(){
 
 			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
@@ -98,7 +98,7 @@ int main(){
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 					cycle++;
-					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 					HAZARD_STALL = 0;
 					continue;
@@ -120,11 +120,11 @@ int main(){
 					if_id = (IF_ID){0, 0, 0, "                    "};
 
 					cycle++;
-					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 					continue;
 				}
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 				
 				pause_counter--;
 				PAUSE = 0;
@@ -140,7 +140,7 @@ int main(){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				pause_counter--;
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				PAUSE = 0;
 				log_debug("PAUSE flag set to 0");
@@ -158,7 +158,7 @@ int main(){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				pause_counter--;
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				PAUSE = 0;
 				log_debug("PAUSE flag set to 0");
@@ -179,7 +179,7 @@ int main(){
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 					cycle++;
-					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 					HAZARD_STALL = 0;
 					continue;
@@ -201,11 +201,11 @@ int main(){
 					if_id = (IF_ID){0, 0, 0, "                    "};
 
 					cycle++;
-					printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 					continue;
 				}
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 				
 				//do the system call here
 				uint32_t ecall_code = reg_file[17];
@@ -229,7 +229,7 @@ int main(){
 				//increase the clock, handle visuals, handle trap_counter and skip the IF, ID stages(stall) and continue to next cycle
 				trap_counter--;
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				TRAP = 0;
 				log_debug("TRAP flag was set to 0");
@@ -247,7 +247,7 @@ int main(){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				trap_counter--;
 				cycle++;
-				printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				TRAP = 0;
 				log_debug("TRAP flag was set to 0");
@@ -262,7 +262,7 @@ int main(){
 			update_operands();	//updating decode stage operands
 
 			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 			FORWARDING_STALL = 0;
 			continue;
@@ -278,7 +278,7 @@ int main(){
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			
 			HAZARD_STALL = 0;
 			continue;
@@ -299,14 +299,14 @@ int main(){
 			if_id = (IF_ID){0, 0, 0, "                    "};
 
 			cycle++;
-			printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
 		
 		cycle++;
 
-		printf("Cycle %d : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+		printf("Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 	}
 
 	if(halt) exit(0);
@@ -315,7 +315,7 @@ int main(){
 	display_internal_registers();
 	display_memory();
 	
-	//printf("%d\n", cycle);
+	//printf("%ld\n", cycle);
 	
 	free_instructions();
 }

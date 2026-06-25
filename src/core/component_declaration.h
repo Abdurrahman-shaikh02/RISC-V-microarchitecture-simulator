@@ -1,4 +1,4 @@
-int cycle = 0;
+uint64_t cycle;		//the global cycle count
 
 uint32_t reg_file[32];
 

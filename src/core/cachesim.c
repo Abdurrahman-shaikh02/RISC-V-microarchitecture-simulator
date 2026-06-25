@@ -1,10 +1,9 @@
 #include "header.h"
 #include "memory.h"
 #include "cache.h"
-#include <stdio.h>
 
 uint64_t cycle = 0x99;
-int CACHE_LEVELS = -1;
+int CACHE_LEVELS = 3;
 
 cache_level l1_i, l1_d, l2, l3;
 int DRAM_READ_LATENCY, DRAM_WRITE_LATENCY, DRAM_SIZE;
@@ -31,8 +30,10 @@ void display(){
 	display_cache(l3);
 }
 
+void configure(char * path);
+
 int main(){
-	configure_cache();
+	configure(NULL);
 	
 	char s = 0;
 	uint32_t addr = 0;

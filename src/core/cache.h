@@ -7,7 +7,6 @@
 extern uint64_t cycle;		//global cycle
 extern int CACHE_LEVELS;	//-1 means 0 stalls for each mem operation, 0 means only ram, 1 means l1 and ram, 2 means l1 l2 and ram and so on
 
-void configure_cache();
 
 typedef struct cache_line{
 	uint32_t data;
@@ -26,10 +25,10 @@ typedef struct cache_level{
 	int read_latency;
 	int cache_size;
 	int block_size;
-	int associativity;
+	int associativity;	//0 is fully associative
 	int write_policy;	//0 is write through, 1 is write back
 	int write_miss_policy;	//0 is no write allocate, 1 write allocate
-	int replacement_policy;
+	int replacement_policy;	//0 is fifo, 1 is lru
 } cache_level;
 
 extern cache_level l1_i;

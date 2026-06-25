@@ -1,6 +1,5 @@
 //ALL STAT VARIABLES ARE MARKED WITH //stat COMMENT !!!
 
-
 //MEMORY
 
 extern uint64_t l1_d_hit_r;
@@ -41,3 +40,4 @@ extern uint64_t n_branch_instructions;	//in ma stage when the switch check happe
 //extern uint64_t n_instructions;		//in fetch stage kya ?????
 extern uint64_t cycles;
 
+void display_stats();

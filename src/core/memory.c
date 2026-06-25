@@ -2,6 +2,7 @@
 #include "memory.h"
 #include "stats.h"
 
+FILE * memory_access_history_file;
 
 uint32_t text_segment_limit = 0x7FF;	//preferably something divisible by 4... :)
 #define total_number_of_instructions (0x7FF + 1)/4	//total text bytes / 4
@@ -16,12 +17,8 @@ uint32_t mbr;
 //assuming little endian 
 
 char * instructions[total_number_of_instructions];
-uint8_t l1[4096];	    //16KB l1 cache
+uint8_t dram[4096];	    //16KB 
 
-//l2 
-//
-//then ram
-//
 
 void read_memory_i(){
 	//remember to check for write permission (text segment limit)
@@ -71,10 +68,10 @@ void read_memory_i(){
 			exit(1);
 		}
 
-		uint32_t b0 = l1[mar_i + 0];
-		uint32_t b1 = l1[mar_i + 1] << 8;
-		uint32_t b2 = l1[mar_i + 2] << 16;
-		uint32_t b3 = l1[mar_i + 3] << 24;
+		uint32_t b0 = dram[mar_i + 0];
+		uint32_t b1 = dram[mar_i + 1] << 8;
+		uint32_t b2 = dram[mar_i + 2] << 16;
+		uint32_t b3 = dram[mar_i + 3] << 24;
 		mbr_i = 0;
 		mbr_i = mbr_i | (b0 | b1 | b2 | b3);
 
@@ -124,10 +121,10 @@ void read_memory(uint32_t opcode){
 
 		log_debug("loading mbr with [mar]");
 		//read address from mar load into mbr
-		uint32_t b0 = l1[mar + 0];
-		uint32_t b1 = l1[mar + 1] << 8;
-		uint32_t b2 = l1[mar + 2] << 16;
-		uint32_t b3 = l1[mar + 3] << 24;
+		uint32_t b0 = dram[mar + 0];
+		uint32_t b1 = dram[mar + 1] << 8;
+		uint32_t b2 = dram[mar + 2] << 16;
+		uint32_t b3 = dram[mar + 3] << 24;
 		mbr = 0;
 
 		switch(opcode){
@@ -170,6 +167,8 @@ void read_memory(uint32_t opcode){
 				log_fatal("invalid memory access opcode.");
 				exit(1);
 		}
+
+		fprintf(memory_access_history_file, "r %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		log_debug("setting mfc to 1");
@@ -228,7 +227,7 @@ void write_memory(uint32_t opcode){
 		switch(opcode){
 			case 0b000:
 				//byte
-				l1[mar + 0] = b0;
+				dram[mar + 0] = b0;
 				break;
 			case 0b001:
 				//halfword
@@ -237,8 +236,8 @@ void write_memory(uint32_t opcode){
 					log_fatal("Unaligned halfword access");
 					exit(1);
 				}
-				l1[mar + 0] = b0;
-				l1[mar + 1] = b1;
+				dram[mar + 0] = b0;
+				dram[mar + 1] = b1;
 				break;
 			case 0b010:
 				//word
@@ -247,15 +246,17 @@ void write_memory(uint32_t opcode){
 					log_fatal("Unaligned word access");
 					exit(1);
 				}
-				l1[mar + 0] = b0;
-				l1[mar + 1] = b1;
-				l1[mar + 2] = b2;
-				l1[mar + 3] = b3;
+				dram[mar + 0] = b0;
+				dram[mar + 1] = b1;
+				dram[mar + 2] = b2;
+				dram[mar + 3] = b3;
 				break;
 			default:
 				log_fatal("invalid memory opcode");
 				exit(1);
 		}
+
+		fprintf(memory_access_history_file, "w %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		mfc = 1;
@@ -267,7 +268,20 @@ void write_memory(uint32_t opcode){
 
 }
 
+void init_memory(char * instruction_file, char * data_file){
+	//open the memory access histroy file... for writing
+	memory_access_history_file = fopen("memory_operations.txt", "w");
+	if(memory_access_history_file == NULL){
+		log_fatal("memory_operations.txt file couldnt be opened");
+		exit(1);
+	}
+	
+	init_memory_i(instruction_file);
+	//init_memory_d(data_file);
+}
 
+/*
+// this function works with the non verbose version of the machine code file
 void init_memory(char * path){
 	// read program from file into memory
 	// expected format per line:
@@ -310,12 +324,12 @@ void init_memory(char * path){
 	fclose(f);
 	log_debug("memory initialization complete...");
 }
-
+*/
 void display_memory(){
-	for(int i = 0; i < sizeof(l1); i+=16){
+	for(int i = 0; i < sizeof(dram); i+=16){
 		printf("[%08x] :", i);
 		for(int j = 0; j < 16; j++){
-			printf(" %02x", l1[i+j]);
+			printf(" %02x", dram[i+j]);
 		}
 		printf("\n");
 	}
@@ -406,10 +420,10 @@ void init_memory_i(char *path)
 		// -----------------------------------------
 		// store opcode little endian
 		// -----------------------------------------
-		l1[addr + 0] = (opcode >> 0)  & 0xFF;
-		l1[addr + 1] = (opcode >> 8)  & 0xFF;
-		l1[addr + 2] = (opcode >> 16) & 0xFF;
-		l1[addr + 3] = (opcode >> 24) & 0xFF;
+		dram[addr + 0] = (opcode >> 0)  & 0xFF;
+		dram[addr + 1] = (opcode >> 8)  & 0xFF;
+		dram[addr + 2] = (opcode >> 16) & 0xFF;
+		dram[addr + 3] = (opcode >> 24) & 0xFF;
 
 		// -----------------------------------------
 		// allocate 20-char instruction string
