@@ -36,7 +36,7 @@ int set_read_i_counter(uint32_t addr){
 
 	if(CACHE_LEVELS == -1){
 		log_info("Ideal memory setup... no stalls");
-		return 0;
+		return 1;
 	}
 
 	if(CACHE_LEVELS > 0){
@@ -60,7 +60,7 @@ int set_read_counter(uint32_t addr){
 
 	if(CACHE_LEVELS == -1){
 		log_info("Ideal memory setup... no stalls");
-		return 0;
+		return 1;
 	}
 
 	if(CACHE_LEVELS > 0){

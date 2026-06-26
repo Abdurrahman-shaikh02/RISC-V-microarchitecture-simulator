@@ -111,6 +111,6 @@ $(BUILD)/%.o: %.c
 clean:
 	rm -rf $(BUILD)
 	rm -f assemble simulate cachesim
-	rm -f src/assembler/log/log.log
+	rm -f log.log output.txt data_trace.txt instruction_trace.txt
 
 rebuild: clean all

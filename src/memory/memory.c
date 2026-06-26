@@ -33,6 +33,9 @@ void read_memory_i(int cancel){
 		counter = -1;
 		//set mfc_i
 		mfc_i = 1;
+		//completing any pending actions
+		complete_read_i(mar_i);
+
 		return;
 	}
 
@@ -40,7 +43,8 @@ void read_memory_i(int cancel){
 
 	if(counter < 0){
 		//reload counter based on operation;
-		counter = l1_read_i_cycles - 1;
+		counter = set_read_i_counter(mar_i) - 1;	//returns total required no of cycles so -1 to conver to no of extra stalls
+
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
@@ -64,6 +68,7 @@ void read_memory_i(int cancel){
 		log_debug("read instruction counter decremented");
 		return;
 	}else if(counter == 0){
+		complete_read_i(mar_i);
 		n_instruction_reads++;	//stat
 
 		log_debug("loading mbr_i with [mar_i]");
@@ -106,7 +111,7 @@ void read_memory(uint32_t opcode){
 
 	if(counter < 0){
 		//reload counter based on operation;
-		counter = l1_read_cycles - 1;
+		counter = set_read_counter(mar) - 1;	//return the total no of cycles required so -1 to convert to no of extra stalls
 		
 		if(counter == -1){
 			//Structural hazard
@@ -130,6 +135,7 @@ void read_memory(uint32_t opcode){
 		log_debug("read counter decremented");
 		return;
 	}else if(counter == 0){
+		complete_read(mar);
 		n_reads++;	//stat
 
 		log_debug("loading mbr with [mar]");
@@ -202,7 +208,8 @@ void write_memory(uint32_t opcode){
 	if(counter < 0){
 		//reload counter
 		//reset mfc
-		counter = l1_write_cycles - 1;
+		counter = set_write_counter(mar) - 1;	//return total no of cycles required so -1 to convert to no of extra stalls
+
 		if(counter == -1){
 			//Structural hazard
 			log_info("Uh oh ! Structural hazard...");
@@ -224,6 +231,8 @@ void write_memory(uint32_t opcode){
 		log_debug("write counter decremented");
 		return;
 	}else if(counter == 0){
+		complete_write(mar);
+
 		n_writes++;	//stat
 
 		if(mar <= text_segment_limit){
