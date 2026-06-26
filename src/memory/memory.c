@@ -283,10 +283,10 @@ void write_memory(uint32_t opcode){
 
 void init_memory(char * instruction_file, char * data_file){
 	//open the memory access histroy file... for writing
-	memory_access_history_file_d = fopen("memory_data_operations.txt", "w");
-	memory_access_history_file_i = fopen("memory_instruction_operations.txt", "w");
+	memory_access_history_file_d = fopen("data_trace.txt", "w");
+	memory_access_history_file_i = fopen("instruction_trace.txt", "w");
 	if(memory_access_history_file_d == NULL || memory_access_history_file_i == NULL){
-		log_fatal("memory_operations files couldnt be opened");
+		log_fatal("trace files couldnt be created");
 		exit(1);
 	}
 	

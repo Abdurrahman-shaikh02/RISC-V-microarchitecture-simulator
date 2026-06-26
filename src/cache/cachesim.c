@@ -1,6 +1,7 @@
 #include "header.h"
 #include "memory.h"
 #include "cache.h"
+#include "stats.h"
 
 uint64_t cycle;
 
@@ -59,7 +60,8 @@ int main(){
 	}
 
 	//display();
-	
+	display_stats();
+
 	return 1;
 }
 
