@@ -30,8 +30,8 @@ ASM_OBJ := $(patsubst %.c,$(BUILD)/%.o,$(ASM_SRC))
 
 SIM_SRC := \
 src/main.c \
-src/cpu/alu.c \
-src/cpu/control.c \
+src/execution/alu.c \
+src/execution/control.c \
 src/pipeline/if.c \
 src/pipeline/id.c \
 src/pipeline/ex.c \

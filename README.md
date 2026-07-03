@@ -1,67 +1,41 @@
-```
-cpu-sim/
-│
-├── src/
-│   ├── core/              # CPU core logic
-│   │   ├── cpu.c
-│   │   ├── pipeline.c
-│   │   ├── alu.c
-│   │   ├── register_file.c
-│   │   └── control.c
-│   │
-│   ├── stages/            # Pipeline stage implementations
-│   │   ├── if_stage.c
-│   │   ├── id_stage.c
-│   │   ├── ex_stage.c
-│   │   ├── mem_stage.c
-│   │   └── wb_stage.c
-│   │
-│   ├── memory/            # Memory system
-│   │   ├── memory.c
-│   │   ├── cache.c
-│   │   └── cache_policy.c
-│   │
-│   ├── branch/            # Branch prediction
-│   │   ├── predictor.c
-│   │   ├── btb.c          # optional later
-│   │   └── branch_unit.c
-│   │
-│   ├── hazard/            # Hazard detection + forwarding
-│   │   ├── hazard.c
-│   │   └── forwarding.c
-│   │
-│   ├── isa/               # Instruction set definition
-│   │   ├── instr.c
-│   │   └── decoder.c
-│   │
-│   ├── stats/             # Performance tracking
-│   │   └── stats.c
-│   │
-│   ├── utils/             # Debug + helpers
-│   │   ├── logger.c
-│   │   └── config.c
-│   │
-│   └── main.c             # Entry point
-│
-├── include/
-│   ├── core/
-│   ├── stages/
-│   ├── memory/
-│   ├── branch/
-│   ├── hazard/
-│   ├── isa/
-│   ├── stats/
-│   └── utils/
-│
-├── programs/              # Test programs (VERY IMPORTANT)
-│   ├── simple_add.txt
-│   ├── load_store.txt
-│   ├── branch_test.txt
-│   └── hazard_test.txt
-│
-├── build/
-│
-├── Makefile
-│
-└── README.md
-```
+1. Introduction (Overview)
+        |
+        |--------------------------> Quick tutorial, Requirements(rv compiler in the future not rn...)
+
+2. Features (ALL features)
+
+3. Project Architecture 
+
+4. Tutorial (FULL)
+
+5. Configuration
+
+6. CPU Architecture
+        the block diagram
+        explain it, give appropriate links too
+
+7. Pipeline
+
+8. Hazard Handling
+        All three hazards 
+        data:forwarding
+        control:branchpred
+        structural:the hazard where the instruction and the data caches simulataneously want to evict the same block in l2 or below...
+
+9. Branch Prediction
+
+10. Cache Hierarchy
+
+11. Memory System
+
+12. Assembler
+
+13. Statistics
+
+14. Testing
+
+15. Limitations
+
+16. Future Work
+        predictor, cache policy, assembler redesign, implement exceptions and interrupts, 
+        (future prospects... others might wanna work on)
