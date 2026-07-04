@@ -301,22 +301,22 @@ cu_output read_b_format(uint32_t ir){
 	switch(funct3){
 		case 0b000:
 			//beq
-			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b000, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b000, 0}, {0, 0, predict(ir), 2}, {0}};
 		case 0b001:
 			//bne
-			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b001, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b001, 0}, {0, 0, predict(ir), 2}, {0}};
 		case 0b100:
 			//blt
-			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(ir), 2}, {0}};
 		case 0b101:
 			//bge
-			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 1, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(ir), 2}, {0}};
 		case 0b110:
 			//bltu
-			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b010, 0}, {0, 0, predict(ir), 2}, {0}};
 		case 0b111:
 			//bgeu
-			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(ir), 0}, {0}};
+			return (cu_output){'b', {1, 0, 0, 0b11, 0, 0, 0b011, 0}, {0, 0, predict(ir), 2}, {0}};
 		default:
 			log_fatal("error in funct3 in b type.");
 			exit(1);

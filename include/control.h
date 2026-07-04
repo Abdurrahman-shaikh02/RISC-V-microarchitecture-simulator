@@ -14,8 +14,8 @@ typedef struct ex_control{
 typedef struct ma_control{
 	uint8_t mem;		//memory access or no ?
 	uint8_t read_write_opcode;	//read or write ? memory access code.... 0000...0100 for reads, 1000...1010 for writes (b, h, w, bu, hu) the 4th last bit gives whether its a read or a write...
-	uint8_t branch_taken;	//was the branch taken ?
-	uint8_t jump_or_branch;	//was this a branch (no address needs to be writtenback) or a jump (save return address) ? 0,1
+	uint8_t branch_taken;	//was the branch taken last bit stores the prediction... second last stores the actual value
+	uint8_t jump_or_branch;	//was this a branch (no address needs to be writtenback) or a jump (save return address) ? (2,1)
 } ma_control;
 
 typedef struct wb_control{

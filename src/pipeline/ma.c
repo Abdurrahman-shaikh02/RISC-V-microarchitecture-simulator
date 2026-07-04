@@ -32,7 +32,7 @@ void ma_stage(){
 		if(control.jump_or_branch == 1){
 			pc = ex_ma.PC_next;
 			FLUSH = 1;
-		}else{
+		}else if(control.jump_or_branch == 2){
 			//branch
 			n_branch_instructions++;	//stat
 			uint8_t predicted = 0, actual = 0;
@@ -54,6 +54,9 @@ void ma_stage(){
 				pc = ex_ma.result;
 				FLUSH = 1;
 			}
+		}else{
+			//its an idle ma stage... (branch/memory = branch but jump/branch = 0)
+			//do nothing
 		}
 		result = ex_ma.result;
 	}else{
