@@ -46,6 +46,7 @@ src/cache/eviction.c \
 src/branch/branch_prediction.c \
 src/branch/static_prediction.c \
 src/branch/dynamic_prediction.c \
+src/forwarding/forwarding.c\
 src/stats/stats.c \
 src/utils/logger.c \
 src/utils/configure.c \

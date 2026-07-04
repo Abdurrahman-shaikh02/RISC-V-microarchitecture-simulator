@@ -29,9 +29,13 @@ int main(){
 	int trap_counter = -1;		//this is to count 1 cycles from the cycle where ecall was in exec
 	int halt = 0;
 
+
 	while(1){
 		log_break();
 		log_info("New cycle starts");
+		char str[65];
+		snprintf(str, sizeof(str), "%" PRIu64, cycle);
+		log_info(str);
 
 		//wb stage
 		wb_stage();

@@ -33,8 +33,8 @@ uint64_t branch_miss;		//in ma stage when the switch actually happens		ma.c
 uint64_t branch_hit;		//in ma stage when the switch actually happens		ma.c
 uint64_t n_branch_instructions;	//in ma stage when the switch check happens		ma.c
 
-//extern uint64_t n_forwards_to_ex;	//every if else clause...
-//extern uint64_t n_forwards_to_ma;	//every if else clause...
+uint64_t n_forwards_to_ex;	//every if else clause...
+uint64_t n_forwards_to_ma;	//every if else clause...
 
 //extern uint64_t n_instructions;		//in fetch stage kya ?????
 
@@ -81,12 +81,12 @@ void display_stats(void)
     printf("Branch Hits           : %" PRIu64 "\n", branch_hit);
     printf("Branch Misses         : %" PRIu64 "\n", branch_miss);
 
-    /* Uncomment these once they're defined */
-    /*
+
     printf("\n-------------------- Forwarding -----------------------\n");
     printf("Forwards to EX        : %" PRIu64 "\n", n_forwards_to_ex);
     printf("Forwards to MA        : %" PRIu64 "\n", n_forwards_to_ma);
-
+    
+    /*
     printf("\n---------------- CPU Statistics -----------------------\n");
     printf("Instructions Retired  : %" PRIu64 "\n", n_instructions);
     */
