@@ -142,7 +142,7 @@ uint32_t generate_immediate(char format, uint32_t ir){
 			imm = imm | ((ir & 0x7E000000) >> 21);
 			imm = imm | ((ir & 0x80) << 3);
 			imm = imm | (((int32_t)(ir & 0x80000000)) >> 20);
-			//imm = imm << 1;		//left shift by one if its a branch/jump
+			imm = imm << 1;		//left shift by one if its a branch/jump
 			break;
 		case 'u':
 			imm = (int32_t)(ir & 0xFFFFF000) >> 12;
@@ -153,7 +153,7 @@ uint32_t generate_immediate(char format, uint32_t ir){
 			imm = imm | ((ir & 0x00100000) >> 10);
 			imm = imm | ((ir & 0x000FF000) >> 1);
 			imm = imm | (((int32_t)(ir & 0x80000000)) >> 12);
-			//imm = imm << 1;		//left shift by one if its a jump/branch
+			imm = imm << 1;		//left shift by one if its a jump/branch
 			log_debug("immediate generated for j format");
 			break;
 		default:

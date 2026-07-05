@@ -9,7 +9,7 @@
 // MUST BE CALLED BEFORE ANY INIT
 void configure(char * path){
 	//DEFAULT CONFIGURATIONS :-
-	CACHE_LEVELS = 3;
+	CACHE_LEVELS = -1;
 	
 	l1_d.cache_size = 1024 * 2;	//2k
 	l1_d.block_size = 16;
@@ -56,7 +56,7 @@ void configure(char * path){
 	DRAM_WRITE_LATENCY = 4;
 	DRAM_SIZE = 32 * 1024;		//32k
 	
-	FORWARDING_SWITCH = 1;
+	FORWARDING_SWITCH = 0;
 	BRANCH_PREDICTION_STRATEGY = 0;
 
 	text_segment_limit = 0x7FF;	//this must be l1 block aligned !!!!! is it ? i think i should remove this restriction

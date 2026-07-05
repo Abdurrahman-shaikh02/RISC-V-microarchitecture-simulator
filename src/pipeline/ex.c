@@ -90,13 +90,13 @@ void ex_stage(){
 			if(control.branch_opcode == 0b100){
 				log_debug("jump instruction");
 				//jump
-				id_ex.PC_next = arithmetic_unit(operand1, operand2 << 1, control.arithmetic_opcode);	//left shift because in risc v the addesses are even...(the lsb is not encoded in the instruction code)
+				id_ex.PC_next = arithmetic_unit(operand1, operand2, control.arithmetic_opcode);
 				//set the branch taken bit too
 				id_ex.cs_ma.branch_taken |= 0b10;
 			}else{
 				//branch
 				log_debug("branch instruction");
-				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm << 1, control.arithmetic_opcode);	//left shift because in risc v the addesses are even...(the lsb is not encoded in the instruction code)
+				id_ex.PC_next = arithmetic_unit(id_ex.PC, id_ex.imm, control.arithmetic_opcode);
 				actual_branch_taken = branch_comparator(operand1, operand2, control.branch_opcode, control.sign);
 				//store
 				store(actual_branch_taken);

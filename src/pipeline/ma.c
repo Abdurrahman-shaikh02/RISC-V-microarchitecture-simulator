@@ -31,6 +31,7 @@ void ma_stage(){
 		//if prediction was not to take and we did then update pc = pc_next (remember we swapped values in the last stage...)
 		//result = result
 		if(control.jump_or_branch == 1){
+			//jump
 			pc = ex_ma.PC_next;
 			FLUSH = 1;
 		}else if(control.jump_or_branch == 2){
