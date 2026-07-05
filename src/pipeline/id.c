@@ -92,14 +92,16 @@ int set_hazard_stall(){
 			log_info("data hazard stall set !");
 			return 1;
 		}
-	}else if(ma_wb.cs_wb.wb == 1){
+	}
+	if(ma_wb.cs_wb.wb == 1){
 		if((id_ex.cs_ex.source1 == 1 && ma_wb.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) || (id_ex.cs_ex.source2 == 0 && ma_wb.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){
 			//if either of the current operands has a pending write in the ma_wb
 			HAZARD_STALL = 1;
 			log_info("data hazard stall set !");
 			return 1;
 		}
-	}else if(wb_if.cs_wb.wb == 1){
+	}
+	if(wb_if.cs_wb.wb == 1){
 		if((id_ex.cs_ex.source1 == 1 && wb_if.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) || (id_ex.cs_ex.source2 == 0 && wb_if.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){
 			//if either of the current operands has been written to in the current cycle in wb stage
 			//still need to stall because due to our design wb stage happens before id in the same clock

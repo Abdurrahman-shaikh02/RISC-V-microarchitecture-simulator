@@ -32,7 +32,7 @@ void simulate(char * path){
 		log_break();
 		log_info("New cycle starts");
 		char str[65];
-		snprintf(str, sizeof(str), "%" PRIu64, cycle);
+		snprintf(str, sizeof(str), "%" PRIu64, cycle + 1);
 		log_info(str);
 
 		//wb stage
