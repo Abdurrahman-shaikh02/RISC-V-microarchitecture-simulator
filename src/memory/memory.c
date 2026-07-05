@@ -43,7 +43,7 @@ void read_memory_i(int cancel){
 
 	if(counter < 0){
 		//reload counter based on operation;
-		counter = set_read_i_counter(mar_i) - 1;	//returns total required no of cycles so -1 to conver to no of extra stalls
+		counter = set_read_i_counter(mar_i) - 1;	//returns total required no of cycles, so - 1 to convert to no of extra stalls
 
 		if(counter == -1){
 			//Structural hazard

@@ -37,7 +37,7 @@ extern uint64_t n_branch_instructions;	//in ma stage when the switch check happe
 extern uint64_t n_forwards_to_ex;	//every if else clause...
 extern uint64_t n_forwards_to_ma;	//every if else clause...
 
-//extern uint64_t n_instructions;		//in fetch stage kya ?????
-extern uint64_t cycles;
+extern uint64_t n_instructions;		//in fetch stage kya ?????
+extern uint64_t cycle;
 
 void display_stats(char * path);

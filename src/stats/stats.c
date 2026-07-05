@@ -36,7 +36,7 @@ uint64_t n_branch_instructions;	//in ma stage when the switch check happens		ma.
 uint64_t n_forwards_to_ex;	//every if else clause...
 uint64_t n_forwards_to_ma;	//every if else clause...
 
-//extern uint64_t n_instructions;		//in fetch stage kya ?????
+uint64_t n_instructions;		//in wb stage... checks the wb_if.ins field
 
 
 void display_stats(char * path){
@@ -100,10 +100,10 @@ void display_stats(char * path){
     fprintf(fd, "Forwards to EX        : %" PRIu64 "\n", n_forwards_to_ex);
     fprintf(fd, "Forwards to MA        : %" PRIu64 "\n", n_forwards_to_ma);
 
-    /*
-       fprintf(fd, "\n---------------- CPU Statistics -----------------------\n");
-       fprintf(fd, "Instructions Retired  : %" PRIu64 "\n", n_instructions);
-       */
+    
+    fprintf(fd, "\n---------------- CPU Statistics -----------------------\n");
+    fprintf(fd, "Instructions Retired  : %" PRIu64 "\n", n_instructions);
+    fprintf(fd, "Total Cycles  : %" PRIu64 "\n", cycle);
 
     fprintf(fd, "\n=======================================================\n");
 

@@ -9,7 +9,7 @@
 // MUST BE CALLED BEFORE ANY INIT
 void configure(char * path){
 	//DEFAULT CONFIGURATIONS :-
-	CACHE_LEVELS = -1;
+	CACHE_LEVELS = 3;
 	
 	l1_d.cache_size = 1024 * 2;	//2k
 	l1_d.block_size = 16;
@@ -35,8 +35,8 @@ void configure(char * path){
 	l2.cache_size = 1024 * 8;	//8k
 	l2.block_size = 32;
 	l2.associativity = 4;
-	l2.read_latency = 2;
-	l2.write_latency = 2;
+	l2.read_latency = 10;
+	l2.write_latency = 10;
 	l2.write_miss_policy = 0;	//no write allocate
 	l2.replacement_policy = 0;	//fifo
 	l2.write_policy = 1;		//write back
@@ -45,21 +45,23 @@ void configure(char * path){
 	l3.cache_size = 1024 * 16;	//16k
 	l3.block_size = 64;
 	l3.associativity = 8;
-	l3.read_latency = 3;
-	l3.write_latency = 3;
+	l3.read_latency = 30;
+	l3.write_latency = 30;
 	l3.write_miss_policy = 0;	//no write allocate
 	l3.replacement_policy = 0;	//fifo
 	l3.write_policy = 1;		//write_back
 	l3.level = 3;
 
-	DRAM_READ_LATENCY = 4;
-	DRAM_WRITE_LATENCY = 4;
+	DRAM_READ_LATENCY = 200;
+	DRAM_WRITE_LATENCY = 200;
 	DRAM_SIZE = 32 * 1024;		//32k
 	
-	FORWARDING_SWITCH = 0;
+	FORWARDING_SWITCH = 1;
 	BRANCH_PREDICTION_STRATEGY = 0;
 
 	text_segment_limit = 0x7FF;	//this must be l1 block aligned !!!!! is it ? i think i should remove this restriction
+					//key is to not allow the same block have both code segment and data segments contents
+					//the code segment boundary must not be in any block...
 	total_number_of_instructions = (text_segment_limit + 1) / 4;
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	//read file here

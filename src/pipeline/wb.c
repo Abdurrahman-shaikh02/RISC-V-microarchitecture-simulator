@@ -3,6 +3,7 @@
 #include "internal_memory.h"
 #include "control.h"
 #include "pipeline.h"
+#include "stats.h"
 
 
 void wb_stage(){
@@ -29,4 +30,9 @@ void wb_stage(){
 	wb_if.result = ma_wb.result;
 	wb_if.nrd = ma_wb.nrd;
 	wb_if.cs_wb = ma_wb.cs_wb;
+
+	//this is desperate... unable find another way of counting no of instructions... shouldn't use the instruction string - its only for visuals
+	if(wb_if.ins != NULL && strcmp(wb_if.ins, "                    ") != 0){
+		n_instructions++;	//stat
+	}
 }
