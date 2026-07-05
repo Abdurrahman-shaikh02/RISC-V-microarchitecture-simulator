@@ -40,4 +40,4 @@ extern uint64_t n_forwards_to_ma;	//every if else clause...
 //extern uint64_t n_instructions;		//in fetch stage kya ?????
 extern uint64_t cycles;
 
-void display_stats();
+void display_stats(char * path);

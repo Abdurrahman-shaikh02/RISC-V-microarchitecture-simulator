@@ -39,57 +39,76 @@ uint64_t n_forwards_to_ma;	//every if else clause...
 //extern uint64_t n_instructions;		//in fetch stage kya ?????
 
 
-void display_stats(void)
-{
-    printf("\n==================== Simulation Statistics ====================\n");
+void display_stats(char * path){
 
-    printf("\n-------------------- L1 Data Cache --------------------\n");
-    printf("L1 D Read Hits        : %" PRIu64 "\n", l1_d_hit_r);
-    printf("L1 D Write Hits       : %" PRIu64 "\n", l1_d_hit_w);
-    printf("L1 D Read Misses      : %" PRIu64 "\n", l1_d_miss_r);
-    printf("L1 D Write Misses     : %" PRIu64 "\n", l1_d_miss_w);
+    FILE * fd = NULL;
 
-    printf("\n---------------- Instruction Cache --------------------\n");
-    printf("L1 I Read Hits        : %" PRIu64 "\n", l1_i_hit_r);
-    printf("L1 I Read Misses      : %" PRIu64 "\n", l1_i_miss_r);
-
-    printf("\n---------------------- L2 Cache -----------------------\n");
-    printf("L2 Read Hits          : %" PRIu64 "\n", l2_hit_r);
-    printf("L2 Write Hits         : %" PRIu64 "\n", l2_hit_w);
-    printf("L2 Read Misses        : %" PRIu64 "\n", l2_miss_r);
-    printf("L2 Write Misses       : %" PRIu64 "\n", l2_miss_w);
-
-    printf("\n---------------------- L3 Cache -----------------------\n");
-    printf("L3 Read Hits          : %" PRIu64 "\n", l3_hit_r);
-    printf("L3 Write Hits         : %" PRIu64 "\n", l3_hit_w);
-    printf("L3 Read Misses        : %" PRIu64 "\n", l3_miss_r);
-    printf("L3 Write Misses       : %" PRIu64 "\n", l3_miss_w);
-
-    printf("\n---------------- Memory Requests ----------------------\n");
-    printf("Data Reads            : %" PRIu64 "\n", n_reads);
-    printf("Data Writes           : %" PRIu64 "\n", n_writes);
-    printf("Instruction Reads     : %" PRIu64 "\n", n_instruction_reads);
-
-    printf("\n--------------------- Stall Counts --------------------\n");
-    printf("Instruction Read Stalls : %" PRIu64 "\n", n_read_i_stalls);
-    printf("Data Read Stalls        : %" PRIu64 "\n", n_read_d_stalls);
-    printf("Data Write Stalls       : %" PRIu64 "\n", n_write_d_stalls);
-    printf("Structural Hazards      : %" PRIu64 "\n", n_structural_hazards);
-
-    printf("\n-------------------- Branch Stats ---------------------\n");
-    printf("Branch Instructions   : %" PRIu64 "\n", n_branch_instructions);
-    printf("Branch Hits           : %" PRIu64 "\n", branch_hit);
-    printf("Branch Misses         : %" PRIu64 "\n", branch_miss);
+    if(path == NULL){
+	fd = stdout;
+    }else{
+	fd = fopen(path, "w");
+    }
 
 
-    printf("\n-------------------- Forwarding -----------------------\n");
-    printf("Forwards to EX        : %" PRIu64 "\n", n_forwards_to_ex);
-    printf("Forwards to MA        : %" PRIu64 "\n", n_forwards_to_ma);
-    
+    if(fd == NULL){
+	log_fatal("Couldnt open file for memory dump.");
+	exit(1);
+    }
+
+    fprintf(fd, "\n==================== Simulation Statistics ====================\n");
+
+    fprintf(fd, "\n-------------------- L1 Data Cache --------------------\n");
+    fprintf(fd, "L1 D Read Hits        : %" PRIu64 "\n", l1_d_hit_r);
+    fprintf(fd, "L1 D Write Hits       : %" PRIu64 "\n", l1_d_hit_w);
+    fprintf(fd, "L1 D Read Misses      : %" PRIu64 "\n", l1_d_miss_r);
+    fprintf(fd, "L1 D Write Misses     : %" PRIu64 "\n", l1_d_miss_w);
+
+    fprintf(fd, "\n---------------- Instruction Cache --------------------\n");
+    fprintf(fd, "L1 I Read Hits        : %" PRIu64 "\n", l1_i_hit_r);
+    fprintf(fd, "L1 I Read Misses      : %" PRIu64 "\n", l1_i_miss_r);
+
+    fprintf(fd, "\n---------------------- L2 Cache -----------------------\n");
+    fprintf(fd, "L2 Read Hits          : %" PRIu64 "\n", l2_hit_r);
+    fprintf(fd, "L2 Write Hits         : %" PRIu64 "\n", l2_hit_w);
+    fprintf(fd, "L2 Read Misses        : %" PRIu64 "\n", l2_miss_r);
+    fprintf(fd, "L2 Write Misses       : %" PRIu64 "\n", l2_miss_w);
+
+    fprintf(fd, "\n---------------------- L3 Cache -----------------------\n");
+    fprintf(fd, "L3 Read Hits          : %" PRIu64 "\n", l3_hit_r);
+    fprintf(fd, "L3 Write Hits         : %" PRIu64 "\n", l3_hit_w);
+    fprintf(fd, "L3 Read Misses        : %" PRIu64 "\n", l3_miss_r);
+    fprintf(fd, "L3 Write Misses       : %" PRIu64 "\n", l3_miss_w);
+
+    fprintf(fd, "\n---------------- Memory Requests ----------------------\n");
+    fprintf(fd, "Data Reads            : %" PRIu64 "\n", n_reads);
+    fprintf(fd, "Data Writes           : %" PRIu64 "\n", n_writes);
+    fprintf(fd, "Instruction Reads     : %" PRIu64 "\n", n_instruction_reads);
+
+    fprintf(fd, "\n--------------------- Stall Counts --------------------\n");
+    fprintf(fd, "Instruction Read Stalls : %" PRIu64 "\n", n_read_i_stalls);
+    fprintf(fd, "Data Read Stalls        : %" PRIu64 "\n", n_read_d_stalls);
+    fprintf(fd, "Data Write Stalls       : %" PRIu64 "\n", n_write_d_stalls);
+    fprintf(fd, "Structural Hazards      : %" PRIu64 "\n", n_structural_hazards);
+
+    fprintf(fd, "\n-------------------- Branch Stats ---------------------\n");
+    fprintf(fd, "Branch Instructions   : %" PRIu64 "\n", n_branch_instructions);
+    fprintf(fd, "Branch Hits           : %" PRIu64 "\n", branch_hit);
+    fprintf(fd, "Branch Misses         : %" PRIu64 "\n", branch_miss);
+
+
+    fprintf(fd, "\n-------------------- Forwarding -----------------------\n");
+    fprintf(fd, "Forwards to EX        : %" PRIu64 "\n", n_forwards_to_ex);
+    fprintf(fd, "Forwards to MA        : %" PRIu64 "\n", n_forwards_to_ma);
+
     /*
-    printf("\n---------------- CPU Statistics -----------------------\n");
-    printf("Instructions Retired  : %" PRIu64 "\n", n_instructions);
-    */
+       fprintf(fd, "\n---------------- CPU Statistics -----------------------\n");
+       fprintf(fd, "Instructions Retired  : %" PRIu64 "\n", n_instructions);
+       */
 
-    printf("\n=======================================================\n");
+    fprintf(fd, "\n=======================================================\n");
+
+
+    if(path != NULL){
+	fclose(fd);
+    }
 }

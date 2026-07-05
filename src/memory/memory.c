@@ -348,13 +348,30 @@ void init_memory(char * path){
 	log_debug("memory initialization complete...");
 }
 */
-void display_memory(){
+void display_memory(char * path){
+	FILE * fd = NULL;
+
+	if(path == NULL){
+		fd = stdout;
+	}else{
+		fd = fopen(path, "w");
+	}
+
+	if(fd == NULL){
+		log_fatal("Couldnt open file for memory dump.");
+		exit(1);
+	}
+
 	for(int i = 0; i < DRAM_SIZE; i+=32){
-		printf("[%08x] :", i);
+		fprintf(fd, "[%08x] :", i);
 		for(int j = 0; j < 32; j++){
-			printf(" %02x", dram[i+j]);
+			fprintf(fd, " %02x", dram[i+j]);
 		}
-		printf("\n");
+		fprintf(fd, "\n");
+	}
+
+	if(path != NULL){
+		fclose(fd);
 	}
 }
 

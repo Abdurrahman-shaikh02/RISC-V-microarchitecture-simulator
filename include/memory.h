@@ -23,7 +23,7 @@ void init_memory(char * instruction_file, char * data_file);		//this function ne
 void init_memory_i(char * path);	//to load the program into the ram... 
 void init_memory_d(char * path);
 
-void display_memory();
+void display_memory(char * path);
 void free_instructions(void);
 void display_instructions();
 

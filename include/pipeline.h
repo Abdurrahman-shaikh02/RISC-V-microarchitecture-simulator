@@ -1,3 +1,5 @@
+extern uint32_t reg_file[];
+
 //below are the pipeline registers
 
 typedef struct IF_ID{

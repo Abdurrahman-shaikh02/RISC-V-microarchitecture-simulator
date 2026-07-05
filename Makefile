@@ -32,6 +32,7 @@ SIM_SRC := \
 src/main.c \
 src/execution/alu.c \
 src/execution/control.c \
+src/execution/simulator.c \
 src/pipeline/if.c \
 src/pipeline/id.c \
 src/pipeline/ex.c \

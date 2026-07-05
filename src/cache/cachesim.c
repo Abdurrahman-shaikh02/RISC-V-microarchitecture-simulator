@@ -60,7 +60,7 @@ int main(){
 	}
 
 	//display();
-	display_stats();
+	display_stats(NULL);
 
 	return 1;
 }
