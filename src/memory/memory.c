@@ -300,9 +300,12 @@ void init_memory(char * instruction_file, char * data_file){
 	}
 	
 	init_memory_i(instruction_file);
-	//init_memory_d(data_file);
+	init_memory_d(data_file);
 }
 
+void init_memory_d(char *path){
+
+}
 /*
 // this function works with the non verbose version of the machine code file
 void init_memory(char * path){

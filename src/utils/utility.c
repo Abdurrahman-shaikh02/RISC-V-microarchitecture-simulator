@@ -23,7 +23,7 @@ void display_general_purpose_registers(char * path){
 	}
 
 	for(int i = 0; i < 32; i++){
-		printf("r%02d : %08x\n", i, reg_file[i]);
+		fprintf(fd, "r%02d : %08x\n", i, reg_file[i]);
 	}
 
 	if(path != NULL){

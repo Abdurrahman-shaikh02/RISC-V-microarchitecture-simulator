@@ -4,7 +4,8 @@
 
 int CACHE_LEVELS;
 cache_level l1_i, l1_d, l2, l3;
-int DRAM_READ_LATENCY, DRAM_WRITE_LATENCY, DRAM_SIZE;
+int DRAM_READ_LATENCY, DRAM_WRITE_LATENCY;
+int DRAM_SIZE;
 
 void complete_below(uint32_t addr, cache_level s){
 	log_info("Completing below operation");
