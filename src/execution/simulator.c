@@ -62,6 +62,8 @@ void simulate(char * path){
 
 			//cancelling any on going read instruction operations going on !!!
 			read_memory_i(1);
+			
+			ex_flushes++;	//stat
 
 			FLUSH = 0;
 		}else if(STRUCTURAL_HAZARD_STALL == 1){
@@ -117,6 +119,8 @@ void simulate(char * path){
 
 					//cancelling any on going read instruction operations going on !!!
 					read_memory_i(1);
+					
+					id_flushes++;	//stat
 
 					FLUSH = 0;
 				}
@@ -201,6 +205,8 @@ void simulate(char * path){
 
 					//cancelling any on going read instruction operations going on !!!
 					read_memory_i(1);
+
+					id_flushes++;	//stat
 
 					FLUSH = 0;
 				}
@@ -303,6 +309,8 @@ void simulate(char * path){
 
 			//cancelling any on going read instruction operations going on !!!
 			read_memory_i(1);
+
+			id_flushes++;	//stat
 
 			FLUSH = 0;
 		}

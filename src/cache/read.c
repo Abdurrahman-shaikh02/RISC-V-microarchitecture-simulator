@@ -125,6 +125,7 @@ int l1_i_read(uint32_t addr){
 		stall_count += stall_count2;
 		
 		l1_i_miss_r++;	//stat
+
 		//return stall + latency because it is taken from l2 cache(conceptually...)
 		//(doesnt work that way in our implementation, we always copy form mem)
 		return l1_i.read_latency + stall_count;

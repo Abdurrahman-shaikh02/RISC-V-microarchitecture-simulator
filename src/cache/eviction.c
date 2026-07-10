@@ -1,6 +1,7 @@
 #include "header.h"
 #include "cache.h"
 #include "memory.h"
+#include "stats.h"
 
 
 //replace() and different policies...
@@ -122,8 +123,16 @@ int evict_lru(uint32_t addr, cache_level s){
 			//if yes then see if it is dirty... if yes invoke write on the right level
 			if(line->dirty == 1){
 				//write the to be evicted block into the lower level(use s.level to dispatch proper write method)
+				//
+				//WE WILL EXPECT EVERY WRITEBACK TO SUCCEED NO MATTER WHAT
+				//IT WILL BE SORT OF A FORCED WRITE ! NOTHING CAN STOP IT! TO DIGEST IT THINK OF AN IMAGINARY BUFFER AT WORK :)
+				//WE WILL CHANGE THE ORDINARY write() FUNCTIONS BELOW, TO DIFFERENT writeback() FUNCTIONS
 				switch (s.level) {
 					case 1:
+						if(s.cache == l1_d.cache) l1_d_writebacks++;	//stat
+						if(s.cache == l1_i.cache) l1_i_writebacks++;	//stat
+						//THIS WAY IF I DECIDE TO NOT SPLIT CACHE THEN IT WILL STILL WORK
+
 						if(CACHE_LEVELS > 1){
 							//write to l2, count in stall_count
 							log_info("eviction requires writing back to l2");
@@ -137,6 +146,7 @@ int evict_lru(uint32_t addr, cache_level s){
 						}
 						break;
 					case 2: if(CACHE_LEVELS > 2){
+							l2_writebacks++;	//stat
 							//write to l3, count int stall_count
 							log_info("eviction requires writing back to l3");
 							stall_count = l3_write(line->addr);
@@ -149,6 +159,7 @@ int evict_lru(uint32_t addr, cache_level s){
 						}
 						break;
 					case 3:
+						l3_writebacks++;	//stat
 						//just add dram write latency to count
 						log_info("eviction requires writing back to ram");
 						stall_count = DRAM_WRITE_LATENCY;
@@ -280,8 +291,16 @@ int evict_fifo(uint32_t addr, cache_level s){
 			//if yes then see if it is dirty... if yes invoke write on the right level
 			if(line->dirty == 1){
 				//write the to be evicted block into the lower level(use s.level to dispatch proper write method)
+				//
+				//WE WILL EXPECT EVERY WRITEBACK TO SUCCEED NO MATTER WHAT
+				//IT WILL BE SORT OF A FORCED WRITE ! NOTHING CAN STOP IT! TO DIGEST IT THINK OF IT AS AN IMAGINARY BUFFER AT WORK :)
+				//WE WILL CHANGE THE ORDINARY write() FUNCTIONS BELOW, TO DIFFERENT writeback() FUNCTIONS
 				switch (s.level) {
 					case 1:
+						if(s.cache == l1_d.cache) l1_d_writebacks++;	//stat
+						if(s.cache == l1_i.cache) l1_i_writebacks++;	//stat
+						//THIS WAY IF I DECIDE TO NOT SPLIT CACHE THEN IT WILL STILL WORK
+
 						if(CACHE_LEVELS > 1){
 							//write to l2, count in stall_count
 							log_info("eviction requires writing back to l2");
@@ -295,6 +314,7 @@ int evict_fifo(uint32_t addr, cache_level s){
 						}
 						break;
 					case 2: if(CACHE_LEVELS > 2){
+							l2_writebacks++;	//stat
 							//write to l3, count int stall_count
 							log_info("eviction requires writing back to l3");
 							stall_count = l3_write(line->addr);
@@ -307,6 +327,7 @@ int evict_fifo(uint32_t addr, cache_level s){
 						}
 						break;
 					case 3:
+						l3_writebacks++;	//stat
 						//just add dram write latency to count
 						log_info("eviction requires writing back to ram");
 						stall_count = DRAM_WRITE_LATENCY;

@@ -5,19 +5,27 @@ uint64_t l1_d_hit_r;
 uint64_t l1_d_hit_w;
 uint64_t l1_d_miss_r;
 uint64_t l1_d_miss_w;
+//uint64_t l1_d_evictions;
+uint64_t l1_d_writebacks;
 
 uint64_t l1_i_hit_r;
 uint64_t l1_i_miss_r;
+//uint64_t l1_i_evictions;
+uint64_t l1_i_writebacks;
 
 uint64_t l2_hit_r;
 uint64_t l2_hit_w;
 uint64_t l2_miss_r;
 uint64_t l2_miss_w;
+//uint64_t l2_evictions;
+uint64_t l2_writebacks;
 
 uint64_t l3_hit_r;			
 uint64_t l3_hit_w;
 uint64_t l3_miss_r;
 uint64_t l3_miss_w;
+//uint64_t l3_evictions;
+uint64_t l3_writebacks;
 
 uint64_t n_reads;		//when the counter for a read is detected to be zero	memory.c
 uint64_t n_writes;		//when the counter for a write is detected to be zero	memory.c
@@ -29,10 +37,16 @@ uint64_t n_structural_hazards;	//whenever the set counter function returns -1	me
 
 //CPU
 
+//Control hazards:
+uint64_t branches_taken;	//in ma stage when the switch actually happens		ma.c
+uint64_t branches_not_taken;	//in ma stage when the switch actually happens		ma.c
 uint64_t branch_miss;		//in ma stage when the switch actually happens		ma.c
 uint64_t branch_hit;		//in ma stage when the switch actually happens		ma.c
 uint64_t n_branch_instructions;	//in ma stage when the switch check happens		ma.c
+uint64_t id_flushes;		//in main where the flushes are handled			main.c
+uint64_t ex_flushes;		//in main where the flushes are handled			main.c
 
+//Data hazards:
 uint64_t n_forwards_to_ex;	//every if else clause...
 uint64_t n_forwards_to_ma;	//every if else clause...
 
@@ -62,22 +76,30 @@ void display_stats(char * path){
     fprintf(fd, "L1 D Write Hits       : %" PRIu64 "\n", l1_d_hit_w);
     fprintf(fd, "L1 D Read Misses      : %" PRIu64 "\n", l1_d_miss_r);
     fprintf(fd, "L1 D Write Misses     : %" PRIu64 "\n", l1_d_miss_w);
+    //fprintf(fd, "L1 D Evictions        : %" PRIu64 "\n", l1_d_evictions);
+    fprintf(fd, "L1 D WriteBacks       : %" PRIu64 "\n", l1_d_writebacks);
 
     fprintf(fd, "\n---------------- Instruction Cache --------------------\n");
     fprintf(fd, "L1 I Read Hits        : %" PRIu64 "\n", l1_i_hit_r);
     fprintf(fd, "L1 I Read Misses      : %" PRIu64 "\n", l1_i_miss_r);
+    //fprintf(fd, "L1 I Evictions        : %" PRIu64 "\n", l1_i_evictions);
+    fprintf(fd, "L1 I WriteBacks       : %" PRIu64 "\n", l1_i_writebacks);
 
     fprintf(fd, "\n---------------------- L2 Cache -----------------------\n");
     fprintf(fd, "L2 Read Hits          : %" PRIu64 "\n", l2_hit_r);
     fprintf(fd, "L2 Write Hits         : %" PRIu64 "\n", l2_hit_w);
     fprintf(fd, "L2 Read Misses        : %" PRIu64 "\n", l2_miss_r);
     fprintf(fd, "L2 Write Misses       : %" PRIu64 "\n", l2_miss_w);
+    //fprintf(fd, "L2 Evictions          : %" PRIu64 "\n", l2_evictions);
+    fprintf(fd, "L2 WriteBacks         : %" PRIu64 "\n", l2_writebacks);
 
     fprintf(fd, "\n---------------------- L3 Cache -----------------------\n");
     fprintf(fd, "L3 Read Hits          : %" PRIu64 "\n", l3_hit_r);
     fprintf(fd, "L3 Write Hits         : %" PRIu64 "\n", l3_hit_w);
     fprintf(fd, "L3 Read Misses        : %" PRIu64 "\n", l3_miss_r);
     fprintf(fd, "L3 Write Misses       : %" PRIu64 "\n", l3_miss_w);
+    //fprintf(fd, "L3 Evictions          : %" PRIu64 "\n", l3_evictions);
+    fprintf(fd, "L3 WriteBacks         : %" PRIu64 "\n", l3_writebacks);
 
     fprintf(fd, "\n---------------- Memory Requests ----------------------\n");
     fprintf(fd, "Data Reads            : %" PRIu64 "\n", n_reads);
@@ -92,9 +114,14 @@ void display_stats(char * path){
 
     fprintf(fd, "\n-------------------- Branch Stats ---------------------\n");
     fprintf(fd, "Branch Instructions   : %" PRIu64 "\n", n_branch_instructions);
+    fprintf(fd, "Branches Taken        : %" PRIu64 "\n", branches_taken);
+    fprintf(fd, "Branches Not Taken    : %" PRIu64 "\n", branches_not_taken);
     fprintf(fd, "Branch Hits           : %" PRIu64 "\n", branch_hit);
     fprintf(fd, "Branch Misses         : %" PRIu64 "\n", branch_miss);
 
+    fprintf(fd, "\n-------------------- Flushes -----------------------\n");
+    fprintf(fd, "Flushes from ID       : %" PRIu64 "\n", id_flushes);
+    fprintf(fd, "Flushes from EX       : %" PRIu64 "\n", ex_flushes);
 
     fprintf(fd, "\n-------------------- Forwarding -----------------------\n");
     fprintf(fd, "Forwards to EX        : %" PRIu64 "\n", n_forwards_to_ex);

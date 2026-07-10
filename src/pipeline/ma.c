@@ -40,6 +40,10 @@ void ma_stage(){
 			uint8_t predicted = 0, actual = 0;
 			actual = (control.branch_taken & 0b10) >> 1;
 			predicted = (control.branch_taken & 0b1);
+	
+			//since this conditional branch is only taken when the instruction is a branch (.jump_or_branch = 2)
+			if(actual == 1) branches_taken++;	//stat
+			else if(actual == 0) branches_not_taken++;	//stat
 
 			if(actual == predicted){
 				//do nothing
