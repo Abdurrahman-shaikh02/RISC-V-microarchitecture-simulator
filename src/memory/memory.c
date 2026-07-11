@@ -6,7 +6,8 @@
 FILE * memory_access_history_file_d;
 FILE * memory_access_history_file_i;
 
-uint32_t text_segment_limit;	//preferably something divisible by 4... :)
+uint32_t text_segment_limit;	//THIS IS THE LAST VALID ADDRESS FOR THE CODE SEGMENT (eg : 7ff... although unaligned... it holds the last byte of the code segment)
+uint32_t rodata_segment_limit;
 uint32_t total_number_of_instructions;
 uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 uint32_t mar_i;
@@ -73,7 +74,7 @@ void read_memory_i(int cancel){
 
 		log_debug("loading mbr_i with [mar_i]");
 		//read address from mar load into mbr
-		if(mar_i > text_segment_limit){
+		if(mar_i > text_segment_limit || mar_i < 0){
 			log_fatal("attempt to fetch instruction from non text segment");
 			exit(1);
 		}
@@ -239,6 +240,12 @@ void write_memory(uint32_t opcode){
 			log_fatal("attempt to write to text segment");
 			exit(1);
 		}
+
+		if(mar <= rodata_segment_limit){
+			log_fatal("attempt to write to rodata segment");
+			exit(1);
+		}
+
 		//read address from mar
 		//load the memory with data from mbr
 		uint8_t b0 = (uint8_t)(mbr & 0x000000FF);

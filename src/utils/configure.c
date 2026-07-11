@@ -54,14 +54,17 @@ void configure(char * path){
 
 	DRAM_READ_LATENCY = 200;
 	DRAM_WRITE_LATENCY = 200;
-	DRAM_SIZE = 32 * 1024;		//32k
+	DRAM_SIZE = 1024 * 1024;		//1M
 	
 	FORWARDING_SWITCH = 1;
 	BRANCH_PREDICTION_STRATEGY = 0;
 
-	text_segment_limit = 0x7FF;	//this must be l1 block aligned !!!!! is it ? i think i should remove this restriction
-					//key is to not allow the same block have both code segment and data segments contents
-					//the code segment boundary must not be in any block...
+	text_segment_limit = 0x0001ffff;	//128k
+	//this must be l1 block aligned !!!!! is it ? i think i should remove this restriction
+	//key is to not allow the same block have both code segment and data segments contents
+	//the code segment boundary must not be in any block...
+	rodata_segment_limit = 0x0003ffff;	//256k
+	
 	total_number_of_instructions = (text_segment_limit + 1) / 4;
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	//read file here

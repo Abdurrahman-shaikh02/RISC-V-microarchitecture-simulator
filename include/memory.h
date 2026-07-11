@@ -1,4 +1,5 @@
-extern uint32_t text_segment_limit;	//preferably something divisible by 4... :)
+extern uint32_t text_segment_limit;	//THIS IS THE LAST VALID ADDRESS FOR THE CODE SEGMENT (eg : 7ff... although unaligned... it holds the last byte of the code segment)
+extern uint32_t rodata_segment_limit;
 extern uint8_t mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 extern uint32_t mar_i;
 extern uint32_t mbr_i;
