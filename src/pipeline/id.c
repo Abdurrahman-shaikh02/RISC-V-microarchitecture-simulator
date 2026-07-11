@@ -8,15 +8,31 @@
 int set_hazard_stall();
 
 
+static int change_pc = 0;
+static uint32_t jump_pc = 0;
+
+//reset the flags when theres an ex flush... 
+//basically handling the situation where the change pc is set due to some branch but then immediately a flush caused all three pipeline registers to get cleared...
+//now if the decode is called it still has the change pc flag and the new pc value which it will replace the pc with (if the flags arent cleared)
+//so so the original branch instruction(and the predictor predicted that it will be taken) that was supposed to be flushed didnt actually get flushed
+//and caused the branch to be taken
+void reset_decode_flags(){
+	change_pc = 0;
+	jump_pc = 0;
+}
+
 void id_stage(){
 	//the following segment is only due to our design where id happens before if does...
 	//so if we change the value of pc here it would be the same as if the pc value was changed in the last clock cycle...
-	static int change_pc = 0;
-	static uint32_t jump_pc = 0;
 	if(change_pc == 1){
 		//change pc, reset id_ex reg and if_id
 		//now this is sort of a trigger set in the last clock cycle to change the pc because the branch prediction predicted
 		//in the last clock cycle that the branch will be taken 
+
+		//cancelling any on going read instruction operations going on !!!
+		read_memory_i(1);
+
+		//then change the pc... so that the next if can fetch that
 		pc = jump_pc;
 		FLUSH = 1;
 		
@@ -68,7 +84,7 @@ void id_stage(){
 	}
 	
 	//after hazard stall so if u are stallin gthen this trigger wont set
-	if(out.cs_ma.branch_taken == 1 && out.cs_ex.type == 0b11 && out.cs_ma.jump_or_branch == 0){
+	if(out.cs_ma.branch_taken == 1 && out.cs_ex.type == 0b11 && out.cs_ma.jump_or_branch == 2){
 		//if it s a branch insturctions and the prediction value is 1
 		//set change_pc = 1 to be read in the next cycle...
 		change_pc = 1;

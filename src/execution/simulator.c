@@ -7,6 +7,7 @@
 #include "stats.h"
 #include "simulator.h"
 
+void reset_decode_flags();
 
 void simulate(char * path){
 	FILE * fd = NULL;
@@ -62,7 +63,7 @@ void simulate(char * path){
 
 			//cancelling any on going read instruction operations going on !!!
 			read_memory_i(1);
-			
+			reset_decode_flags();
 			ex_flushes++;	//stat
 
 			FLUSH = 0;
