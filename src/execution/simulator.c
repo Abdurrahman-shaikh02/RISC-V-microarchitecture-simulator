@@ -7,21 +7,22 @@
 #include "stats.h"
 #include "simulator.h"
 
-void reset_decode_flags();
 
-void simulate(char * path){
+void simulate(char * path, int visuals){
 	FILE * fd = NULL;
 
-	if(path == NULL){
-		fd = stdout;
-	}else{
-		fd = fopen(path, "w");
-	}
-	
+	if(visuals == 1){
+		if(path == NULL){
+			fd = stdout;
+		}else{
+			fd = fopen(path, "w");
+		}
 
-	if(fd == NULL){
-		log_fatal("Couldnt open file for pipeline visuals");
-		exit(1);
+
+		if(fd == NULL){
+			log_fatal("Couldnt open file for pipeline visuals");
+			exit(1);
+		}
 	}
 
 	int pause_counter = -1;		//this is to count 1 cycles from the cycle where ebreak was in exec
@@ -51,7 +52,8 @@ void simulate(char * path){
 
 			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
-			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			if(visuals == 1)
+				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}else if(FLUSH == 1){
 			//clear ex_ma, id_ex, if_id stages
@@ -87,7 +89,8 @@ void simulate(char * path){
 
 			//increase the clock, handle visuals and skip the IF, ID, EX stages(stall) and continue to next cycle
 			cycle++;
-			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			if(visuals == 1)
+				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
@@ -109,7 +112,8 @@ void simulate(char * path){
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 					cycle++;
-					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					if(visuals == 1)
+						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 					HAZARD_STALL = 0;
 					continue;
@@ -136,11 +140,13 @@ void simulate(char * path){
 					if_id = (IF_ID){0, 0, 0, "                    "};
 
 					cycle++;
-					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					if(visuals == 1)
+						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 					continue;
 				}
 				cycle++;
-				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				if(visuals == 1)
+					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 				
 				pause_counter--;
 				PAUSE = 0;
@@ -156,6 +162,7 @@ void simulate(char * path){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				pause_counter--;
 				cycle++;
+				if(visuals == 1)
 				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				PAUSE = 0;
@@ -174,7 +181,8 @@ void simulate(char * path){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				pause_counter--;
 				cycle++;
-				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				if(visuals == 1)
+					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				PAUSE = 0;
 				log_debug("PAUSE flag set to 0");
@@ -195,7 +203,8 @@ void simulate(char * path){
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 					cycle++;
-					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					if(visuals == 1)
+						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 					HAZARD_STALL = 0;
 					continue;
@@ -222,11 +231,13 @@ void simulate(char * path){
 					if_id = (IF_ID){0, 0, 0, "                    "};
 
 					cycle++;
-					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+					if(visuals == 1)
+						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 					continue;
 				}
 				cycle++;
-				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				if(visuals == 1)
+					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 				
 				//do the system call here
 				uint32_t ecall_code = reg_file[17];
@@ -250,6 +261,7 @@ void simulate(char * path){
 				//increase the clock, handle visuals, handle trap_counter and skip the IF, ID stages(stall) and continue to next cycle
 				trap_counter--;
 				cycle++;
+				if(visuals == 1)
 				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				TRAP = 0;
@@ -268,7 +280,8 @@ void simulate(char * path){
 				//increase the clock, handle visuals, handle pause_counter and skip the IF, ID stages(stall) and continue to next cycle
 				trap_counter--;
 				cycle++;
-				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+				if(visuals == 1)
+					fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 				TRAP = 0;
 				log_debug("TRAP flag was set to 0");
@@ -283,7 +296,8 @@ void simulate(char * path){
 			update_operands();	//updating decode stage operands
 
 			cycle++;
-			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			if(visuals == 1)
+				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
 			FORWARDING_STALL = 0;
 			continue;
@@ -299,7 +313,8 @@ void simulate(char * path){
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
 			cycle++;
-			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			if(visuals == 1)
+				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			
 			HAZARD_STALL = 0;
 			continue;
@@ -325,19 +340,21 @@ void simulate(char * path){
 			if_id = (IF_ID){0, 0, 0, "                    "};
 
 			cycle++;
-			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+			if(visuals == 1)
+				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			continue;
 		}
 
 		
 		cycle++;
 
-		fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
+		if(visuals == 1)
+			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 	}
 
 	if(halt) exit(0);
 	
-	if(path != NULL){
+	if(visuals == 1 && path != NULL){
 		fclose(fd);
 	}
 }

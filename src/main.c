@@ -27,7 +27,10 @@ int main(){
 	init_memory("output.txt", NULL);
 	
 	printf("Running Simulation...\n");
-	simulate("pipevis.txt");
+	simulate("pipevis.txt", 1);		//dont disable printfs until ur sure	main thing to take care of is free_instructions and the instruction retired count
+	
+	//were allocated in init_memory
+	free_instructions();
 
 	printf("Dumping Machine State...\n");
 	display_general_purpose_registers("register_dump");
@@ -39,6 +42,5 @@ int main(){
 	
 	//printf("%ld\n", cycle);
 	
-	free_instructions();
 	//close the files tooooooo !!!
 }

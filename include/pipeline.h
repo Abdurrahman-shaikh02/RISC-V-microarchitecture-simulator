@@ -62,6 +62,7 @@ extern WB_IF recent_wb;		//solely for the purpose of saving a history of the wri
 void if_stage();
 void id_stage();
 void update_operands();
+void reset_decode_flags();
 void ex_stage();
 void ma_stage();
 void wb_stage();

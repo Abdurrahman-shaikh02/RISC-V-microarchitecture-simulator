@@ -358,35 +358,9 @@ void init_memory(char * path){
 	log_debug("memory initialization complete...");
 }
 */
-void display_memory(char * path){
-	FILE * fd = NULL;
 
-	if(path == NULL){
-		fd = stdout;
-	}else{
-		fd = fopen(path, "w");
-	}
-
-	if(fd == NULL){
-		log_fatal("Couldnt open file for memory dump.");
-		exit(1);
-	}
-
-	for(int i = 0; i < DRAM_SIZE; i+=32){
-		fprintf(fd, "[%08x] :", i);
-		for(int j = 0; j < 32; j++){
-			fprintf(fd, " %02x", dram[i+j]);
-		}
-		fprintf(fd, "\n");
-	}
-
-	if(path != NULL){
-		fclose(fd);
-	}
-}
-
-void init_memory_i(char *path)
-{
+//allocates all instructions strings, if theres no instruction, it fills with 20 spaces
+void init_memory_i(char *path){
 	FILE *f = fopen(path, "r");
 
 	if (f == NULL) {
@@ -508,6 +482,33 @@ void init_memory_i(char *path)
 	fclose(f);
 
 	log_debug("memory initialization complete...");
+}
+
+void display_memory(char * path){
+	FILE * fd = NULL;
+
+	if(path == NULL){
+		fd = stdout;
+	}else{
+		fd = fopen(path, "w");
+	}
+
+	if(fd == NULL){
+		log_fatal("Couldnt open file for memory dump.");
+		exit(1);
+	}
+
+	for(int i = 0; i < DRAM_SIZE; i+=32){
+		fprintf(fd, "[%08x] :", i);
+		for(int j = 0; j < 32; j++){
+			fprintf(fd, " %02x", dram[i+j]);
+		}
+		fprintf(fd, "\n");
+	}
+
+	if(path != NULL){
+		fclose(fd);
+	}
 }
 
 

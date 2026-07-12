@@ -132,42 +132,4 @@ void configure(char * path){
 	}
 	
 	log_info("configured...");
-	/*
-	// use calloc buddy pls : commented this just in case you decide to make a reset function
-	for(int i = 0; i < l1_d.cache_size/4; i++){
-		l1_d.cache[i].addr = 0;
-		l1_d.cache[i].data = 0;
-		l1_d.cache[i].dirty = 0;
-		l1_d.cache[i].done = 0;
-		l1_d.cache[i].reference = 0;
-		l1_d.cache[i].valid = 0;
-	}
-
-	for(int i = 0; i < l1_i.cache_size/4; i++){
-		l1_i.cache[i].addr = 0;
-		l1_i.cache[i].data = 0;
-		l1_i.cache[i].dirty = 0;
-		l1_i.cache[i].done = 0;
-		l1_i.cache[i].reference = 0;
-		l1_i.cache[i].valid = 0;
-	}
-
-	for(int i = 0; i < l2.cache_size/4; i++){
-		l2.cache[i].addr = 0;
-		l2.cache[i].data = 0;
-		l2.cache[i].dirty = 0;
-		l2.cache[i].done = 0;
-		l2.cache[i].reference = 0;
-		l2.cache[i].valid = 0;
-	}
-
-	for(int i = 0; i < l3.cache_size/4; i++){
-		l3.cache[i].addr = 0;
-		l3.cache[i].data = 0;
-		l3.cache[i].dirty = 0;
-		l3.cache[i].done = 0;
-		l3.cache[i].reference = 0;
-		l3.cache[i].valid = 0;
-	}
-	*/
 }
