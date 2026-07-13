@@ -20,6 +20,7 @@ void read_memory(uint32_t opcode);	//need to implement aligned accesses only, RE
 
 void write_memory(uint32_t opcode);
 
+void open_trace_files();
 void display_memory(char * path);
 void free_instructions(void);
 void display_instructions();

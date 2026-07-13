@@ -342,4 +342,11 @@ void display_instructions(){
 	}
 }
 
-
+void open_trace_files(){
+	memory_access_history_file_d = fopen("data_trace.txt", "w");
+	memory_access_history_file_i = fopen("instruction_trace.txt", "w");
+	if(memory_access_history_file_d == NULL || memory_access_history_file_i == NULL){
+		log_fatal("trace files couldnt be created");
+		exit(1);
+	}
+}

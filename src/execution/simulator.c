@@ -2,13 +2,14 @@
 #include "control.h"
 #include "pipeline.h"
 #include "memory.h"
+#include "internal_memory.h"
 #include "utility.h"
 #include "cache.h"
 #include "stats.h"
 #include "simulator.h"
 
 
-void simulate(char * path, int visuals){
+void simulate(char * path, uint32_t entry, int visuals){
 	FILE * fd = NULL;
 
 	if(visuals == 1){
@@ -29,7 +30,9 @@ void simulate(char * path, int visuals){
 	int trap_counter = -1;		//this is to count 1 cycles from the cycle where ecall was in exec
 	int halt = 0;
 
-
+	pc = entry;	//set pc to entry point
+	
+	//start machine
 	while(1){
 		log_break();
 		log_info("New cycle starts");
@@ -352,7 +355,7 @@ void simulate(char * path, int visuals){
 			fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 	}
 
-	if(halt) exit(0);
+	//if(halt) exit(0);
 	
 	if(visuals == 1 && path != NULL){
 		fclose(fd);

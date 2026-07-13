@@ -17,6 +17,7 @@ need to declare internal registers, pipeline registers here.
 #include "configure.h"
 #include "simulator.h"
 #include "custom_loader.h"
+#include "elf_loader.h"
 
 int main(){
 	//initialize memory...
@@ -25,10 +26,13 @@ int main(){
 	configure(NULL);
 
 	printf("Initializing Memory...\n");
-	custom_loader("output.txt", NULL);
+	open_trace_files();
+	uint32_t entry;
+	elf_loader("program.elf", dram, DRAM_SIZE, instructions, total_number_of_instructions, &entry);
+	//custom_loader("output.txt", NULL, &entry);
 	
 	printf("Running Simulation...\n");
-	simulate("pipevis.txt", 1);		//dont disable printfs until ur sure	main thing to take care of is free_instructions and the instruction retired count
+	simulate("pipevis.txt", entry, 1);		//dont disable printfs until ur sure	main thing to take care of is free_instructions and the instruction retired count
 	
 	//were allocated in init_memory
 	free_instructions();

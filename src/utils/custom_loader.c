@@ -131,16 +131,13 @@ void custom_loader_d(char *path){
 
 }
 
-void custom_loader(char * instruction_file, char * data_file){
-	//open the memory access histroy file... for writing
-	memory_access_history_file_d = fopen("data_trace.txt", "w");
-	memory_access_history_file_i = fopen("instruction_trace.txt", "w");
-	if(memory_access_history_file_d == NULL || memory_access_history_file_i == NULL){
-		log_fatal("trace files couldnt be created");
-		exit(1);
-	}
+int custom_loader(char * instruction_file, char * data_file, uint32_t * entry){
+	//return 0 for success
 	
 	custom_loader_i(instruction_file);
 	custom_loader_d(data_file);
+
+	*entry = 0;	//custom loader code starts from 0
+	return 0;
 }
 

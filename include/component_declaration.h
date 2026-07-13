@@ -13,12 +13,12 @@ int HAZARD_STALL;	//set when a stall is required... only used when forwarding sw
 int STRUCTURAL_HAZARD_STALL;
 int FLUSH;
 
-IF_ID if_id;
-ID_EX id_ex;
-EX_MA ex_ma;
-MA_WB ma_wb;
-WB_IF wb_if;
-WB_IF recent_wb;
+IF_ID if_id = (IF_ID){0, 0, 0, "                    "};
+ID_EX id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
+EX_MA ex_ma = (EX_MA){0, 0, 0, 0, 0, {0, 0, 0, 0}, {0}, "                    "};
+MA_WB ma_wb = (MA_WB){0, 0, {0}, "                    "};
+WB_IF wb_if = (WB_IF){0, 0, {0}, "                    "};
+WB_IF recent_wb = (WB_IF){0, 0, {0}, "                    "};
 
 int FORWARDING_SWITCH = 1;	//forwarding on(1) or off(0) ?
 
