@@ -20,10 +20,6 @@ void read_memory(uint32_t opcode);	//need to implement aligned accesses only, RE
 
 void write_memory(uint32_t opcode);
 
-void init_memory(char * instruction_file, char * data_file);		//this function needs to call both init i and init d
-void init_memory_i(char * path);	//to load the program into the ram... 
-void init_memory_d(char * path);
-
 void display_memory(char * path);
 void free_instructions(void);
 void display_instructions();

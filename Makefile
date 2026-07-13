@@ -51,7 +51,8 @@ src/forwarding/forwarding.c\
 src/stats/stats.c \
 src/utils/logger.c \
 src/utils/configure.c \
-src/utils/utility.c
+src/utils/utility.c \
+src/utils/custom_loader.c
 
 SIM_OBJ := $(patsubst %.c,$(BUILD)/%.o,$(SIM_SRC))
 
