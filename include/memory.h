@@ -20,14 +20,12 @@ void read_memory(uint32_t opcode);	//need to implement aligned accesses only, RE
 
 void write_memory(uint32_t opcode);
 
-void open_trace_files();
+void open_trace_files(char * instruction_trace, char * data_trace);
 void display_memory(char * path);
 void free_instructions(void);
 void display_instructions();
 
+extern int trace;
 extern FILE * memory_access_history_file_d;
 extern FILE * memory_access_history_file_i;
-#define l1_read_cycles 3
-#define l1_read_i_cycles 3
-#define l1_write_cycles 3
 

@@ -9,6 +9,8 @@ typedef enum {
 
 void log_msg(log_level level, const char * msg);    //use only macros to acces this function... to be safe ofcourse....
 
+extern log_level CURRENT_LEVEL;
+
 #define log_debug(msg) log_msg(LOG_DEBUG, msg)
 #define log_info(msg) log_msg(LOG_INFO, msg)
 #define log_warn(msg) log_msg(LOG_WARN, msg)

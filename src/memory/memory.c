@@ -3,6 +3,7 @@
 #include "stats.h"
 #include "cache.h"
 
+int trace = 0;
 FILE * memory_access_history_file_d;
 FILE * memory_access_history_file_i;
 
@@ -92,7 +93,8 @@ void read_memory_i(int cancel){
 		mbr_i = 0;
 		mbr_i = mbr_i | (b0 | b1 | b2 | b3);
 
-		fprintf(memory_access_history_file_i, "i %#08x\n", mar_i);		//memory access history file
+		if(trace == 1)
+			fprintf(memory_access_history_file_i, "i %#08x\n", mar_i);		//memory access history file
 	
 		//set mfc;
 		log_debug("setting mfc to 1");
@@ -188,7 +190,8 @@ void read_memory(uint32_t opcode){
 				exit(1);
 		}
 
-		fprintf(memory_access_history_file_d, "r %#08x\n", mar);		//memory access history file
+		if(trace == 1)
+			fprintf(memory_access_history_file_d, "r %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		log_debug("setting mfc to 1");
@@ -285,7 +288,8 @@ void write_memory(uint32_t opcode){
 				exit(1);
 		}
 
-		fprintf(memory_access_history_file_d, "w %#08x\n", mar);		//memory access history file
+		if(trace == 1)
+			fprintf(memory_access_history_file_d, "w %#08x\n", mar);		//memory access history file
 
 		//set mfc;
 		mfc = 1;
@@ -342,9 +346,10 @@ void display_instructions(){
 	}
 }
 
-void open_trace_files(){
-	memory_access_history_file_d = fopen("data_trace.txt", "w");
-	memory_access_history_file_i = fopen("instruction_trace.txt", "w");
+void open_trace_files(char * instruction_trace, char * data_trace){
+	if(trace == 0) return;
+	memory_access_history_file_d = fopen(data_trace, "w");
+	memory_access_history_file_i = fopen(instruction_trace, "w");
 	if(memory_access_history_file_d == NULL || memory_access_history_file_i == NULL){
 		log_fatal("trace files couldnt be created");
 		exit(1);

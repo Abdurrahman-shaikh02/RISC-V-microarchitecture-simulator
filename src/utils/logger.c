@@ -3,7 +3,8 @@
 #include "logger.h"
 
 
-static log_level CURRENT_LEVEL = LOG_DEBUG;
+log_level CURRENT_LEVEL = LOG_DEBUG;
+
 // use macros to use this function...
 void log_msg(log_level level, const char * msg){
     if(level < CURRENT_LEVEL) return;
