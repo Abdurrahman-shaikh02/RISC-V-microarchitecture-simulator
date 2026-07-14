@@ -8,9 +8,12 @@ static int read_program_headers(FILE *fp, const Elf32_Ehdr *ehdr, Elf32_Phdr **p
 static int load_segments(FILE *fp, const Elf32_Phdr *phdrs, int phnum, uint8_t *dram, uint32_t dram_size);
 
 void fill_instruction_strings(char ** instructions, uint32_t total_number_of_instructions){
-    for(int i = 0; i < total_number_of_instructions; i++){
+    uint32_t j = 0;
+    for(int i = 0; i < total_number_of_instructions; i++, j+=4){
         char * s = (char *)malloc(21);
-        strcpy(s, "<------------------>");
+
+        snprintf(s, 21, "     0x%08" PRIx32 "     ", j);
+
         instructions[i] = s;
     }
 }
