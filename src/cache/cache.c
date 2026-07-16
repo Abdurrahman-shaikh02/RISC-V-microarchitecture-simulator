@@ -3,6 +3,7 @@
 #include "memory.h"
 
 int CACHE_LEVELS;
+int L1_SPLIT;
 cache_level l1_i, l1_d, l2, l3;
 int DRAM_READ_LATENCY, DRAM_WRITE_LATENCY;
 int DRAM_SIZE;

@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------
 extern uint64_t cycle;		//global cycle
 extern int CACHE_LEVELS;	//-1 means 0 stalls for each mem operation, 0 means only ram, 1 means l1 and ram, 2 means l1 l2 and ram and so on
-
+extern int L1_SPLIT;
 
 typedef struct cache_line{
 	uint32_t data;
