@@ -102,7 +102,9 @@ int set_hazard_stall(){
 	
 
 	if(ex_ma.cs_wb.wb == 1){
-		if((id_ex.cs_ex.source1 == 1 && ex_ma.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) || (id_ex.cs_ex.source2 == 0 && ex_ma.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){
+		if((id_ex.cs_ex.source1 == 1 && ex_ma.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) ||	
+		(id_ex.cs_ex.source2 == 0 && ex_ma.nrd == id_ex.nrs2 && id_ex.nrs2 != 0) ||
+		(id_ex.cs_ma.mem == 1 && ((id_ex.cs_ma.read_write_opcode & 0x8) == 0x8) && ex_ma.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){	//if its a memory write compulsarily check r2 because r2 contains the value to be written
 			//if either of the current operands has a pending write in the ex_ma
 			HAZARD_STALL = 1;
 			log_info("data hazard stall set !");
@@ -110,7 +112,9 @@ int set_hazard_stall(){
 		}
 	}
 	if(ma_wb.cs_wb.wb == 1){
-		if((id_ex.cs_ex.source1 == 1 && ma_wb.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) || (id_ex.cs_ex.source2 == 0 && ma_wb.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){
+		if((id_ex.cs_ex.source1 == 1 && ma_wb.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) ||
+		(id_ex.cs_ex.source2 == 0 && ma_wb.nrd == id_ex.nrs2 && id_ex.nrs2 != 0) ||
+		(id_ex.cs_ma.mem == 1 && ((id_ex.cs_ma.read_write_opcode & 0x8) == 0x8) && ma_wb.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){	//if its a memory write compulsarily check r2 because r2 contains the value to be written
 			//if either of the current operands has a pending write in the ma_wb
 			HAZARD_STALL = 1;
 			log_info("data hazard stall set !");
@@ -118,7 +122,9 @@ int set_hazard_stall(){
 		}
 	}
 	if(wb_if.cs_wb.wb == 1){
-		if((id_ex.cs_ex.source1 == 1 && wb_if.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) || (id_ex.cs_ex.source2 == 0 && wb_if.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){
+		if((id_ex.cs_ex.source1 == 1 && wb_if.nrd == id_ex.nrs1 && id_ex.nrs1 != 0) ||
+		(id_ex.cs_ex.source2 == 0 && wb_if.nrd == id_ex.nrs2 && id_ex.nrs2 != 0) ||
+		(id_ex.cs_ma.mem == 1 && ((id_ex.cs_ma.read_write_opcode & 0x8) == 0x8) && wb_if.nrd == id_ex.nrs2 && id_ex.nrs2 != 0)){	//if its a memory write compulsarily check r2 because r2 contains the value to be written
 			//if either of the current operands has been written to in the current cycle in wb stage
 			//still need to stall because due to our design wb stage happens before id in the same clock
 			HAZARD_STALL = 1;

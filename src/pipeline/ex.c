@@ -118,7 +118,10 @@ void ex_stage(){
 								//and oring with 0 doesnt cause a problem...
 	ex_ma.cs_wb = id_ex.cs_wb;
 	ex_ma.nrs2 = id_ex.nrs2;
-	ex_ma.R2 = id_ex.R2;
+
+	log_info("Checking for data hazards in R2 field (ex_forward)");
+	ex_ma.R2 = forward_ex(id_ex.R2, id_ex.nrs2);
+
 	ex_ma.nrd = id_ex.nrd;
 	ex_ma.PC_next = id_ex.PC_next;
 	ex_ma.ins = id_ex.ins;
