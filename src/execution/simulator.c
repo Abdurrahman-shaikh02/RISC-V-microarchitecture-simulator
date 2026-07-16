@@ -108,9 +108,9 @@ void simulate(char * path, uint32_t entry, int visuals){
 				
 				//id_stage
 				id_stage();
-				if(HAZARD_STALL == 1){
+				if(DATA_HAZARD_STALL == 1){
 					//clear id_ex register
-					//increment cycle, print visuals, reset HAZARD_STALL
+					//increment cycle, print visuals, reset DATA_HAZARD_STALL
 
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
@@ -118,7 +118,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 					if(visuals == 1)
 						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
-					HAZARD_STALL = 0;
+					DATA_HAZARD_STALL = 0;
 					continue;
 				}else if(FLUSH == 1){
 					//clear id_ex register, if_id register... let the excution continue
@@ -199,9 +199,9 @@ void simulate(char * path, uint32_t entry, int visuals){
 				
 				//id_stage
 				id_stage();
-				if(HAZARD_STALL == 1){
+				if(DATA_HAZARD_STALL == 1){
 					//clear id_ex register
-					//increment cycle, print visuals, reset HAZARD_STALL
+					//increment cycle, print visuals, reset DATA_HAZARD_STALL
 
 					id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
@@ -209,7 +209,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 					if(visuals == 1)
 						fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 
-					HAZARD_STALL = 0;
+					DATA_HAZARD_STALL = 0;
 					continue;
 				}else if(FLUSH == 1){
 					//clear id_ex register, if_id register... let the excution continue
@@ -309,9 +309,9 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 		//id_stage
 		id_stage();
-		if(HAZARD_STALL == 1){
+		if(DATA_HAZARD_STALL == 1){
 			//clear id_ex register
-			//increment cycle, print visuals, reset HAZARD_STALL
+			//increment cycle, print visuals, reset DATA_HAZARD_STALL
 
 			id_ex = (ID_EX){0,0,0,0,0,0,0,0,{0,0,0,0,0,0,0,0},{0,0,0,0},{0}, "                    "};
 
@@ -319,7 +319,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 			if(visuals == 1)
 				fprintf(fd, "Cycle %ld : %s | %s | %s | %s | %s\n", cycle,  if_id.ins, id_ex.ins, ex_ma.ins, ma_wb.ins, wb_if.ins);
 			
-			HAZARD_STALL = 0;
+			DATA_HAZARD_STALL = 0;
 			continue;
 		}else if(FLUSH == 1){
 			//clear id_ex register, if_id register... let the excution continue

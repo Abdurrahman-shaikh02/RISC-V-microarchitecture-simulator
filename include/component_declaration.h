@@ -9,7 +9,7 @@ uint32_t ir;
 int PAUSE;
 int TRAP;
 int FORWARDING_STALL;	//used for the compulsory stall during forwarding to ex stage
-int HAZARD_STALL;	//set when a stall is required... only used when forwarding switch is on
+int DATA_HAZARD_STALL;	//set when a stall is required... only used when forwarding switch is on
 int STRUCTURAL_HAZARD_STALL;
 int FLUSH;
 
