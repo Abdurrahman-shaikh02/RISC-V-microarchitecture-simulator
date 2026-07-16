@@ -53,7 +53,9 @@ src/utils/logger.c \
 src/utils/configure.c \
 src/utils/utility.c \
 src/utils/custom_loader.c \
-src/utils/elf_loader.c
+src/utils/elf_loader.c \
+src/utils/cJSON.c \
+src/utils/json_loader.c
 
 SIM_OBJ := $(patsubst %.c,$(BUILD)/%.o,$(SIM_SRC))
 

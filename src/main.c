@@ -113,8 +113,6 @@ int main(int argc, char * argv[]){
 			}
 
 			config = argv[++i];
-			printf("Config file not supported yet !\n");
-			return 0;
 		}else{
 			fprintf(stderr, "Error: unknown argument '%s'\n", argv[i]);
 			return EXIT_FAILURE;
@@ -140,7 +138,6 @@ int main(int argc, char * argv[]){
 
 	printf("Configuring System...\n");
 	configure(config);
-
 
 	printf("Initializing Memory...\n");
 	if(gen_trace){

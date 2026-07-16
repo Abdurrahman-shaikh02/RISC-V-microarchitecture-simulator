@@ -3,6 +3,8 @@
 #include "memory.h"
 #include "branch_prediction.h"
 #include "control.h"
+#include "configure.h"
+#include "json_loader.h"
 
 
 
@@ -69,7 +71,9 @@ void configure(char * path){
 	total_number_of_instructions = (text_segment_limit + 1) / 4;
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	//read file here
-	
+	if(path != NULL){
+		load_config_json(path); // override only supplied values
+	}
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 	// check for value constraints
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,42 +91,69 @@ void configure(char * path){
 	}
 	
 	log_info("configured...");
-	/*
-	// use calloc buddy pls : commented this just in case you decide to make a reset function
-	for(int i = 0; i < l1_d.cache_size/4; i++){
-		l1_d.cache[i].addr = 0;
-		l1_d.cache[i].data = 0;
-		l1_d.cache[i].dirty = 0;
-		l1_d.cache[i].done = 0;
-		l1_d.cache[i].reference = 0;
-		l1_d.cache[i].valid = 0;
-	}
+}
 
-	for(int i = 0; i < l1_i.cache_size/4; i++){
-		l1_i.cache[i].addr = 0;
-		l1_i.cache[i].data = 0;
-		l1_i.cache[i].dirty = 0;
-		l1_i.cache[i].done = 0;
-		l1_i.cache[i].reference = 0;
-		l1_i.cache[i].valid = 0;
-	}
+void display_config(void)
+{
+    printf("\n========== Configuration ==========\n");
 
-	for(int i = 0; i < l2.cache_size/4; i++){
-		l2.cache[i].addr = 0;
-		l2.cache[i].data = 0;
-		l2.cache[i].dirty = 0;
-		l2.cache[i].done = 0;
-		l2.cache[i].reference = 0;
-		l2.cache[i].valid = 0;
-	}
+    printf("CACHE_LEVELS = %d\n", CACHE_LEVELS);
+    printf("L1_SPLIT = %d\n\n", L1_SPLIT);
 
-	for(int i = 0; i < l3.cache_size/4; i++){
-		l3.cache[i].addr = 0;
-		l3.cache[i].data = 0;
-		l3.cache[i].dirty = 0;
-		l3.cache[i].done = 0;
-		l3.cache[i].reference = 0;
-		l3.cache[i].valid = 0;
-	}
-	*/
+    printf("L1 Instruction Cache\n");
+    printf("level = %d\n", l1_i.level);
+    printf("cache_size = %d\n", l1_i.cache_size);
+    printf("block_size = %d\n", l1_i.block_size);
+    printf("associativity = %d\n", l1_i.associativity);
+    printf("read_latency = %d\n", l1_i.read_latency);
+    printf("write_latency = %d\n", l1_i.write_latency);
+    printf("write_policy = %d\n", l1_i.write_policy);
+    printf("write_miss_policy = %d\n", l1_i.write_miss_policy);
+    printf("replacement_policy = %d\n\n", l1_i.replacement_policy);
+
+    printf("L1 Data Cache\n");
+    printf("level = %d\n", l1_d.level);
+    printf("cache_size = %d\n", l1_d.cache_size);
+    printf("block_size = %d\n", l1_d.block_size);
+    printf("associativity = %d\n", l1_d.associativity);
+    printf("read_latency = %d\n", l1_d.read_latency);
+    printf("write_latency = %d\n", l1_d.write_latency);
+    printf("write_policy = %d\n", l1_d.write_policy);
+    printf("write_miss_policy = %d\n", l1_d.write_miss_policy);
+    printf("replacement_policy = %d\n\n", l1_d.replacement_policy);
+
+    printf("L2 Cache\n");
+    printf("level = %d\n", l2.level);
+    printf("cache_size = %d\n", l2.cache_size);
+    printf("block_size = %d\n", l2.block_size);
+    printf("associativity = %d\n", l2.associativity);
+    printf("read_latency = %d\n", l2.read_latency);
+    printf("write_latency = %d\n", l2.write_latency);
+    printf("write_policy = %d\n", l2.write_policy);
+    printf("write_miss_policy = %d\n", l2.write_miss_policy);
+    printf("replacement_policy = %d\n\n", l2.replacement_policy);
+
+    printf("L3 Cache\n");
+    printf("level = %d\n", l3.level);
+    printf("cache_size = %d\n", l3.cache_size);
+    printf("block_size = %d\n", l3.block_size);
+    printf("associativity = %d\n", l3.associativity);
+    printf("read_latency = %d\n", l3.read_latency);
+    printf("write_latency = %d\n", l3.write_latency);
+    printf("write_policy = %d\n", l3.write_policy);
+    printf("write_miss_policy = %d\n", l3.write_miss_policy);
+    printf("replacement_policy = %d\n\n", l3.replacement_policy);
+
+    printf("DRAM_READ_LATENCY = %d\n", DRAM_READ_LATENCY);
+    printf("DRAM_WRITE_LATENCY = %d\n", DRAM_WRITE_LATENCY);
+    printf("DRAM_SIZE = %d\n\n", DRAM_SIZE);
+
+    printf("FORWARDING_SWITCH = %d\n", FORWARDING_SWITCH);
+    printf("BRANCH_PREDICTION_STRATEGY = %d\n", BRANCH_PREDICTION_STRATEGY);
+
+    printf("text_segment_limit = 0x%08X\n", text_segment_limit);
+    printf("rodata_segment_limit = 0x%08X\n", rodata_segment_limit);
+    printf("total_number_of_instructions = %u\n", total_number_of_instructions);
+
+    printf("===================================\n");
 }
