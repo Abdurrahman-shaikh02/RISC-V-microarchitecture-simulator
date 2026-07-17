@@ -1,0 +1,58 @@
+{
+    "CACHE_LEVELS": 3,
+    "L1_SPLIT": 1,
+
+    "l1_d": {
+        "cache_size": 2048,
+        "block_size": 16,
+        "associativity": 2,
+        "read_latency": 1,
+        "write_latency": 1,
+        "write_miss_policy": 1,
+        "replacement_policy": 0,
+        "write_policy": 0
+    },
+
+    "l1_i": {
+        "cache_size": 2048,
+        "block_size": 16,
+        "associativity": 2,
+        "read_latency": 1,
+        "write_latency": 1,
+        "write_miss_policy": 1,
+        "replacement_policy": 0,
+        "write_policy": 0
+    },
+
+    "l2": {
+        "cache_size": 8192,
+        "block_size": 32,
+        "associativity": 4,
+        "read_latency": 10,
+        "write_latency": 10,
+        "write_miss_policy": 0,
+        "replacement_policy": 0,
+        "write_policy": 1
+    },
+
+    "l3": {
+        "cache_size": 16384,
+        "block_size": 64,
+        "associativity": 8,
+        "read_latency": 30,
+        "write_latency": 30,
+        "write_miss_policy": 0,
+        "replacement_policy": 0,
+        "write_policy": 1
+    },
+
+    "DRAM_READ_LATENCY": 200,
+    "DRAM_WRITE_LATENCY": 200,
+    "DRAM_SIZE": 1048576,
+
+    "FORWARDING_SWITCH": 1,
+    "BRANCH_PREDICTION_STRATEGY": 0,
+
+    "text_segment_limit": 131071,
+    "rodata_segment_limit": 262143
+}
