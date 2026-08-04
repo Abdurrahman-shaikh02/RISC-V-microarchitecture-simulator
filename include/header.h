@@ -6,3 +6,5 @@
 #include <ctype.h>
 #include <math.h>
 #include <inttypes.h>
+#include <fcntl.h>
+#include <unistd.h>

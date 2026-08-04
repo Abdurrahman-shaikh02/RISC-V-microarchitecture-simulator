@@ -1,0 +1,4 @@
+spike --isa=rv32i -d program.elf
+
+reg 0  :  dump registers and then compare the register values remember for spike the origin is 0x80000000 and for the sim is 0x00000000
+pc 0   :  pc value

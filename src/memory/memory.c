@@ -2,6 +2,7 @@
 #include "memory.h"
 #include "stats.h"
 #include "cache.h"
+#include <fcntl.h>
 
 int trace = 0;
 FILE * memory_access_history_file_d;
@@ -142,6 +143,11 @@ void read_memory(uint32_t opcode){
 		n_reads++;	//stat
 
 		log_debug("loading mbr with [mar]");
+
+		if(mar >= DRAM_SIZE || mar < 0){
+			log_fatal("Out of bounds memory read.");
+			exit(1);
+		}
 		//read address from mar load into mbr
 		uint32_t b0 = dram[mar + 0];
 		uint32_t b1 = dram[mar + 1] << 8;
@@ -249,6 +255,11 @@ void write_memory(uint32_t opcode){
 			exit(1);
 		}
 
+		if(mar >= DRAM_SIZE){
+			log_fatal("Out of bounds memory write.");
+			exit(1);
+		}
+
 		//read address from mar
 		//load the memory with data from mbr
 		uint8_t b0 = (uint8_t)(mbr & 0x000000FF);
@@ -302,29 +313,31 @@ void write_memory(uint32_t opcode){
 }
 
 void display_memory(char * path){
-	FILE * fd = NULL;
-
 	if(path == NULL){
+		FILE * fd = NULL;
 		fd = stdout;
-	}else{
-		fd = fopen(path, "w");
-	}
 
-	if(fd == NULL){
-		log_fatal("Couldnt open file for memory dump.");
-		exit(1);
-	}
-
-	for(int i = 0; i < DRAM_SIZE; i+=32){
-		fprintf(fd, "[%08x] :", i);
-		for(int j = 0; j < 32; j++){
-			fprintf(fd, " %02x", dram[i+j]);
+		for(int i = 0; i < DRAM_SIZE; i+=32){
+			fprintf(fd, "[%08x] :", i);
+			for(int j = 0; j < 32; j++){
+				fprintf(fd, " %02x", dram[i+j]);
+			}
+			fprintf(fd, "\n");
 		}
-		fprintf(fd, "\n");
-	}
+	}else{
+		int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if(fd == -1){
+			log_fatal("Couldnt open file for memory dump.");
+			exit(1);
+		}
 
-	if(path != NULL){
-		fclose(fd);
+		int t = write(fd, dram, DRAM_SIZE);
+		if(t == -1){
+			log_fatal("Failed to write into memory dump.");
+			exit(1);
+		}
+
+		close(fd);
 	}
 }
 

@@ -174,7 +174,7 @@ int main(int argc, char * argv[]){
 		display_internal_registers("internal_register_dump");
 	}
 	if(mem_dump){
-		display_memory("memory_dump.txt");
+		display_memory("memory_dump.bin");
 	}
 
 
