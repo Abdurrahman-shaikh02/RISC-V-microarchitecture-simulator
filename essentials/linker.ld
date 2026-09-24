@@ -20,7 +20,7 @@ SECTIONS
         *(.text.*)
     } > RAM
 
-    . = 0x00020000;     /*128kb for code*/
+    . = ORIGIN(RAM) + 0x00020000;     /*128kb for code*/
 
     .rodata ALIGN(4) :
     {
@@ -28,7 +28,7 @@ SECTIONS
         *(.rodata.*)
     } > RAM
 
-    . = 0x00040000;     /*128kb for read only data*/
+    . = ORIGIN(RAM) + 0x00040000;     /*128kb for read only data*/
 
     .data ALIGN(4) :
     {

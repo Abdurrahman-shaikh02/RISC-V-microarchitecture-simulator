@@ -1,0 +1,64 @@
+For compiling coremark becnhmark for this simulator follow thi given steps:-
+
+i. Configure the baremetal/core_portme.h :-
+	#include <stddef.h>
+	~ add the definition at the top of core_portme.h
+	HAS_FLOAT = 0
+	HAS_TIME_H = 0
+	USE_CLOCK = 0
+	HAS_STDIO = 0
+	HAS_PRINTF = 0
+	MEM_LOCATION = "STACK"
+	MULTITHREAD = 1
+	MAIN_HAS_NOARGC = 1
+	MAIN_HAS_NORETURN = 0
+
+ii. Implement other required funtions in baremetal/core_portme.c :-
+	a.
+	CORETIMETYPE barebones_clock(){
+		return 0;
+	}
+	~ and also comment out the error directive.
+
+	b.
+	#define EE_TICKS_PER_SEC 	1
+	~ the original definition requires <time.h> but we will not use cvt.c ~ the file that uses <time.h>
+
+iii. Change a few other functions in ee_printf.c :-
+	a.
+	void uart_send_char(char c){
+		return;
+	}
+	~ and also comment out the error directive.
+
+	b.
+	int ee_printf(const char *fmt, ...){
+		return 0;
+	}
+	~ we do not have support for anything of this sort
+
+iv. Compile.
+	riscv64-unknown-elf-gcc \
+    		-march=rv32i \
+    		-mabi=ilp32 \
+    		-nostdlib \
+    		-ffreestanding \
+    		-O2 \
+    		-DITERATIONS=100 \
+    		-DTOTAL_DATA_SIZE=2000 \
+    		-DFLAGS_STR="\"-O2\"" \
+    		-I. \
+    		-Ibarebones \
+    		-T linker.ld \
+    		crt0.S \
+    		core_main.c \
+    		core_list_join.c \
+    		core_matrix.c \
+    		core_state.c \
+    		core_util.c \
+    		barebones/core_portme.c \
+    		barebones/ee_printf.c \
+    		-o coremark.elf
+
+	~ add the __mulsi3.c and __udivsi3.c implementation files too
+
