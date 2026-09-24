@@ -1,5 +1,5 @@
 #include "header.h"
-#include "branch_prediction.h"
+#include "static_branch_prediction.h"
 #include "alu.h"
 
 int predict_not_taken(uint32_t ir){
