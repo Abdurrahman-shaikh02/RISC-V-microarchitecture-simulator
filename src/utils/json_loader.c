@@ -3,6 +3,7 @@
 #include "control.h"
 #include "branch_prediction.h"
 #include "memory.h"
+#include "memory_configurables.h"
 #include "cJSON.h"
 
 #define READ_INT(json, name, var)                     \

@@ -1,6 +1,5 @@
 #include "header.h"
 #include "cache.h"
-#include "memory.h"
 
 int CACHE_LEVELS;
 int L1_SPLIT;

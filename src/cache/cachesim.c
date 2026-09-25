@@ -1,5 +1,5 @@
 #include "header.h"
-#include "memory.h"
+#include "memory_configurables.h"
 #include "cache.h"
 #include "stats.h"
 

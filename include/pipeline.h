@@ -66,5 +66,3 @@ void reset_decode_flags();
 void ex_stage();
 void ma_stage();
 void wb_stage();
-
-

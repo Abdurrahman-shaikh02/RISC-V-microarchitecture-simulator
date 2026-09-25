@@ -1,6 +1,5 @@
 #include "header.h"
 #include "cache.h"
-#include "memory.h"
 
 int set_valid(uint32_t addr, int valid, cache_level s){
 	cache_line * cache = s.cache;

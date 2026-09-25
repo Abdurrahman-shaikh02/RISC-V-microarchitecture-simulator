@@ -4,7 +4,6 @@
 #include "memory.h"
 #include "internal_memory.h"
 #include "utility.h"
-#include "cache.h"
 #include "stats.h"
 #include "simulator.h"
 

@@ -1,5 +1,6 @@
 #include "header.h"
 #include "memory.h"
+#include "memory_configurables.h"
 #include "stats.h"
 #include "cache.h"
 #include <fcntl.h>

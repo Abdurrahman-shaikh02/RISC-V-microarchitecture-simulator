@@ -1,5 +1,6 @@
 #include "header.h"
 #include "memory.h"
+#include "memory_configurables.h"
 #include "custom_loader.h"
 
 //allocates all instructions strings, if theres no instruction, it fills with 20 spaces

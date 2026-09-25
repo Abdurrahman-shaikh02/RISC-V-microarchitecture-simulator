@@ -1,6 +1,7 @@
 #include "header.h"
 #include "cache.h"
 #include "memory.h"
+#include "memory_configurables.h"
 #include "branch_prediction.h"
 #include "control.h"
 #include "configure.h"
