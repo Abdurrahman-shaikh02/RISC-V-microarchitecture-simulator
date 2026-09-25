@@ -36,11 +36,6 @@ extern cache_level l1_d;
 extern cache_level l2;
 extern cache_level l3;
 
-extern int DRAM_READ_LATENCY;
-extern int DRAM_WRITE_LATENCY;
-extern int DRAM_SIZE;
-
-
 //these are general functions... to be called only when the target BLOCK exists... -1 if block not found, 0 otherwise
 int set_valid(uint32_t addr, int valid, cache_level cache);	//cache, size, block size, n-way set
 int set_dirty(uint32_t addr, int dirty, cache_level cache);

@@ -1,10 +1,13 @@
-extern uint32_t text_segment_limit;	//THIS IS THE LAST VALID ADDRESS FOR THE CODE SEGMENT (eg : 7ff... although unaligned... it holds the last byte of the code segment)
-extern uint32_t rodata_segment_limit;
-extern uint8_t mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+typedef enum memory_op_status {
+	NOT_COMPLETED = 0,
+	COMPLETED = 1
+} memory_op_status;
+
+extern memory_op_status mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 extern uint32_t mar_i;
 extern uint32_t mbr_i;
 
-extern uint8_t mfc;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+extern memory_op_status mfc;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 extern uint32_t mar;
 extern uint32_t mbr;
 
@@ -12,7 +15,7 @@ extern char ** instructions;
 extern uint32_t total_number_of_instructions;
 extern uint8_t * dram;
 
-extern int STRUCTURAL_HAZARD_STALL;
+extern int STRUCTURAL_HAZARD_STALL;	// the memory module needs to set this, since only the memory module can cause a structural hazard.
 
 void read_memory_i(int cancel);		//in case of a flush one must also cancel any pending memory instruction reads... non zero value of cancel resets the internal counter and sets the mfc_i
 

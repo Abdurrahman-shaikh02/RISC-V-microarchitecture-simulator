@@ -1,6 +1,6 @@
 #include "header.h"
 #include "cache.h"
-#include "memory.h"
+#include "memory_configurables.h"
 #include "stats.h"
 
 //complete reads only set the done bits in every level...

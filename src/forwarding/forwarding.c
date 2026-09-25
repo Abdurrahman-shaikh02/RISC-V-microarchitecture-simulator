@@ -1,7 +1,6 @@
 #include "header.h"
 #include "control.h"
 #include "pipeline.h"
-#include "memory.h"
 #include "internal_memory.h"
 #include "alu.h"
 #include "branch_prediction.h"

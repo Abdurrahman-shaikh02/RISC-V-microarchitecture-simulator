@@ -1,17 +1,9 @@
-/*
-The IF stage function's success must be determined by the value of mfc_i
-If mfc_i is 1 then the stage was successful, otherwise it wasnt.
-If it wasnt then we must insert a bubble ie clear the if_id register.
-
-need to declare internal registers, pipeline registers here.
-*/
-
 #include "header.h"
 #include "control.h"
 #include "pipeline.h"
 #include "memory.h"
+#include "memory_configurables.h"
 #include "utility.h"
-#include "cache.h"
 #include "component_declaration.h"
 #include "stats.h"
 #include "configure.h"
