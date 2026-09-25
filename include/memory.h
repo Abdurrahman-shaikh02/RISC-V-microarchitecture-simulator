@@ -1,8 +1,13 @@
-extern uint8_t mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+typedef enum memory_op_status {
+	NOT_COMPLETED = 0,
+	COMPLETED = 1
+} memory_op_status;
+
+extern memory_op_status mfc_i;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 extern uint32_t mar_i;
 extern uint32_t mbr_i;
 
-extern uint8_t mfc;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+extern memory_op_status mfc;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
 extern uint32_t mar;
 extern uint32_t mbr;
 

@@ -12,11 +12,11 @@ FILE * memory_access_history_file_i;
 uint32_t text_segment_limit;	//THIS IS THE LAST VALID ADDRESS FOR THE CODE SEGMENT (eg : 7ff... although unaligned... it holds the last byte of the code segment)
 uint32_t rodata_segment_limit;
 uint32_t total_number_of_instructions;
-uint8_t mfc_i = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+memory_op_status mfc_i = COMPLETED;
 uint32_t mar_i;
 uint32_t mbr_i;
 
-uint8_t mfc = 1;	    //0 means not completed	make sure to call read/write ONLY if mfc is 1
+memory_op_status mfc = COMPLETED;
 uint32_t mar;
 uint32_t mbr;
 
@@ -36,7 +36,7 @@ void read_memory_i(int cancel){
 		//reset internal counter
 		counter = -1;
 		//set mfc_i
-		mfc_i = 1;
+		mfc_i = COMPLETED;
 		//completing any pending actions
 		complete_read_i(mar_i);
 
@@ -64,7 +64,7 @@ void read_memory_i(int cancel){
 		log_debug("read instruction counter set");
 
 		//reset mfc
-		mfc_i = 0;
+		mfc_i = NOT_COMPLETED;
 	}
 
 	if(counter > 0){
@@ -99,8 +99,8 @@ void read_memory_i(int cancel){
 			fprintf(memory_access_history_file_i, "i %#08x\n", mar_i);		//memory access history file
 	
 		//set mfc;
-		log_debug("setting mfc to 1");
-		mfc_i = 1;
+		log_debug("setting mfc to COMPLETED");
+		mfc_i = COMPLETED;
 		counter = -1;
 
 		//return
@@ -132,7 +132,7 @@ void read_memory(uint32_t opcode){
 
 		log_debug("read data counter set");
 		//reset mfc
-		mfc = 0;
+		mfc = NOT_COMPLETED;
 	}
 
 	if(counter > 0){
@@ -201,8 +201,8 @@ void read_memory(uint32_t opcode){
 			fprintf(memory_access_history_file_d, "r %#08x\n", mar);		//memory access history file
 
 		//set mfc;
-		log_debug("setting mfc to 1");
-		mfc = 1;
+		log_debug("setting mfc to COMPLETED");
+		mfc = COMPLETED;
 		counter = -1;
 
 		//return
@@ -233,7 +233,7 @@ void write_memory(uint32_t opcode){
 		
 		n_write_d_stalls += counter;	//stat
 		
-		mfc = 0;
+		mfc = NOT_COMPLETED;
 		log_debug("write counter set");
 	}
 
@@ -304,7 +304,7 @@ void write_memory(uint32_t opcode){
 			fprintf(memory_access_history_file_d, "w %#08x\n", mar);		//memory access history file
 
 		//set mfc;
-		mfc = 1;
+		mfc = COMPLETED;
 		counter = -1;
 
 		//return

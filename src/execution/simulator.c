@@ -44,7 +44,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 		//ma stage
 		ma_stage();
-		if(mfc == 0){
+		if(mfc == NOT_COMPLETED){
 			//ex stage stall
 			
 			//clearing the next pipeline register...
@@ -80,7 +80,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 			//call if stage to make its attempt on the memory access... and update its internal stall counter.
 			if_stage();
-			if(mfc_i == 0){
+			if(mfc_i == NOT_COMPLETED){
 				//if stage stall
 
 				//clearing the next pipeline rgister...
@@ -135,7 +135,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 				//if_stage
 				if_stage();
-				if(mfc_i == 0){
+				if(mfc_i == NOT_COMPLETED){
 					//if stage stall
 
 					//clearing the next pipeline rgister...
@@ -226,7 +226,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 				//if_stage
 				if_stage();
-				if(mfc_i == 0){
+				if(mfc_i == NOT_COMPLETED){
 					//if stage stall
 
 					//clearing the next pipeline rgister...
@@ -335,7 +335,7 @@ void simulate(char * path, uint32_t entry, int visuals){
 
 		//if_stage
 		if_stage();
-		if(mfc_i == 0){
+		if(mfc_i == NOT_COMPLETED){
 			//if stage stall
 
 			//clearing the next pipeline rgister...
