@@ -8,7 +8,7 @@ typedef struct ex_control{
 	uint8_t arithmetic_opcode;		//alu opcode 0, 1
 	uint8_t logic_opcode;		//logic opcode	000 ... 110
 	uint8_t branch_opcode;		//branch comparison opcode 000, 001, 010, 011, for branches, 100 for jump
-	uint8_t SYSTEM_CALL;		//for ebreak, a SYSTEMCALL, 010 for an ecall
+	uint8_t SYSTEM_CALL;		//1 for ebreak, a SYSTEMCALL, 010 for an ecall
 } ex_control;
 
 typedef struct ma_control{

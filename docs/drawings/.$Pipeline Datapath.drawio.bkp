@@ -19,7 +19,7 @@
         <mxCell id="v7wq8K2rofwXCJArurG--2" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#008a00;fontColor=light-dark(#FFFFFF,#006600);strokeColor=#005700;opacity=20;direction=south;swimlaneFillColor=light-dark(#000000,#168219);fontSize=30;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" value="INSTRUCTION DECODE" vertex="1">
           <mxGeometry height="380" width="1670" x="370" y="630" as="geometry" />
         </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--1" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#a20025;fontColor=light-dark(#FFFFFF,#A80000);strokeColor=light-dark(#6F0000, #fdbfbf);direction=south;fillStyle=auto;swimlaneFillColor=light-dark(#FFFFFF,#FF3333);gradientColor=none;gradientDirection=south;opacity=20;fontSize=30;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;labelBorderColor=default;" value="INSTRUCTION FETCH" vertex="1">
+        <mxCell id="v7wq8K2rofwXCJArurG--1" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#a20025;fontColor=light-dark(#FFFFFF,#A80000);strokeColor=light-dark(#6F0000, #fdbfbf);direction=south;fillStyle=auto;swimlaneFillColor=light-dark(#FFFFFF,#FF3333);gradientColor=none;gradientDirection=south;opacity=20;fontSize=30;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;labelBorderColor=none;" value="INSTRUCTION FETCH" vertex="1">
           <mxGeometry height="530" width="1670" x="370" y="100" as="geometry" />
         </mxCell>
         <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Instruction Memory" vertex="1">

@@ -22,7 +22,7 @@
         <mxCell id="v7wq8K2rofwXCJArurG--1" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#a20025;fontColor=light-dark(#FFFFFF,#A80000);strokeColor=light-dark(#6F0000, #fdbfbf);direction=south;fillStyle=auto;swimlaneFillColor=light-dark(#FFFFFF,#FF3333);gradientColor=none;gradientDirection=south;opacity=20;fontSize=30;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;labelBorderColor=none;" value="INSTRUCTION FETCH" vertex="1">
           <mxGeometry height="530" width="1670" x="370" y="100" as="geometry" />
         </mxCell>
-        <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Instruction Memory" vertex="1">
+        <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Code Segment" vertex="1">
           <mxGeometry height="150" width="270" x="530" y="310" as="geometry" />
         </mxCell>
         <mxCell id="ulpixTb7L0UEB1ylkOeH-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Program Counter" vertex="1">
@@ -481,7 +481,7 @@
         <mxCell id="KwYx42ogXvFUPmhkp3Ex-110" edge="1" parent="1" source="KwYx42ogXvFUPmhkp3Ex-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;endSize=10;strokeWidth=2;" target="KwYx42ogXvFUPmhkp3Ex-95" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KwYx42ogXvFUPmhkp3Ex-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Data Memory" vertex="1">
+        <mxCell id="KwYx42ogXvFUPmhkp3Ex-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Data Segment" vertex="1">
           <mxGeometry height="150" width="270" x="590" y="1590" as="geometry" />
         </mxCell>
         <mxCell id="KwYx42ogXvFUPmhkp3Ex-115" edge="1" parent="1" source="KwYx42ogXvFUPmhkp3Ex-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endSize=10;strokeWidth=2;" target="KwYx42ogXvFUPmhkp3Ex-113">

@@ -1,27 +1,9 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="q7quTadRWXQDkjZyFFXQ">
-    <mxGraphModel dx="3535" dy="2108" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4713" dy="2810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="v7wq8K2rofwXCJArurG--10" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;direction=south;fillStyle=auto;swimlaneFillColor=light-dark(#FFFFFF,#E1D5E7);gradientDirection=south;opacity=20;" value="" vertex="1">
-          <mxGeometry height="2100" width="300" x="1980" y="40" as="geometry" />
-        </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--9" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;opacity=20;direction=south;swimlaneFillColor=light-dark(#FFFFFF,#CC6600);" value="" vertex="1">
-          <mxGeometry height="320" width="1670" x="310" y="1820" as="geometry" />
-        </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--8" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;opacity=20;direction=south;swimlaneFillColor=light-dark(#FFFFFF,#CC99FF);" value="" vertex="1">
-          <mxGeometry height="410" width="1670" x="310" y="1410" as="geometry" />
-        </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--4" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;opacity=20;direction=south;swimlaneFillColor=light-dark(#FFFFFF,#666600);" value="" vertex="1">
-          <mxGeometry height="460" width="1670" x="310" y="950" as="geometry" />
-        </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--2" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;opacity=20;direction=south;swimlaneFillColor=light-dark(#000000,#168219);" value="" vertex="1">
-          <mxGeometry height="380" width="1670" x="310" y="570" as="geometry" />
-        </mxCell>
-        <mxCell id="v7wq8K2rofwXCJArurG--1" parent="1" style="swimlane;startSize=0;strokeWidth=3;fillColor=#a20025;fontColor=#ffffff;strokeColor=light-dark(#6F0000, #fdbfbf);direction=south;fillStyle=auto;swimlaneFillColor=light-dark(#FFFFFF,#FF3333);gradientColor=none;gradientDirection=south;opacity=20;" value="" vertex="1">
-          <mxGeometry height="530" width="1670" x="310" y="40" as="geometry" />
-        </mxCell>
         <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Instruction Memory" vertex="1">
           <mxGeometry height="150" width="270" x="470" y="250" as="geometry" />
         </mxCell>

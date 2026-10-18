@@ -1,10 +1,10 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="q7quTadRWXQDkjZyFFXQ">
-    <mxGraphModel dx="4713" dy="2810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3535" dy="2108" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Instruction Memory" vertex="1">
+        <mxCell id="ulpixTb7L0UEB1ylkOeH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Code Segment" vertex="1">
           <mxGeometry height="150" width="270" x="470" y="250" as="geometry" />
         </mxCell>
         <mxCell id="ulpixTb7L0UEB1ylkOeH-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Program Counter" vertex="1">
@@ -463,7 +463,7 @@
         <mxCell id="KwYx42ogXvFUPmhkp3Ex-110" edge="1" parent="1" source="KwYx42ogXvFUPmhkp3Ex-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;endSize=10;strokeWidth=2;" target="KwYx42ogXvFUPmhkp3Ex-95" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KwYx42ogXvFUPmhkp3Ex-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Data Memory" vertex="1">
+        <mxCell id="KwYx42ogXvFUPmhkp3Ex-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=20;strokeWidth=2;" value="Data Segment" vertex="1">
           <mxGeometry height="150" width="270" x="530" y="1530" as="geometry" />
         </mxCell>
         <mxCell id="KwYx42ogXvFUPmhkp3Ex-115" edge="1" parent="1" source="KwYx42ogXvFUPmhkp3Ex-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endSize=10;strokeWidth=2;" target="KwYx42ogXvFUPmhkp3Ex-113">

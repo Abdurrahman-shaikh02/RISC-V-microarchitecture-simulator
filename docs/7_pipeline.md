@@ -93,81 +93,6 @@ Discuss
 - simultaneous execution
 
 ---
-
-### IF/ID Register
-
-Insert cropped datapath showing IF and IF/ID only.
-
-Include actual C structure.
-
-Explain every field.
-
----
-
-### ID/EX Register
-
-Insert cropped datapath.
-
-Include actual structure.
-
-Explain
-
-- operands
-- immediate
-- destination register
-- decoded instruction
-- control signals
-
----
-
-### EX/MEM Register
-
-Insert cropped datapath.
-
-Include structure.
-
-Explain stored ALU result and memory information.
-
----
-
-### MEM/WB Register
-
-Insert cropped datapath.
-
-Include structure.
-
-Explain writeback information.
-
----
-
-## 7.3.2 Control Signal Propagation
-
-Insert cropped datapath highlighting only control path.
-
-Explain:
-
-The Control Unit generates all control signals during the Decode stage.
-
-These signals are stored inside the pipeline registers and propagated alongside instruction data until they are consumed by later stages.
-
-Describe every propagated control signal.
-
-Example table:
-
-| Signal | Generated | Used | Purpose |
-|---------|-----------|------|---------|
-| RegWrite | ID | WB | Enable register write |
-| MemRead | ID | MEM | Perform memory read |
-| MemWrite | ID | MEM | Perform memory write |
-| MemToReg | ID | WB | Select memory data |
-| Branch | ID | EX | Branch evaluation |
-| ALUSrc | ID | EX | ALU operand selection |
-| ALUOp | ID | EX | ALU operation |
-
-Explain that detailed behavior of each signal will be covered in the respective stage sections.
-
----
-
 ## 7.3.3 Stalls
 
 Explain pipeline stalls at a high level.
@@ -199,15 +124,15 @@ Mention that branch prediction is explained later.
 # 7.4 Instruction Fetch (IF)
 
 Insert cropped datapath showing only IF stage.
-
-Explain
+[![IF stage](assets/figures/if.png)](assets/figures/if.png)
+> Figure 7.2: IF stage.
 
 ## Components
 
 - Program Counter
 - PC Incrementer
 - Next-PC MUX
-- Instruction Cache
+- Code Segment
 - IF/ID Register
 
 ---
@@ -221,6 +146,16 @@ Describe every input.
 ## Outputs
 
 Describe every output.
+
+### IF/ID Register
+
+Insert cropped datapath showing IF and IF/ID only.
+
+Include actual C structure.
+
+Explain every field.
+
+---
 
 ---
 
@@ -255,6 +190,34 @@ Explain what is written into IF/ID.
 Insert cropped datapath.
 
 Explain
+
+## Control Signal Propagation
+
+Insert cropped datapath highlighting only control path.
+
+Explain:
+
+The Control Unit generates all control signals during the Decode stage.
+
+These signals are stored inside the pipeline registers and propagated alongside instruction data until they are consumed by later stages.
+
+Describe every propagated control signal.
+
+Example table:
+
+| Signal | Generated | Used | Purpose |
+|---------|-----------|------|---------|
+| RegWrite | ID | WB | Enable register write |
+| MemRead | ID | MEM | Perform memory read |
+| MemWrite | ID | MEM | Perform memory write |
+| MemToReg | ID | WB | Select memory data |
+| Branch | ID | EX | Branch evaluation |
+| ALUSrc | ID | EX | ALU operand selection |
+| ALUOp | ID | EX | ALU operation |
+
+Explain that detailed behavior of each signal will be covered in the respective stage sections.
+
+---
 
 ## Components
 
@@ -301,6 +264,21 @@ Reference Chapter 8.
 
 Explain ID/EX contents.
 
+### ID/EX Register
+
+Insert cropped datapath.
+
+Include actual structure.
+
+Explain
+
+- operands
+- immediate
+- destination register
+- decoded instruction
+- control signals
+
+---
 ---
 
 # 7.6 Execute (EX)
@@ -356,6 +334,14 @@ Explain
 
 Explain EX/MEM contents.
 
+### EX/MEM Register
+
+Insert cropped datapath.
+
+Include structure.
+
+Explain stored ALU result and memory information.
+
 ---
 
 # 7.7 Memory Access (MEM)
@@ -397,6 +383,19 @@ Explain
 ## Pipeline Register Update
 
 Explain MEM/WB contents.
+---
+### MEM/WB Register
+
+Insert cropped datapath.
+
+Include structure.
+
+Explain writeback information.
+
+---
+
+
+
 
 ---
 
@@ -434,6 +433,8 @@ Explain
 
 - RegWrite
 - MemToReg
+
+## why is there a wb/if register ?
 
 ---
 
