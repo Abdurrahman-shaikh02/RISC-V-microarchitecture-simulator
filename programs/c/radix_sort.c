@@ -2050,7 +2050,7 @@ unsigned int arr[] = {
 };
 
 
-unsigned int temp[sizeof(arr)];
+unsigned int temp[sizeof(arr) / sizeof(arr[0])];
 
 void radix_sort(int n)
 {
@@ -2089,7 +2089,7 @@ void radix_sort(int n)
 
 int main()
 {
-    radix_sort(sizeof(arr));
+    radix_sort(sizeof(arr) / sizeof(arr[0]));
 
     /* array is now sorted */
     return 0;

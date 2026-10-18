@@ -2092,7 +2092,7 @@ void quick_sort(int left, int right)
 
 int main()
 {
-    quick_sort(0, sizeof(arr) - 1);
+    quick_sort(0, sizeof(arr) / sizeof(arr[0]) - 1);
 
     /* array is now sorted */
     return 0;
