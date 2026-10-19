@@ -24,7 +24,7 @@ const title = [
     transformation: { width: 139, height: 172 }, altText: { title: "COEP logo", description: "COEP Technological University logo", name: "logo" } })] }),
   tp("COEP Technological University Pune", 34, 440, true),
   tp("Department of Computer Science and Engineering", 28, 400),
-  tp("compute_engine: A Configurable Five-Stage Pipelined RV32I Processor Simulator with a Multi-Level Cache Hierarchy", 32, 440, true),
+  tp("RISC-V Microarchitecture Simulator: A Configurable Five-Stage Pipelined RV32I Processor with a Multi-Level Cache Hierarchy", 32, 440, true),
   tp("Submitted in partial fulfilment of the requirements for Summer Internship/Project 2026", 24, 400),
   tp("Academic Year: 2026–2027", 24, 360),
   tp("Submitted by", 24, 100, true),
@@ -41,7 +41,7 @@ const toc = [
 
 // ================================================================ ABSTRACT
 add(H1("Abstract"));
-add(P(`Computer-architecture concepts such as pipelining, data and control hazards, branch prediction and cache hierarchies are usually taught on paper, which makes their quantitative effect hard to see. This project, **compute_engine**, is a cycle-level simulator, written from scratch in C, of a five-stage in-order RISC-V processor implementing the complete RV32I base integer instruction set. The simulator models the IF, ID, EX, MA and WB stages with explicit pipeline registers, a forwarding unit with load-use stall detection, a pluggable branch-prediction unit (always-not-taken, always-taken and backward-taken/forward-not-taken), and a configurable timing model of up to three cache levels (split L1 instruction/data caches, unified L2 and L3) in front of DRAM. Cache size, block size, associativity, latency, write policy (write-through/write-back), write-miss policy and replacement policy (FIFO/LRU) are set from a JSON file. Programs are supplied either through a custom two-pass RV32I assembler or as ELF executables produced by the standard RISC-V GCC toolchain, so real C programs and the EEMBC CoreMark benchmark run unmodified apart from a bare-metal port.`));
+add(P(`Computer-architecture concepts such as pipelining, data and control hazards, branch prediction and cache hierarchies are usually taught on paper, which makes their quantitative effect hard to see. This project, the **RISC-V Microarchitecture Simulator**, is a cycle-level model, written from scratch in C, of a five-stage in-order RISC-V processor implementing the complete RV32I base integer instruction set. The simulator models the IF, ID, EX, MA and WB stages with explicit pipeline registers, a forwarding unit with load-use stall detection, a pluggable branch-prediction unit (always-not-taken, always-taken and backward-taken/forward-not-taken), and a configurable timing model of up to three cache levels (split L1 instruction/data caches, unified L2 and L3) in front of DRAM. Cache size, block size, associativity, latency, write policy (write-through/write-back), write-miss policy and replacement policy (FIFO/LRU) are set from a JSON file. Programs are supplied either through a custom two-pass RV32I assembler or as ELF executables produced by the standard RISC-V GCC toolchain, so real C programs and the EEMBC CoreMark benchmark run unmodified apart from a bare-metal port.`));
 add(P(`The simulator was validated by differential testing against the official RISC-V ISA simulator (Spike) and against natively compiled reference programs. All ${N.runs} runs of the six C workloads across the design-space sweep produced bit-exact results. Retired-instruction counts match Spike's exactly (a constant offset of 6 start-up instructions), and direct-mapped L1 data-cache miss rates agree with Spike's independent cache model to within ${f2(N.dm_max_abs_diff)} percentage points. Experiments show that forwarding reduces CPI by 1.25–2.40×. BTFN static prediction reaches 57–100% accuracy, against 7–54% for always-not-taken. A write-back L1 data cache speeds programs up by as much as 2.7× compared with the default write-through configuration. On CoreMark, the pipeline sustains a CPI of 1.30 with ideal memory and reaches 1.44 CoreMark/MHz.`));
 add(P(`**Keywords:** RISC-V, RV32I, pipeline simulator, hazard detection, data forwarding, branch prediction, cache hierarchy, CoreMark, Spike.`));
 
@@ -52,7 +52,7 @@ add(H2("1.1 Context"));
 add(P(`A processor's performance is determined not only by how many instructions a program executes but by how many clock cycles each instruction costs on average (CPI). In a pipelined processor, CPI is driven by structural, data and control hazards, and by the latency of the memory hierarchy. These effects interact in ways that are difficult to reason about analytically: a branch predictor that removes control stalls exposes more memory stalls, and a larger cache may matter far less than a change of write policy. A simulator that executes real programs and reports *why* every cycle was spent makes these trade-offs visible and measurable.`));
 add(P(`RISC-V is an open, modular instruction-set architecture whose 32-bit base integer subset, RV32I, contains only about forty instructions while remaining a complete compiler target [1]. This makes it an ideal vehicle for building a processor model from first principles that can still run programs produced by an industrial compiler.`));
 add(H2("1.2 What this project delivers"));
-add(P(`**compute_engine** is a cycle-level, execution-driven simulator of a classic five-stage RV32I pipeline, together with the tooling needed to use it. Its main features are:`));
+add(P(`The **RISC-V Microarchitecture Simulator** is a cycle-level, execution-driven model of a classic five-stage RV32I pipeline, together with the tooling needed to use it. Its main features are:`));
 add(B("Complete RV32I functional model (R, I, S, B, U and J formats; all loads/stores with alignment and segment checks; `ecall`/`ebreak` for halting)."));
 add(B("Five-stage pipeline (IF, ID, EX, MA, WB) with explicit pipeline-register structures and grouped per-stage control signals."));
 add(B("Data-hazard handling by forwarding to EX and MA with automatic load-use stalls, or by full interlocking when forwarding is disabled."));
@@ -135,7 +135,7 @@ const tRel = table(["Simulator", "Type", "Pipeline timing", "Cache model", "Runs
   ["gem5 [4]", "Full-system architecture simulator", "Yes (in-order/O3)", "Detailed, coherent", "Yes", "Very large; steep learning curve"],
   ["Ripes [5]", "Visual educational simulator", "Yes (graphical)", "Single-level, configurable", "Limited", "Small programs, GUI-centric"],
   ["RARS / Venus", "Educational assembler + simulator", "No", "Basic / none", "No (assembly)", "Small"],
-  ["**compute_engine (this work)**", "Cycle-level execution-driven", "Yes, 5-stage", "L1-I/L1-D/L2/L3, policies", "Yes", "~6.3 kLOC C, CLI + JSON"],
+  ["**This work**", "Cycle-level execution-driven", "Yes, 5-stage", "L1-I/L1-D/L2/L3, policies", "Yes", "~6.3 kLOC C, CLI + JSON"],
 ], [1700, 1900, 1400, 1700, 1200, 2000], "Comparison with related RISC-V simulators");
 add(P(`Table ${tRel.no} positions this work. It sits between functional simulators, which have no timing, and full architectural simulators, which are powerful but opaque. It pairs a real compiler toolchain with a pipeline and multi-level cache model that one person can read in full.`), tRel);
 
@@ -431,7 +431,7 @@ const tCor = table(["Workload", "Expected a0 (reference)", "Simulator a0", "Matc
   [2000, 3300, 3300, 1200], "Program results under the default configuration (reference: native x86-64 build; Spike for CoreMark)");
 add(P(`All six workloads produce the reference result (Table ${tCor.no}). For CoreMark, the upper 16 bits of a0 hold CoreMark's own count of list, matrix and state CRC mismatches against EEMBC's published values; it is zero, so CoreMark's built-in self-validation also passes. Across the whole experiment matrix, **${N.runs_ok} of ${N.runs}** runs returned the correct value, covering every predictor, forwarding setting and cache configuration. The 11 self-checking assembly programs passed under all seven tested configurations (77 runs).`), tCor);
 add(H2("9.4 Retired-instruction count versus Spike"));
-const tIns = table(["Workload", "Spike", "compute_engine", "Difference"],
+const tIns = table(["Workload", "Spike", "This simulator", "Difference"],
   N.validation.map((v) => [v.wl, kfmt(v.spike_ins), kfmt(v.ins), String(v.spike_ins - v.ins)]),
   [2600, 2400, 2400, 2400], "Dynamic instruction counts", { align: [null, R, R, R] });
 add(P(`A pipeline that silently drops or duplicates instructions can still produce the right answer by luck, so the number of retired instructions was compared with Spike's commit log (Table ${tIns.no}). The difference is exactly **6 for every workload**, including CoreMark's 5.32 million instructions. The six instructions are the difference between the two start-up stubs: the Spike version needs extra instructions for the HTIF \`tohost\` exit sequence. The simulator therefore retires exactly the same instruction stream as the reference model.`), tIns);
@@ -503,10 +503,10 @@ add(H2("10.8 CoreMark"));
 add(P(`CoreMark/MHz is iterations per million cycles. The simulator achieves **${f2(N.coremark.default)} CoreMark/MHz** in the default configuration and **${f2(N.coremark.ideal_btfn)}** with ideal memory and BTFN. The marginal per-iteration rate from a 20-iteration build is ${f2(1e6 / 690810)}, so start-up overhead is negligible. That is about 3.6× the published 0.40 of the multi-cycle PicoRV32 [11], as expected for a pipelined design. It is below the 2.50 reported for NoX [11], a four-stage RV32I core *also* without hardware multiply. The instruction profile explains most of the gap. CoreMark executes about 530,000 instructions per iteration, and **40.7% of them** are inside \`__mulsi3\`. CoreMark makes 94,056 multiply calls in 10 iterations, and the quarter-square fast path covers 89% of them, but even this costs about 23 instructions per multiply once the call, return and table lookups are counted. Without the multiply routine, an iteration is about 316,000 instructions. With a single-cycle \`mul\` instruction and the measured CPI of 1.30, that would be roughly 420,000 cycles per iteration, or about 2.4 CoreMark/MHz, close to the NoX figure. The pipeline itself is not the bottleneck: CPI is 1.30.`));
 add(H2("10.9 Simulation speed"));
 const tSp = table(["Simulator", "Configuration", "Time (CoreMark, 5.32 M instr.)", "Throughput"], [
-  ["compute_engine (-g build)", "default caches", "3.83 s", "1.4 MIPS"],
-  ["compute_engine (-g build)", "ideal memory", "1.02 s", "5.2 MIPS"],
-  ["compute_engine (-O2 build)", "default caches", "2.45 s", "2.2 MIPS"],
-  ["compute_engine (-O2 build)", "ideal memory", "0.70 s", "7.7 MIPS"],
+  ["This simulator (-g build)", "default caches", "3.83 s", "1.4 MIPS"],
+  ["This simulator (-g build)", "ideal memory", "1.02 s", "5.2 MIPS"],
+  ["This simulator (-O2 build)", "default caches", "2.45 s", "2.2 MIPS"],
+  ["This simulator (-O2 build)", "ideal memory", "0.70 s", "7.7 MIPS"],
   ["Spike", "functional only", "0.016 s", "≈340 MIPS"],
   ["Spike", "with L1 cache model", "0.12 s", "≈40 MIPS"],
 ], [2600, 2200, 2800, 2200], "Host simulation speed (best of 3, Intel i5-12450HX, single thread)", { align: [null, null, R, R] });
@@ -537,7 +537,7 @@ add(B("**Speed:** about 1.4–7.7 MIPS, limited mainly by floating-point `log2()
 setChapter(12);
 add(H1("12. Conclusion and Future Scope"));
 add(H2("12.1 Conclusion"));
-add(P(`This project built **compute_engine**, a cycle-level simulator of a five-stage pipelined RV32I processor with forwarding, static branch prediction and a configurable three-level cache hierarchy, together with an assembler, an ELF loader and the bare-metal software support needed to run compiled C programs and CoreMark. Differential testing against the official Spike simulator shows that it executes exactly the same instruction stream with the same results, and that its cache model reproduces Spike's direct-mapped miss rates to within ${f2(N.dm_max_abs_diff)} percentage points. Across ${N.runs} experimental runs it quantified the classic architectural trade-offs. Forwarding cuts cycles by up to 2.40×. BTFN prediction improves accuracy from 46% to 73% on CoreMark. Write-back L1 caching gives up to 2.6× over write-through without a write buffer, and each added cache level shows diminishing returns. All of these agree with textbook expectations.`));
+add(P(`This project built the **RISC-V Microarchitecture Simulator**, a cycle-level model of a five-stage pipelined RV32I processor with forwarding, static branch prediction and a configurable three-level cache hierarchy, together with an assembler, an ELF loader and the bare-metal software support needed to run compiled C programs and CoreMark. Differential testing against the official Spike simulator shows that it executes exactly the same instruction stream with the same results, and that its cache model reproduces Spike's direct-mapped miss rates to within ${f2(N.dm_max_abs_diff)} percentage points. Across ${N.runs} experimental runs it quantified the classic architectural trade-offs. Forwarding cuts cycles by up to 2.40×. BTFN prediction improves accuracy from 46% to 73% on CoreMark. Write-back L1 caching gives up to 2.6× over write-through without a write buffer, and each added cache level shows diminishing returns. All of these agree with textbook expectations.`));
 add(H2("12.2 Future scope"));
 add(B("**Dynamic branch prediction:** implement the 2-bit saturating counter and a BHT/BTB behind the existing `predict()/store()` interface, and compare them with the static results in Table 10.2."));
 add(B("**M extension:** hardware multiply/divide would replace the 41% of CoreMark instructions still spent in `__mulsi3` with single `mul` instructions, which by the estimate in §10.8 would raise CoreMark/MHz to about 2.4, and would allow a fair comparison with RV32IM cores."));
@@ -614,7 +614,7 @@ const footer = new Footer({ children: [new Paragraph({ alignment: C, children: [
   new TextRun({ children: [PageNumber.CURRENT], size: 20 })] })] });
 
 const doc = new Document({
-  creator: "Abdurrahman Shaikh", title: "compute_engine – Project Report", description: "RV32I pipeline simulator project report",
+  creator: "Abdurrahman Shaikh", title: "RISC-V Microarchitecture Simulator – Project Report", description: "RV32I pipeline simulator project report",
   features: { updateFields: true },
   styles, numbering,
   sections: [{

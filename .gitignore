@@ -6,3 +6,4 @@ assemble
 cachesim
 simulate
 .clangd
+temp/

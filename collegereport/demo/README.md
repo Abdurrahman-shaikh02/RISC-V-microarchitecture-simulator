@@ -1,4 +1,4 @@
-# compute_engine – live demo
+# RISC-V Microarchitecture Simulator – live demo
 
 A short, hands-on walkthrough: the assembler, the simulator, its output files,
 and how changing the configuration changes the timing (never the result).
