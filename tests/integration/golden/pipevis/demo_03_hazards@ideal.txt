@@ -1,0 +1,14 @@
+Cycle 1 : lui     r10, 0x40    |                      |                      |                      |                     
+Cycle 2 : addi    r1, r0, 10   | lui     r10, 0x40    |                      |                      |                     
+Cycle 3 : add     r2, r1, r1   | addi    r1, r0, 10   | lui     r10, 0x40    |                      |                     
+Cycle 4 : add     r3, r2, r1   | add     r2, r1, r1   | addi    r1, r0, 10   | lui     r10, 0x40    |                     
+Cycle 5 : add     r4, r3, r3   | add     r3, r2, r1   | add     r2, r1, r1   | addi    r1, r0, 10   | lui     r10, 0x40   
+Cycle 6 : sw      r4, 0(r10)   | add     r4, r3, r3   | add     r3, r2, r1   | add     r2, r1, r1   | addi    r1, r0, 10  
+Cycle 7 : lw      r5, 0(r10)   | sw      r4, 0(r10)   | add     r4, r3, r3   | add     r3, r2, r1   | add     r2, r1, r1  
+Cycle 8 : add     r6, r5, r5   | lw      r5, 0(r10)   | sw      r4, 0(r10)   | add     r4, r3, r3   | add     r3, r2, r1  
+Cycle 9 : addi    r17, r0, 0   | add     r6, r5, r5   | lw      r5, 0(r10)   | sw      r4, 0(r10)   | add     r4, r3, r3  
+Cycle 10 : addi    r17, r0, 0   | add     r6, r5, r5   |                      | lw      r5, 0(r10)   | sw      r4, 0(r10)  
+Cycle 11 : ecall                | addi    r17, r0, 0   | add     r6, r5, r5   |                      | lw      r5, 0(r10)  
+Cycle 12 : (null) | ecall                | addi    r17, r0, 0   | add     r6, r5, r5   |                     
+Cycle 13 : (null) | ecall                |                      | addi    r17, r0, 0   | add     r6, r5, r5  
+Cycle 14 : (null) | (null) | ecall                |                      | addi    r17, r0, 0  

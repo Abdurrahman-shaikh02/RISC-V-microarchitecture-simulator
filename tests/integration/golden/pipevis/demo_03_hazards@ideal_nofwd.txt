@@ -1,0 +1,28 @@
+Cycle 1 : lui     r10, 0x40    |                      |                      |                      |                     
+Cycle 2 : addi    r1, r0, 10   | lui     r10, 0x40    |                      |                      |                     
+Cycle 3 : add     r2, r1, r1   | addi    r1, r0, 10   | lui     r10, 0x40    |                      |                     
+Cycle 4 : add     r2, r1, r1   |                      | addi    r1, r0, 10   | lui     r10, 0x40    |                     
+Cycle 5 : add     r2, r1, r1   |                      |                      | addi    r1, r0, 10   | lui     r10, 0x40   
+Cycle 6 : add     r2, r1, r1   |                      |                      |                      | addi    r1, r0, 10  
+Cycle 7 : add     r3, r2, r1   | add     r2, r1, r1   |                      |                      |                     
+Cycle 8 : add     r3, r2, r1   |                      | add     r2, r1, r1   |                      |                     
+Cycle 9 : add     r3, r2, r1   |                      |                      | add     r2, r1, r1   |                     
+Cycle 10 : add     r3, r2, r1   |                      |                      |                      | add     r2, r1, r1  
+Cycle 11 : add     r4, r3, r3   | add     r3, r2, r1   |                      |                      |                     
+Cycle 12 : add     r4, r3, r3   |                      | add     r3, r2, r1   |                      |                     
+Cycle 13 : add     r4, r3, r3   |                      |                      | add     r3, r2, r1   |                     
+Cycle 14 : add     r4, r3, r3   |                      |                      |                      | add     r3, r2, r1  
+Cycle 15 : sw      r4, 0(r10)   | add     r4, r3, r3   |                      |                      |                     
+Cycle 16 : sw      r4, 0(r10)   |                      | add     r4, r3, r3   |                      |                     
+Cycle 17 : sw      r4, 0(r10)   |                      |                      | add     r4, r3, r3   |                     
+Cycle 18 : sw      r4, 0(r10)   |                      |                      |                      | add     r4, r3, r3  
+Cycle 19 : lw      r5, 0(r10)   | sw      r4, 0(r10)   |                      |                      |                     
+Cycle 20 : add     r6, r5, r5   | lw      r5, 0(r10)   | sw      r4, 0(r10)   |                      |                     
+Cycle 21 : add     r6, r5, r5   |                      | lw      r5, 0(r10)   | sw      r4, 0(r10)   |                     
+Cycle 22 : add     r6, r5, r5   |                      |                      | lw      r5, 0(r10)   | sw      r4, 0(r10)  
+Cycle 23 : add     r6, r5, r5   |                      |                      |                      | lw      r5, 0(r10)  
+Cycle 24 : addi    r17, r0, 0   | add     r6, r5, r5   |                      |                      |                     
+Cycle 25 : ecall                | addi    r17, r0, 0   | add     r6, r5, r5   |                      |                     
+Cycle 26 : (null) | ecall                | addi    r17, r0, 0   | add     r6, r5, r5   |                     
+Cycle 27 : (null) | ecall                |                      | addi    r17, r0, 0   | add     r6, r5, r5  
+Cycle 28 : (null) | (null) | ecall                |                      | addi    r17, r0, 0  

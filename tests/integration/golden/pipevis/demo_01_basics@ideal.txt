@@ -1,0 +1,18 @@
+Cycle 1 : addi    r1, r0, 12   |                      |                      |                      |                     
+Cycle 2 : addi    r2, r0, 5    | addi    r1, r0, 12   |                      |                      |                     
+Cycle 3 : add     r3, r1, r2   | addi    r2, r0, 5    | addi    r1, r0, 12   |                      |                     
+Cycle 4 : sub     r4, r1, r2   | add     r3, r1, r2   | addi    r2, r0, 5    | addi    r1, r0, 12   |                     
+Cycle 5 : and     r5, r1, r2   | sub     r4, r1, r2   | add     r3, r1, r2   | addi    r2, r0, 5    | addi    r1, r0, 12  
+Cycle 6 : or      r6, r1, r2   | and     r5, r1, r2   | sub     r4, r1, r2   | add     r3, r1, r2   | addi    r2, r0, 5   
+Cycle 7 : xor     r7, r1, r2   | or      r6, r1, r2   | and     r5, r1, r2   | sub     r4, r1, r2   | add     r3, r1, r2  
+Cycle 8 : slli    r8, r1, 3    | xor     r7, r1, r2   | or      r6, r1, r2   | and     r5, r1, r2   | sub     r4, r1, r2  
+Cycle 9 : srli    r9, r1, 2    | slli    r8, r1, 3    | xor     r7, r1, r2   | or      r6, r1, r2   | and     r5, r1, r2  
+Cycle 10 : addi    r10, r0, -2  | srli    r9, r1, 2    | slli    r8, r1, 3    | xor     r7, r1, r2   | or      r6, r1, r2  
+Cycle 11 : slt     r11, r10, r1 | addi    r10, r0, -2  | srli    r9, r1, 2    | slli    r8, r1, 3    | xor     r7, r1, r2  
+Cycle 12 : sltu    r12, r10, r1 | slt     r11, r10, r1 | addi    r10, r0, -2  | srli    r9, r1, 2    | slli    r8, r1, 3   
+Cycle 13 : lui     r13, 0x12345 | sltu    r12, r10, r1 | slt     r11, r10, r1 | addi    r10, r0, -2  | srli    r9, r1, 2   
+Cycle 14 : addi    r17, r0, 0   | lui     r13, 0x12345 | sltu    r12, r10, r1 | slt     r11, r10, r1 | addi    r10, r0, -2 
+Cycle 15 : ecall                | addi    r17, r0, 0   | lui     r13, 0x12345 | sltu    r12, r10, r1 | slt     r11, r10, r1
+Cycle 16 : (null) | ecall                | addi    r17, r0, 0   | lui     r13, 0x12345 | sltu    r12, r10, r1
+Cycle 17 : (null) | ecall                |                      | addi    r17, r0, 0   | lui     r13, 0x12345
+Cycle 18 : (null) | (null) | ecall                |                      | addi    r17, r0, 0  

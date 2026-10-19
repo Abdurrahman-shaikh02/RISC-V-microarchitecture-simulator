@@ -1,0 +1,10 @@
+// the spec ebreak encoding (0x00100073, emitted by gcc) must stop like ebreak:
+// r2 must not be written
+// XFAIL: the simulator decodes the spec ebreak as an ecall (a7 = 5 -> ignored, execution continues)
+// EXPECT r2 = 0
+// CONFIGS: ideal
+[0] 00000000   00500893   addi r17, r0, 5
+[1] 0x000004   00100073   ebreak
+[2] 0x000008   00200113   addi r2, r0, 2
+[3] 0x00000c   00000893   addi r17, r0, 0
+[4] 0x000010   00000073   ecall

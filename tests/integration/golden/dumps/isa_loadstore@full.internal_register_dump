@@ -1,0 +1,71 @@
+========================================
+CORE REGISTERS
+========================================
+pc       : 0000007c
+ir       : 00000000
+
+========================================
+MEMORY INTERFACE
+========================================
+mar      : 00000000
+mbr      : 00040537
+mar_i    : 120
+mbr_i    : 0
+
+========================================
+PIPELINE REGISTERS
+========================================
+IF_ID:
+IR       : 00000000
+PC       : 00000078
+PC_next  : 0000007c
+----------------------------------------
+ID_EX:
+PC       : 00000074
+PC_next  : 00000078
+R1       : 00000000
+R2       : 00000000
+imm      : 00000000
+nrd      : 00000000
+
+EX CONTROL:
+source1             : 00
+source2             : 00
+sign                : 00
+type                : 00
+arithmetic_opcode   : 00
+logic_opcode        : 00
+branch_opcode       : 00
+SYSTEM_CALL         : 00
+
+MA CONTROL:
+mem                 : 00
+read_write_opcode   : 00
+branch_taken        : 00
+jump_or_branch      : 00
+
+WB CONTROL:
+wb                  : 00
+----------------------------------------
+EX_MA:
+PC_next  : 00000000
+R2       : 00000000
+result   : 00000000
+nrd      : 00000000
+
+MA CONTROL:
+mem                 : 00
+read_write_opcode   : 00
+branch_taken        : 00
+jump_or_branch      : 00
+
+WB CONTROL:
+wb                  : 00
+----------------------------------------
+MA_WB:
+result   : 00000000
+nrd      : 00000000
+
+WB CONTROL:
+wb                  : 00
+========================================

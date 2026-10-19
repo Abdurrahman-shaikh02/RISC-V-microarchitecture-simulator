@@ -1,0 +1,58 @@
+Cycle 1 : addi    r1, r0, 0    |                      |                      |                      |                     
+Cycle 2 : addi    r2, r0, 1    | addi    r1, r0, 0    |                      |                      |                     
+Cycle 3 : addi    r3, r0, 11   | addi    r2, r0, 1    | addi    r1, r0, 0    |                      |                     
+Cycle 4 : add     r1, r1, r2   | addi    r3, r0, 11   | addi    r2, r0, 1    | addi    r1, r0, 0    |                     
+Cycle 5 : addi    r2, r2, 1    | add     r1, r1, r2   | addi    r3, r0, 11   | addi    r2, r0, 1    | addi    r1, r0, 0   
+Cycle 6 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   | addi    r3, r0, 11   | addi    r2, r0, 1   
+Cycle 7 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   | addi    r3, r0, 11  
+Cycle 8 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 9 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 10 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 11 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 12 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 13 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 14 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 15 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 16 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 17 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 18 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 19 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 20 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 21 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 22 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 23 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 24 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 25 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 26 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 27 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 28 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 29 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 30 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 31 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 32 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 33 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 34 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 35 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 36 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 37 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 38 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 39 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 40 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 41 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 42 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 43 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 44 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 45 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 46 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 47 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 48 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 49 : add     r1, r1, r2   |                      |                      | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 50 : addi    r2, r2, 1    | add     r1, r1, r2   |                      |                      | bne     r2, r3, loop
+Cycle 51 : bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                      |                     
+Cycle 52 : lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2   |                     
+Cycle 53 : sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1    | add     r1, r1, r2  
+Cycle 54 : addi    r17, r0, 0   | sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop | addi    r2, r2, 1   
+Cycle 55 : ecall                | addi    r17, r0, 0   | sw      r1, 0(r10)   | lui     r10, 0x40    | bne     r2, r3, loop
+Cycle 56 : (null) | ecall                | addi    r17, r0, 0   | sw      r1, 0(r10)   | lui     r10, 0x40   
+Cycle 57 : (null) | ecall                |                      | addi    r17, r0, 0   | sw      r1, 0(r10)  
+Cycle 58 : (null) | (null) | ecall                |                      | addi    r17, r0, 0  

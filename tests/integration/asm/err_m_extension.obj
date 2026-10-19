@@ -1,0 +1,7 @@
+// NOTE: no "]" in comments of .obj files: the loader parses every line containing "]" as an instruction
+// mul r1, r2, r3 (M extension, not supported)
+// EXPECT exit = 1
+// EXPECT output: error in funct7 in r type
+[0] 00000000   023100b3   mul r1, r2, r3
+[1] 0x000004   00000893   addi r17, r0, 0
+[2] 0x000008   00000073   ecall
