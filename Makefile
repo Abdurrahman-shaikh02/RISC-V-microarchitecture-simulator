@@ -4,7 +4,7 @@
 
 CC := gcc
 
-CFLAGS := -g -Iinclude	# Use -Wall and -Wextra and make the code bulletproof!!!
+CFLAGS := -g -Iinclude -MMD -MP	# Use -Wall and -Wextra and make the code bulletproof!!!
 LDLIBS := -lm
 
 BUILD := build
@@ -109,6 +109,59 @@ cachesim: $(CACHE_OBJ)
 $(BUILD)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+###############################################################################
+# Tests (see tests/README.md)
+###############################################################################
+
+TEST_BUILD := $(BUILD)/tests
+TEST_CFLAGS := $(CFLAGS) -Itests/framework
+
+# everything except the files that define main()
+SIM_LIB_OBJ := $(filter-out $(BUILD)/src/main.o,$(SIM_OBJ))
+ASM_LIB_OBJ := $(filter-out $(BUILD)/src/assembler/core/main.o,$(ASM_OBJ))
+
+SIM_UNIT_SRC := $(wildcard tests/unit/sim/test_*.c)
+ASM_UNIT_SRC := $(wildcard tests/unit/asm/test_*.c)
+SIM_UNIT_BIN := $(patsubst tests/unit/sim/%.c,$(TEST_BUILD)/sim/%,$(SIM_UNIT_SRC))
+ASM_UNIT_BIN := $(patsubst tests/unit/asm/%.c,$(TEST_BUILD)/asm/%,$(ASM_UNIT_SRC))
+UNIT_BIN := $(SIM_UNIT_BIN) $(ASM_UNIT_BIN)
+
+.PHONY: test test-unit test-integration test-slow test-golden
+
+# all tests: unit + integration (the default, fast)
+test: $(UNIT_BIN) assemble simulate cachesim
+	@tests/run_tests.sh all $(UNIT_BIN)
+
+# white box tests of every module (tied to the internal C API)
+test-unit: $(UNIT_BIN)
+	@tests/run_tests.sh unit $(UNIT_BIN)
+
+# black box tests of ./assemble ./simulate ./cachesim (the user interface)
+test-integration: assemble simulate cachesim
+	@tests/run_tests.sh integration
+
+# everything, including the long running C workloads
+test-slow: $(UNIT_BIN) assemble simulate cachesim
+	@tests/run_tests.sh slow $(UNIT_BIN)
+
+# regenerate the golden files after an INTENTIONAL change of timing or output
+test-golden: assemble simulate cachesim
+	@python3 tests/integration/run.py --update-golden --slow
+
+$(TEST_BUILD)/sim/%: tests/unit/sim/%.c $(TEST_BUILD)/sim/sim_support.o $(SIM_LIB_OBJ)
+	@mkdir -p $(dir $@)
+	$(CC) $(TEST_CFLAGS) -Itests/unit/sim $< $(TEST_BUILD)/sim/sim_support.o $(SIM_LIB_OBJ) -o $@ $(LDLIBS)
+
+$(TEST_BUILD)/sim/sim_support.o: tests/unit/sim/sim_support.c
+	@mkdir -p $(dir $@)
+	$(CC) $(TEST_CFLAGS) -Itests/unit/sim -c $< -o $@
+
+$(TEST_BUILD)/asm/%: tests/unit/asm/%.c $(ASM_LIB_OBJ)
+	@mkdir -p $(dir $@)
+	$(CC) $(TEST_CFLAGS) $< $(ASM_LIB_OBJ) -o $@ $(LDLIBS)
+
+-include $(shell find $(BUILD) -name '*.d' 2>/dev/null)
 
 ###############################################################################
 # Cleaning

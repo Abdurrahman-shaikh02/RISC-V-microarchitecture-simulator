@@ -1,0 +1,5 @@
+Cycle 1 : addi    r1, r0, 1    |                      |                      |                      |                     
+Cycle 2 : ebreak               | addi    r1, r0, 1    |                      |                      |                     
+Cycle 3 : addi    r2, r0, 2    | ebreak               | addi    r1, r0, 1    |                      |                     
+Cycle 4 : addi    r2, r0, 2    | ebreak               |                      | addi    r1, r0, 1    |                     
+Cycle 5 : addi    r2, r0, 2    | addi    r2, r0, 2    | ebreak               |                      | addi    r1, r0, 1   

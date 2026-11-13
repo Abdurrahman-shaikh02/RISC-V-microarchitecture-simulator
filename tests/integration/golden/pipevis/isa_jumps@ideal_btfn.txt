@@ -1,0 +1,40 @@
+Cycle 1 : jal     r1, func     |                      |                      |                      |                     
+Cycle 2 : addi    r5, r0, 1    | jal     r1, func     |                      |                      |                     
+Cycle 3 : jal     r0, skip     | addi    r5, r0, 1    | jal     r1, func     |                      |                     
+Cycle 4 : addi    r4, r0, 42   |                      |                      | jal     r1, func     |                     
+Cycle 5 : jalr    r0, 0(r1)    | addi    r4, r0, 42   |                      |                      | jal     r1, func    
+Cycle 6 : (null) | jalr    r0, 0(r1)    | addi    r4, r0, 42   |                      |                     
+Cycle 7 : (null) | (null) | jalr    r0, 0(r1)    | addi    r4, r0, 42   |                     
+Cycle 8 : addi    r5, r0, 1    |                      |                      | jalr    r0, 0(r1)    | addi    r4, r0, 42  
+Cycle 9 : jal     r0, skip     | addi    r5, r0, 1    |                      |                      | jalr    r0, 0(r1)   
+Cycle 10 : addi    r6, r0, 99   | jal     r0, skip     | addi    r5, r0, 1    |                      |                     
+Cycle 11 : auipc   r7, 0        | addi    r6, r0, 99   | jal     r0, skip     | addi    r5, r0, 1    |                     
+Cycle 12 : auipc   r7, 0        |                      |                      | jal     r0, skip     | addi    r5, r0, 1   
+Cycle 13 : jalr    r8, 16(r7)   | auipc   r7, 0        |                      |                      | jal     r0, skip    
+Cycle 14 : addi    r9, r0, 99   | jalr    r8, 16(r7)   | auipc   r7, 0        |                      |                     
+Cycle 15 : addi    r9, r0, 99   | addi    r9, r0, 99   | jalr    r8, 16(r7)   | auipc   r7, 0        |                     
+Cycle 16 : addi    r10, r0, 7   |                      |                      | jalr    r8, 16(r7)   | auipc   r7, 0       
+Cycle 17 : addi    r11, r0, 3   | addi    r10, r0, 7   |                      |                      | jalr    r8, 16(r7)  
+Cycle 18 : addi    r12, r0, 0   | addi    r11, r0, 3   | addi    r10, r0, 7   |                      |                     
+Cycle 19 : addi    r11, r11, -1 | addi    r12, r0, 0   | addi    r11, r0, 3   | addi    r10, r0, 7   |                     
+Cycle 20 : addi    r12, r12, 1  | addi    r11, r11, -1 | addi    r12, r0, 0   | addi    r11, r0, 3   | addi    r10, r0, 7  
+Cycle 21 : beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 | addi    r12, r0, 0   | addi    r11, r0, 3  
+Cycle 22 : jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 | addi    r12, r0, 0  
+Cycle 23 : addi    r17, r0, 0   | jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1
+Cycle 24 : ecall                | addi    r17, r0, 0   | jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1 
+Cycle 25 : addi    r11, r11, -1 |                      |                      | jal     r0, back     | beq     r11, r0, out
+Cycle 26 : addi    r12, r12, 1  | addi    r11, r11, -1 |                      |                      | jal     r0, back    
+Cycle 27 : beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 |                      |                     
+Cycle 28 : jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 |                     
+Cycle 29 : addi    r17, r0, 0   | jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1
+Cycle 30 : ecall                | addi    r17, r0, 0   | jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1 
+Cycle 31 : addi    r11, r11, -1 |                      |                      | jal     r0, back     | beq     r11, r0, out
+Cycle 32 : addi    r12, r12, 1  | addi    r11, r11, -1 |                      |                      | jal     r0, back    
+Cycle 33 : beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 |                      |                     
+Cycle 34 : jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1 |                     
+Cycle 35 : addi    r17, r0, 0   | jal     r0, back     | beq     r11, r0, out | addi    r12, r12, 1  | addi    r11, r11, -1
+Cycle 36 : addi    r17, r0, 0   |                      |                      | beq     r11, r0, out | addi    r12, r12, 1 
+Cycle 37 : ecall                | addi    r17, r0, 0   |                      |                      | beq     r11, r0, out
+Cycle 38 : addi    r4, r0, 42   | ecall                | addi    r17, r0, 0   |                      |                     
+Cycle 39 : addi    r4, r0, 42   | ecall                |                      | addi    r17, r0, 0   |                     
+Cycle 40 : jalr    r0, 0(r1)    | addi    r4, r0, 42   | ecall                |                      | addi    r17, r0, 0  
